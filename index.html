@@ -516,11 +516,9 @@ function parseESPNEvent(e) {
 
 async function loadData() {
   try {
-    // ESPN scoreboard — returns today's/recent matches
-    // We also fetch the full schedule via the calendar endpoint
     const [boardRes, schedRes] = await Promise.all([
-      tFetch(`${ESPN}/scoreboard`).then(r=>r.json()),
-      tFetch(`${ESPN}/scoreboard?dates=20260611-20260719&limit=200`).then(r=>r.json()).catch(()=>null),
+      tFetch(`${ESPN}/scoreboard`, 5000).then(r=>r.json()),
+      tFetch(`${ESPN}/scoreboard?dates=20260611-20260719&limit=200`, 5000).then(r=>r.json()).catch(()=>null),
     ]);
 
     const events = new Map();
@@ -1184,17 +1182,28 @@ function showTab(id) {
   document.getElementById(`pane-${id}`).classList.add('active');
 }
 
-async function init() {
-  await drawLoad();
-  if(drawAllDone()) syncDrawToSweepstake();
-  await loadData();
-  renderSweepstake();
-  renderLeague();
-  renderFixtures();
-  renderDraw();
+function dismissLoading() {
   const el = document.getElementById('loading');
-  el.classList.add('fade');
-  setTimeout(()=>el.remove(),600);
+  if (el) { el.classList.add('fade'); setTimeout(()=>el.remove(),600); }
+}
+
+async function init() {
+  // Hard timeout — loading screen gone in 6s no matter what
+  const bail = setTimeout(dismissLoading, 6000);
+  try {
+    await drawLoad();
+    if(drawAllDone()) syncDrawToSweepstake();
+    await loadData();
+    renderSweepstake();
+    renderLeague();
+    renderFixtures();
+    renderDraw();
+  } catch(e) {
+    console.warn('Init error:', e);
+  } finally {
+    clearTimeout(bail);
+    dismissLoading();
+  }
 }
 
 init();
