@@ -1213,6 +1213,19 @@ async function init() {
 }
 
 init();
+
+// Refresh data when user switches back to the app
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+    loadData().then(() => {
+      if (drawAllDone()) {
+        renderSweepstake();
+        renderLeague();
+        renderFixtures();
+      }
+    }).catch(()=>{});
+  }
+});
 </script>
 <script>
 if ('serviceWorker' in navigator && location.hostname === 'thephatphox.github.io') {
