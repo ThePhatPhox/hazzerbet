@@ -475,9 +475,8 @@ let allMatches = [];
 
 // ── ESPN DATA FETCH (no auth, open CORS) ─────────────────────────────────────
 function tFetch(url, ms=8000) {
-  const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), ms);
-  return fetch(url, { signal: ctrl.signal }).finally(() => clearTimeout(t));
+  const timeout = new Promise((_,reject) => setTimeout(() => reject(new Error('timeout')), ms));
+  return Promise.race([fetch(url), timeout]);
 }
 
 // Parse ESPN scoreboard event into our match format
@@ -664,6 +663,11 @@ function showTeamFixtures(teamName, flag) {
 }
 
 function renderSweepstake() {
+  if (!drawAllDone()) {
+    document.getElementById('pane-sweepstake').innerHTML =
+      '<div style="text-align:center;padding:40px 20px;color:#666;font-family:'Barlow Condensed',sans-serif;font-size:16px;letter-spacing:2px;text-transform:uppercase;line-height:2">🎰 Complete the draw first<br><span style="font-size:12px;opacity:.6">Tap the Draw tab to assign teams</span></div>';
+    return;
+  }
   const rows = PARTICIPANTS.map(p => {
     let totalWin=0, escSum=0, escCount=0;
     for (const t of p.teams) {
@@ -747,6 +751,11 @@ function renderSweepstake() {
 
 // ── LEAGUE TABLE ─────────────────────────────────────────────────────────────
 function renderLeague() {
+  if (!drawAllDone()) {
+    document.getElementById('pane-league').innerHTML =
+      '<div style="text-align:center;padding:40px 20px;color:#666;font-family:'Barlow Condensed',sans-serif;font-size:16px;letter-spacing:2px;text-transform:uppercase;line-height:2">🎰 Complete the draw first<br><span style="font-size:12px;opacity:.6">League table appears once teams are assigned</span></div>';
+    return;
+  }
   const stageRank = {winner:7,final:6,sf:5,qf:4,r16:3,r32:2,group:1};
 
   const rows = PARTICIPANTS.map(p => {
@@ -802,6 +811,11 @@ function renderLeague() {
 
 // ── FIXTURES ─────────────────────────────────────────────────────────────────
 function renderFixtures() {
+  if (!drawAllDone()) {
+    document.getElementById('pane-fixtures').innerHTML =
+      '<div style="text-align:center;padding:40px 20px;color:#666;font-family:'Barlow Condensed',sans-serif;font-size:16px;letter-spacing:2px;text-transform:uppercase;line-height:2">🎰 Complete the draw first<br><span style="font-size:12px;opacity:.6">Fixtures appear once teams are assigned</span></div>';
+    return;
+  }
   const relevant = allMatches.filter(m =>
     SWEEP_TEAMS.has(norm(m.homeTeam?.name||'')) || SWEEP_TEAMS.has(norm(m.awayTeam?.name||''))
   );
@@ -937,8 +951,9 @@ function drawSave() {
 }
 
 async function drawLoad() {
-  // Try cloud first
-  try {
+  // Try cloud first (skip on preview/local)
+  const onRealHost = location.hostname === 'thephatphox.github.io';
+  if (onRealHost) try {
     const r = await fetch(JSONBIN_URL + '/latest', {
       headers: { 'X-Master-Key': JSONBIN_KEY }
     });
@@ -977,7 +992,7 @@ function drawCurrentPerson() {
 }
 
 function drawAllDone() {
-  return drawCurrentPerson() >= DRAW_PEOPLE.length;
+  return drawState.locked || drawCurrentPerson() >= DRAW_PEOPLE.length;
 }
 
 function renderDraw() {
@@ -1141,7 +1156,6 @@ function syncDrawToSweepstake() {
     ];
   });
   // Re-render other tabs
-  await drawLoad(); if(drawAllDone()) syncDrawToSweepstake();
   renderSweepstake();
   renderLeague();
   renderFixtures();
@@ -1186,7 +1200,7 @@ async function init() {
 init();
 </script>
 <script>
-if ('serviceWorker' in navigator && location.hostname !== 'www.claudeusercontent.com') {
+if ('serviceWorker' in navigator && location.hostname === 'thephatphox.github.io') {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js')
       .catch(e => console.log('SW reg failed:', e));
