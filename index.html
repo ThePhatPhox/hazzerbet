@@ -411,6 +411,9 @@ body::before {
 
 <script>
 const ESPN = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world';
+const JSONBIN_ID  = '6a2ae20bf5f4af5e29e060c8';
+const JSONBIN_KEY = '$2a$10$b5DxpxQ1lxSrQX13fCQ1m.vmSaz1D3dJLyfy.TAh9yDhrr1OndnDm';
+const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
 
 const PARTICIPANTS = [
   { name:"Nicola",  teams:[{name:"Iran",flag:"🇮🇷"},{name:"Australia",flag:"🇦🇺"},{name:"South Korea",flag:"🇰🇷"}] },
@@ -919,9 +922,46 @@ let drawState = {
 };
 
 function drawSave() {
+  // Always save locally as backup
   try { localStorage.setItem('hazzerbet_draw_v2', JSON.stringify(drawState)); } catch(e) {}
+  // Push to cloud
+  fetch(JSONBIN_URL, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Master-Key': JSONBIN_KEY,
+      'X-Bin-Versioning': 'false',
+    },
+    body: JSON.stringify(drawState)
+  }).catch(e => console.warn('Cloud save failed:', e));
 }
-function drawLoad() {
+
+async function drawLoad() {
+  // Try cloud first
+  try {
+    const r = await fetch(JSONBIN_URL + '/latest', {
+      headers: { 'X-Master-Key': JSONBIN_KEY }
+    });
+    if (r.ok) {
+      const data = await r.json();
+      const record = data.record;
+      if (record && (record.locked || Object.keys(record.results||{}).length > 0)) {
+        drawState = record;
+        // Restore remaining from what hasn't been drawn yet
+        if (!drawState.remaining) {
+          drawState.remaining = {
+            1: DRAW_TIERS[1].teams.filter(t => !Object.values(drawState.results||{}).some(r => r.t1?.name===t.name)),
+            2: DRAW_TIERS[2].teams.filter(t => !Object.values(drawState.results||{}).some(r => r.t2?.name===t.name)),
+            3: DRAW_TIERS[3].teams.filter(t => !Object.values(drawState.results||{}).some(r => r.t3?.name===t.name)),
+          };
+        }
+        return;
+      }
+    }
+  } catch(e) {
+    console.warn('Cloud load failed, trying local:', e);
+  }
+  // Fallback to localStorage
   try {
     const s = localStorage.getItem('hazzerbet_draw_v2');
     if (s) drawState = JSON.parse(s);
@@ -1101,7 +1141,7 @@ function syncDrawToSweepstake() {
     ];
   });
   // Re-render other tabs
-  drawLoad(); if(drawAllDone()) syncDrawToSweepstake();
+  await drawLoad(); if(drawAllDone()) syncDrawToSweepstake();
   renderSweepstake();
   renderLeague();
   renderFixtures();
@@ -1131,9 +1171,9 @@ function showTab(id) {
 }
 
 async function init() {
-  drawLoad();
+  await drawLoad();
+  if(drawAllDone()) syncDrawToSweepstake();
   await loadData();
-  drawLoad(); if(drawAllDone()) syncDrawToSweepstake();
   renderSweepstake();
   renderLeague();
   renderFixtures();
@@ -1146,9 +1186,9 @@ async function init() {
 init();
 </script>
 <script>
-if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator && location.hostname !== 'www.claudeusercontent.com') {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/hazzerbet/sw.js')
+    navigator.serviceWorker.register('./sw.js')
       .catch(e => console.log('SW reg failed:', e));
   });
 }
