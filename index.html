@@ -401,7 +401,7 @@ body::before {
   <div id="pane-draw" class="pane"></div>
 
   <div class="footer">
-    Sweepstake 2026 · Live data via ESPN · No login needed · <span style="color:var(--gold)">v1.4</span> · Opens fresh each time
+    Sweepstake 2026 · Live data via ESPN · No login needed · <span style="color:var(--gold)">v1.5</span> · Opens fresh each time
     <br><button onclick="if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(regs=>Promise.all(regs.map(r=>r.unregister()))).then(()=>caches.keys().then(keys=>Promise.all(keys.map(k=>caches.delete(k))))).then(()=>location.reload(true))}else{location.reload(true)}" style="margin-top:8px;background:none;border:1px solid var(--border);color:var(--muted2);font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;">🔄 Force update</button>
   </div>
 </div>
@@ -422,7 +422,7 @@ const PARTICIPANTS = [
   { name:"Jack",    teams:[{name:"Netherlands",flag:"🇳🇱"},{name:"Austria",flag:"🇦🇹"},{name:"Qatar",flag:"🇶🇦"}] },
   { name:"Paul",    teams:[{name:"Germany",flag:"🇩🇪"},{name:"Ivory Coast",flag:"🇨🇮"},{name:"Cape Verde",flag:"🇨🇻"}] },
   { name:"Thomas",  teams:[{name:"England",flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},{name:"Senegal",flag:"🇸🇳"},{name:"DR Congo",flag:"🇨🇩"}] },
-  { name:"Rick",    teams:[{name:"Morocco",flag:"🇲🇦"},{name:"Serbia",flag:"🇷🇸"},{name:"Saudi Arabia",flag:"🇸🇦"}] },
+  { name:"Rick",    teams:[{name:"Morocco",flag:"🇲🇦"},{name:"Sweden",flag:"🇸🇪"},{name:"Saudi Arabia",flag:"🇸🇦"}] },
   { name:"Rachel",  teams:[{name:"Portugal",flag:"🇵🇹"},{name:"Ecuador",flag:"🇪🇨"},{name:"Algeria",flag:"🇩🇿"}] },
   { name:"Ethan",   teams:[{name:"Mexico",flag:"🇲🇽"},{name:"Japan",flag:"🇯🇵"},{name:"Iran",flag:"🇮🇷"}] },
   { name:"Elliot",  teams:[{name:"Colombia",flag:"🇨🇴"},{name:"Croatia",flag:"🇭🇷"},{name:"Uzbekistan",flag:"🇺🇿"}] },
@@ -448,11 +448,11 @@ const ODDS = {
   "Paraguay":{win:0.5,esc:40},"Scotland":{win:0.3,esc:28},"Tunisia":{win:0.1,esc:20},
   "Algeria":{win:0.2,esc:22},"Ghana":{win:0.2,esc:24},"Iran":{win:0.2,esc:20},
   "South Africa":{win:0.1,esc:22},"New Zealand":{win:0.1,esc:14},
-  "Serbia":{win:0.5,esc:35},"Bosnia & Herzegovina":{win:0.3,esc:25},"Egypt":{win:0.3,esc:28},"Panama":{win:0.1,esc:12},
+  "Sweden":{win:1.0,esc:55},"Bosnia & Herzegovina":{win:0.3,esc:25},"Egypt":{win:0.3,esc:28},"Panama":{win:0.1,esc:12},
   "Saudi Arabia":{win:0.1,esc:18},"Qatar":{win:0.1,esc:10},"Jordan":{win:0.1,esc:10},
   "Iraq":{win:0.1,esc:12},"DR Congo":{win:0.1,esc:12},"Cape Verde":{win:0.05,esc:10},
   "Haiti":{win:0.05,esc:5},"Uzbekistan":{win:0.1,esc:8},"Curaçao":{win:0.05,esc:6},
-  "Sweden":{win:0.0,esc:0},
+
 };
 
 const SWEEP_TEAMS = new Set(PARTICIPANTS.flatMap(p => p.teams.map(t => t.name)));
@@ -914,7 +914,7 @@ const DRAW_TIERS = {
   2: { label:"Tier 2", cls:"t2c", pill:"t2", col:"#4A9EFF", teams:[
     {name:"Croatia",flag:"🇭🇷"},{name:"Ecuador",flag:"🇪🇨"},{name:"Türkiye",flag:"🇹🇷"},
     {name:"Senegal",flag:"🇸🇳"},{name:"Japan",flag:"🇯🇵"},{name:"Canada",flag:"🇨🇦"},
-    {name:"Serbia",flag:"🇷🇸"},{name:"Paraguay",flag:"🇵🇾"},{name:"South Korea",flag:"🇰🇷"},
+    {name:"Sweden",flag:"🇸🇪"},{name:"Paraguay",flag:"🇵🇾"},{name:"South Korea",flag:"🇰🇷"},
     {name:"Australia",flag:"🇦🇺"},{name:"Ivory Coast",flag:"🇨🇮"},{name:"Austria",flag:"🇦🇹"},
     {name:"Czech Republic",flag:"🇨🇿"},{name:"Scotland",flag:"🏴󠁧󠁢󠁳󠁣󠁴󠁿"},
     {name:"Bosnia & Herzegovina",flag:"🇧🇦"},{name:"Egypt",flag:"🇪🇬"}
