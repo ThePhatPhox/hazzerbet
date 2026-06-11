@@ -1,2585 +1,1221 @@
 <!DOCTYPE html>
-<html lang="en-GB">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0a0e1a">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Revise">
-<title>Harry's Revision Hub v3.1</title>
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.svg">
-<link rel="icon" type="image/svg+xml" href="icon-192.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Hazzer Bet — World Cup 2026</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#FFD700">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Hazzer Bet">
+  <link rel="apple-touch-icon" href="icon-192.svg">
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Inter:wght@400;500;600;700&display=swap');
+
 :root {
-  --bg-base: #0a0e1a;
-  --bg-panel: #131826;
-  --bg-elevated: #1a2033;
-  --bg-hover: #232a40;
-  --border: #2a3147;
-  --border-bright: #3d4566;
-  --text-primary: #e8ecf5;
-  --text-secondary: #9aa3b8;
-  --text-muted: #5e6680;
-  --cs: #00d9a3;
-  --science: #7c3aed;
-  --geography: #ff8c42;
-  --maths: #ef4444;
-  --english: #38bdf8;
-  --spanish: #facc15;
-  --rs: #f472b6;
-  --history: #a78bfa;
-  --music: #94a3b8;
-  --accent: #00d9a3;
-  --warning: #facc15;
-  --urgent: #ef4444;
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.5);
-  --shadow-lg: 0 12px 32px rgba(0,0,0,0.6);
+  --gold: #FFD700;
+  --gold2: #FFA500;
+  --green: #00C851;
+  --red: #FF3B30;
+  --blue: #4A9EFF;
+  --bg: #0a0a0f;
+  --surface: #13131f;
+  --surface2: #1c1c2e;
+  --surface3: #242438;
+  --border: #2a2a3e;
+  --text: #f0f0f0;
+  --muted: #777;
+  --muted2: #444;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html { scroll-behavior: smooth; }
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+html { font-size: 16px; }
+
 body {
-  font-family: 'Inter', system-ui, sans-serif;
-  background: var(--bg-base);
-  color: var(--text-primary);
-  line-height: 1.55;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
   min-height: 100vh;
-  padding-bottom: env(safe-area-inset-bottom);
-  background-image:
-    radial-gradient(circle at 20% 20%, rgba(124,58,237,0.08) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(0,217,163,0.06) 0%, transparent 50%);
-}
-.mono { font-family: 'JetBrains Mono', monospace; }
-
-header {
-  border-bottom: 1px solid var(--border);
-  background: rgba(10,14,26,0.85);
-  backdrop-filter: blur(12px);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  padding-top: env(safe-area-inset-top);
-}
-.header-inner {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 1.25rem 1.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-.brand { display: flex; align-items: baseline; gap: 0.75rem; }
-.brand-title {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 1.15rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-.brand-title::before { content: '> '; color: var(--accent); }
-.version {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  padding: 0.15rem 0.5rem;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-}
-.header-stats {
-  display: flex;
-  gap: 1rem;
-  font-size: 0.8rem;
-  font-family: 'JetBrains Mono', monospace;
-  flex-wrap: wrap;
-}
-.header-stat { color: var(--text-secondary); }
-.header-stat strong { color: var(--text-primary); }
-
-main { max-width: 1400px; margin: 0 auto; padding: 1.5rem; }
-
-.hero {
-  background: linear-gradient(135deg, var(--bg-panel) 0%, var(--bg-elevated) 100%);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 2rem 1.5rem;
-  margin-bottom: 1.5rem;
-  position: relative;
-  overflow: hidden;
-  box-shadow: var(--shadow-lg);
-}
-.hero::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, var(--cs), var(--science), var(--geography), var(--maths), var(--english));
-}
-.hero-grid { display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; align-items: center; }
-.hero-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  margin-bottom: 0.6rem;
-}
-.hero-title { font-size: 1.85rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 0.5rem; }
-.hero-subtitle { color: var(--text-secondary); font-size: 0.95rem; }
-.countdown { text-align: right; }
-.countdown-number {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 3.8rem; font-weight: 800;
-  color: var(--accent); line-height: 1; letter-spacing: -0.05em;
-  text-shadow: 0 0 32px rgba(0,217,163,0.4);
-}
-.countdown-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem; color: var(--text-secondary);
-  text-transform: uppercase; letter-spacing: 0.15em; margin-top: 0.25rem;
-}
-.countdown.warning .countdown-number { color: var(--warning); text-shadow: 0 0 32px rgba(250,204,21,0.4); }
-.countdown.urgent .countdown-number { color: var(--urgent); text-shadow: 0 0 32px rgba(239,68,68,0.4); }
-
-.phase-bar {
-  background: var(--bg-panel);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 1rem 1.25rem;
-  margin-bottom: 1.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-.phase-info { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
-.phase-badge {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem; font-weight: 700;
-  padding: 0.3rem 0.65rem; border-radius: 6px;
-  background: var(--accent); color: var(--bg-base);
-  text-transform: uppercase; letter-spacing: 0.1em;
-}
-.phase-badge.phase-2 { background: var(--warning); }
-.phase-badge.phase-3 { background: var(--urgent); color: white; }
-.phase-text { font-size: 0.9rem; color: var(--text-secondary); }
-.phase-text strong { color: var(--text-primary); }
-.phase-progress { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-muted); }
-
-/* Reschedule notification */
-.reschedule-notice {
-  background: linear-gradient(135deg, rgba(250,204,21,0.1) 0%, rgba(239,68,68,0.05) 100%);
-  border: 1px solid rgba(250,204,21,0.3);
-  border-radius: 12px;
-  padding: 1rem 1.25rem;
-  margin-bottom: 1.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-.reschedule-notice-text { font-size: 0.9rem; color: var(--text-primary); flex: 1; min-width: 200px; }
-.reschedule-notice-text strong { color: var(--warning); }
-.reschedule-btn {
-  background: var(--warning);
-  color: var(--bg-base);
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-.reschedule-btn:hover { opacity: 0.9; }
-
-h2 {
-  font-size: 1.35rem; font-weight: 700;
-  margin: 2rem 0 1rem; letter-spacing: -0.02em;
-  display: flex; align-items: center; gap: 0.65rem;
-}
-h2::before {
-  content: ''; display: inline-block;
-  width: 4px; height: 1.35rem;
-  background: var(--accent); border-radius: 2px;
+  overscroll-behavior: none;
 }
 
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-}
-.stat-card {
-  background: var(--bg-panel);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 1rem;
-}
-.stat-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.65rem; color: var(--text-muted);
-  text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.35rem;
-}
-.stat-value {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 1.5rem; font-weight: 800; color: var(--text-primary);
-  letter-spacing: -0.02em;
-}
-.stat-sub { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.2rem; }
-
-.today-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 0.85rem;
-  margin-bottom: 1rem;
-}
-.slot-card {
-  background: var(--bg-panel);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 1.1rem;
-  position: relative;
-  overflow: hidden;
-}
-.slot-card::before {
-  content: ''; position: absolute;
-  left: 0; top: 0; bottom: 0; width: 4px;
-  background: var(--subject-color, var(--accent));
-}
-.slot-card.rescheduled::after {
-  content: 'CARRIED OVER';
-  position: absolute; top: 0.6rem; right: 0.6rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.6rem; font-weight: 700;
-  color: var(--warning); letter-spacing: 0.05em;
-  background: rgba(250,204,21,0.1);
-  padding: 0.2rem 0.4rem; border-radius: 4px;
-  border: 1px solid rgba(250,204,21,0.3);
-}
-.slot-card.overflow::after {
-  content: 'EXTRA';
-  position: absolute; top: 0.6rem; right: 0.6rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.6rem; font-weight: 700;
-  color: var(--science); letter-spacing: 0.05em;
-  background: rgba(124,58,237,0.1);
-  padding: 0.2rem 0.4rem; border-radius: 4px;
-  border: 1px solid rgba(124,58,237,0.3);
-}
-.slot-time {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem; color: var(--text-muted);
-  text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.4rem;
-}
-.slot-subject { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.3rem; color: var(--subject-color, var(--text-primary)); }
-.slot-focus { font-size: 0.85rem; color: var(--text-secondary); }
-.slot-done-btn {
-  margin-top: 0.75rem;
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-  padding: 0.4rem 0.85rem;
-  border-radius: 6px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-.slot-done-btn:hover { border-color: var(--accent); color: var(--accent); }
-.slot-done-btn.done { background: var(--accent); color: var(--bg-base); border-color: var(--accent); }
-
-.subjects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-.subject-card {
-  background: var(--bg-panel);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 1.25rem;
-  transition: all 0.25s ease;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.subject-card::before {
-  content: ''; position: absolute;
-  top: 0; left: 0; right: 0; height: 3px;
-  background: var(--subject-color);
-}
-.subject-card:active { transform: scale(0.98); }
-.subject-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.85rem; }
-.subject-name { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em; color: var(--subject-color); }
-.subject-priority {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.65rem; font-weight: 700;
-  padding: 0.2rem 0.45rem; border-radius: 4px;
-  text-transform: uppercase; letter-spacing: 0.1em;
-}
-.priority-critical { background: rgba(239,68,68,0.15); color: var(--urgent); border: 1px solid rgba(239,68,68,0.3); }
-.priority-high { background: rgba(250,204,21,0.15); color: var(--warning); border: 1px solid rgba(250,204,21,0.3); }
-.priority-medium { background: rgba(0,217,163,0.15); color: var(--accent); border: 1px solid rgba(0,217,163,0.3); }
-.priority-light { background: rgba(148,163,184,0.15); color: var(--text-secondary); border: 1px solid rgba(148,163,184,0.3); }
-
-.subject-time { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.65rem; }
-.subject-meta { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.85rem; line-height: 1.45; }
-.subject-progress { margin-bottom: 0.85rem; }
-.progress-label {
-  display: flex; justify-content: space-between;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.65rem; color: var(--text-muted);
-  text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.35rem;
-}
-.progress-bar { height: 6px; background: var(--bg-elevated); border-radius: 3px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--subject-color); transition: width 0.3s ease; }
-.btn-open {
-  width: 100%;
-  background: var(--bg-elevated);
-  color: var(--text-primary);
-  border: 1px solid var(--border);
-  padding: 0.55rem 1rem; border-radius: 8px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.78rem; font-weight: 500;
-  cursor: pointer; text-align: center;
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background:
+    radial-gradient(ellipse 120% 40% at 50% 0%, rgba(0,200,81,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 50% at 100% 100%, rgba(255,165,0,0.04) 0%, transparent 60%);
+  pointer-events:none; z-index:0;
 }
 
+.app { position:relative; z-index:1; max-width:480px; margin:0 auto; padding:0 12px 80px; }
+
+/* ── HEADER ── */
+.hero { text-align:center; padding:28px 0 18px; }
+.hero-eyebrow {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px; font-weight:700; letter-spacing:3px;
+  text-transform:uppercase; color:var(--gold); margin-bottom:6px; opacity:.9;
+}
+.hero-title {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(54px,16vw,80px); line-height:.88;
+  background:linear-gradient(135deg,#FFD700 0%,#FF8C00 45%,#FFD700 75%,#fff 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  letter-spacing:2px; margin-bottom:4px;
+}
+.hero-sub {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:13px; font-weight:600;
+  letter-spacing:4px; text-transform:uppercase; color:rgba(255,255,255,0.4);
+}
+.hero-ball { font-size:38px; margin-bottom:4px; display:inline-block;  }
+ }
+
+/* ── STATUS ── */
+.status-bar {
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  background:var(--surface2); border:1px solid var(--border); border-radius:8px;
+  padding:9px 14px; margin:0 auto 16px; font-size:12px; color:var(--muted);
+}
+.live-dot { width:7px;height:7px;background:var(--green);border-radius:50%;flex-shrink:0; }
+ 50%{opacity:.5;transform:scale(1.4)} }
+.status-bar b { color:var(--text); }
+
+/* ── TABS ── */
+.tabs {
+  display:flex; gap:3px; margin-bottom:16px;
+  background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:3px;
+  position:sticky; top:8px; z-index:10;
+}
+.tab {
+  flex:1; padding:11px 4px; text-align:center; cursor:pointer; border-radius:8px;
+  font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700;
+  letter-spacing:1px; text-transform:uppercase; color:var(--muted);
+  transition:all .2s; border:none; background:transparent; user-select:none;
+}
+.tab.active { background:var(--surface3); color:var(--gold); box-shadow:0 2px 8px rgba(0,0,0,.4); }
+
+.pane { display:none; }
+.pane.active { display:block; }
+
+/* ── SWEEPSTAKE CARDS ── */
+.s-card {
+  background:var(--surface); border:1px solid var(--border); border-radius:14px;
+  margin-bottom:8px; overflow:hidden; transition:border-color .2s;
+}
+.s-card.r1 { border-color:rgba(255,215,0,.4); background:linear-gradient(135deg,rgba(255,215,0,.07),var(--surface)); }
+.s-card.r2 { border-color:rgba(192,192,192,.3); }
+.s-card.r3 { border-color:rgba(205,127,50,.3); }
+.s-card.eliminated { opacity:.35; }
+
+.s-top {
+  display:flex; align-items:center; padding:12px 14px 8px; gap:10px;
+}
+.s-rank {
+  font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--muted);
+  min-width:32px; text-align:center; line-height:1;
+}
+.r1 .s-rank { color:var(--gold); }
+.r2 .s-rank { color:#C0C0C0; }
+.r3 .s-rank { color:#CD7F32; }
+
+.s-name-wrap { flex:1; }
+.s-name { font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:700; line-height:1; }
+.s-elim { font-size:10px; color:var(--red); font-family:'Barlow Condensed',sans-serif; letter-spacing:1px; margin-top:1px; }
+
+.s-pcts { display:flex; gap:12px; }
+.s-pct-block { text-align:right; }
+.s-pct-label { font-size:9px; font-family:'Barlow Condensed',sans-serif; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); }
+.s-pct-val { font-family:'Bebas Neue',sans-serif; font-size:24px; line-height:1; }
+.s-pct-val.win { color:var(--gold); }
+.s-pct-val.esc { color:var(--green); }
+.s-card.eliminated .s-pct-val { color:var(--muted); }
+
+.s-teams { padding:0 14px 12px; display:flex; flex-direction:column; gap:5px; }
+.s-team {
+  display:flex; align-items:center; gap:8px;
+  background:var(--surface2); border-radius:8px; padding:7px 10px;
+}
+.s-team.out { opacity:.4; }
+.s-team-flag { font-size:18px; line-height:1; }
+.s-team-name { font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700; flex:1; }
+.s-team.out .s-team-name { text-decoration:line-through; }
+.s-team-stats { display:flex; gap:8px; }
+.s-team-stat { font-size:11px; color:var(--muted); font-family:'Barlow Condensed',sans-serif; }
+.s-team-stat.win { color:var(--gold); }
+.s-team-stat.goals { color:var(--green); }
+
+.s-bar-row { display:flex; gap:6px; padding:0 14px 10px; }
+.s-bar-wrap { flex:1; }
+.s-bar-label { font-size:9px; font-family:'Barlow Condensed',sans-serif; letter-spacing:1px; color:var(--muted); margin-bottom:3px; }
+.bar-bg { height:4px; background:rgba(255,255,255,.08); border-radius:2px; overflow:hidden; }
+.bar-fill { height:100%; border-radius:2px; transition:width .8s ease; }
+.win-fill { background:linear-gradient(90deg,var(--gold2),var(--gold)); }
+.esc-fill { background:var(--green); }
+
+/* ── LEAGUE TABLE ── */
+.l-header {
+  display:grid; grid-template-columns:32px 1fr 48px 48px 48px;
+  padding:10px 12px; gap:6px; align-items:center;
+  background:linear-gradient(90deg,rgba(74,158,255,.12),rgba(74,158,255,.04));
+  border:1px solid rgba(74,158,255,.25); border-radius:12px 12px 0 0;
+  margin-top:0;
+}
+.l-wrap { border:1px solid var(--border); border-top:none; border-radius:0 0 12px 12px; overflow:hidden; margin-bottom:8px; }
+.lth { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--blue); }
+.lth.r { text-align:right; }
+
+.l-row {
+  display:grid; grid-template-columns:32px 1fr 48px 48px 48px;
+  padding:11px 12px; gap:6px; align-items:center;
+  border-bottom:1px solid rgba(255,255,255,.04);
+  background:var(--surface);
+}
+.l-row:last-child { border-bottom:none; }
+.l-row.lr1 { background:rgba(255,215,0,.07); }
+.l-row.lr2 { background:rgba(192,192,192,.05); }
+.l-row.lr3 { background:rgba(205,127,50,.05); }
+.l-row.eliminated { opacity:.3; }
+.l-rank { font-family:'Bebas Neue',sans-serif; font-size:18px; color:var(--muted); text-align:center; }
+.lr1 .l-rank { color:var(--gold); }
+.lr2 .l-rank { color:#C0C0C0; }
+.lr3 .l-rank { color:#CD7F32; }
+.l-name { font-family:'Barlow Condensed',sans-serif; font-size:17px; font-weight:700; }
+.l-name-sub { font-size:10px; color:var(--muted); font-family:'Barlow Condensed',sans-serif; margin-top:1px; }
+.lval { font-family:'Bebas Neue',sans-serif; font-size:20px; text-align:right; }
+.lval.g { color:var(--green); }
+.lval.pos { color:var(--green); }
+.lval.neg { color:var(--red); }
+
+.stage-pill {
+  display:inline-block; font-size:9px; font-family:'Barlow Condensed',sans-serif;
+  letter-spacing:1px; padding:2px 5px; border-radius:4px; text-transform:uppercase; font-weight:700;
+  white-space:nowrap;
+}
+.sp-group  { background:rgba(74,158,255,.18);  color:var(--blue);  }
+.sp-r32    { background:rgba(0,200,81,.18);    color:var(--green); }
+.sp-r16    { background:rgba(255,215,0,.18);   color:var(--gold);  }
+.sp-qf     { background:rgba(255,165,0,.22);   color:var(--gold2); }
+.sp-sf     { background:rgba(255,100,0,.22);   color:#FF6400;      }
+.sp-final  { background:rgba(255,215,0,.3);    color:var(--gold);  }
+.sp-out    { background:rgba(255,59,48,.14);   color:var(--red);   }
+
+/* ── FIXTURES ── */
+.f-group { margin-bottom:20px; }
+.f-group-title {
+  font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:3px;
+  color:var(--muted); padding:10px 0 8px; border-bottom:1px solid var(--border);
+  margin-bottom:8px;
+}
+.f-group-title span { color:var(--gold); }
+
+.f-match {
+  background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  padding:10px 12px; margin-bottom:6px;
+}
+.f-match.highlight { border-color:rgba(255,215,0,.35); background:rgba(255,215,0,.03); }
+
+.f-score-row {
+  display:grid; grid-template-columns:1fr auto 1fr;
+  gap:8px; align-items:center; margin-bottom:5px;
+}
+.f-team-home { font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700; display:flex; align-items:center; gap:6px; }
+.f-team-away { font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700; display:flex; align-items:center; gap:6px; justify-content:flex-end; }
+.f-score {
+  text-align:center; font-family:'Bebas Neue',sans-serif; font-size:20px;
+  background:var(--surface2); border-radius:6px; padding:4px 10px;
+  border:1px solid var(--border); white-space:nowrap; min-width:64px;
+}
+.f-score.live { border-color:var(--green); color:var(--green); font-size:16px; }
+.f-score.ft { color:var(--text); }
+.f-score.upcoming { color:var(--muted); font-size:13px; font-family:'Inter',sans-serif; font-weight:600; line-height:1.4; }
+.f-meta { font-size:11px; color:var(--muted); font-family:'Barlow Condensed',sans-serif; letter-spacing:.5px; text-align:center; }
+
+/* ── LOADING ── */
+#loading {
+  position:fixed; inset:0; background:var(--bg);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  z-index:999; gap:14px; transition:opacity .5s;
+}
+#loading.fade { opacity:0; pointer-events:none; }
+.lb { font-size:52px;  }
+ to{transform:translateY(-16px)} }
+.lt { font-family:'Bebas Neue',sans-serif; font-size:24px; color:var(--gold); letter-spacing:3px; }
+.ls { font-size:12px; color:var(--muted); }
+
+.empty { text-align:center; padding:36px 20px; color:var(--muted); font-family:'Barlow Condensed',sans-serif; font-size:15px; letter-spacing:1px; line-height:1.6; }
+
+.footer { text-align:center; font-size:11px; color:var(--muted2); margin-top:20px; padding-top:14px; border-top:1px solid var(--border); line-height:1.6; }
+
+.hero-sub2 {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:14px; font-weight:600; letter-spacing:5px;
+  text-transform:uppercase; color:rgba(255,255,255,.35); margin-top:2px;
+}
+
+/* ── TEAM FIXTURE MODAL ── */
 .modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.75);
-  backdrop-filter: blur(8px);
-  z-index: 1000;
-  display: none;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 1rem;
-  padding-top: max(1rem, env(safe-area-inset-top));
-  padding-bottom: max(1rem, env(safe-area-inset-bottom));
-  overflow-y: auto;
+  position:fixed; inset:0; background:rgba(0,0,0,.85);
+  z-index:100; display:flex; align-items:flex-end;
+  
 }
-.modal-overlay.active { display: flex; }
+ to{opacity:1} }
 .modal {
-  background: var(--bg-panel);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  max-width: 800px; width: 100%;
-  margin: 1rem auto; position: relative;
-  box-shadow: var(--shadow-lg);
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:20px 20px 0 0; width:100%; max-height:85vh;
+  overflow-y:auto; padding:20px 16px 40px;
+  
 }
-.modal::before {
-  content: ''; position: absolute;
-  top: 0; left: 0; right: 0; height: 3px;
-  background: var(--subject-color, var(--accent));
-  border-radius: 16px 16px 0 0;
+ to{transform:translateY(0)} }
+.modal-drag { width:40px; height:4px; background:var(--border); border-radius:2px; margin:0 auto 16px; }
+.modal-title {
+  font-family:'Bebas Neue',sans-serif; font-size:26px; letter-spacing:2px;
+  color:var(--gold); margin-bottom:4px;
 }
-.modal-header {
-  padding: 1.5rem 1.5rem 1rem;
-  border-bottom: 1px solid var(--border);
-  display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem;
-}
-.modal-title { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; color: var(--subject-color, var(--text-primary)); }
-.modal-subtitle { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.3rem; }
+.modal-sub { font-size:12px; color:var(--muted); font-family:'Barlow Condensed',sans-serif; letter-spacing:1px; margin-bottom:16px; }
 .modal-close {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-  width: 36px; height: 36px;
-  border-radius: 8px; cursor: pointer;
-  font-size: 1.25rem; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-}
-.modal-body { padding: 1.25rem 1.5rem 1.75rem; }
-
-.section-h {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem; color: var(--text-muted);
-  text-transform: uppercase; letter-spacing: 0.2em;
-  margin: 1.25rem 0 0.65rem;
-}
-.section-h:first-child { margin-top: 0; }
-
-.topics-list { list-style: none; display: grid; gap: 0.4rem; }
-.topic-item {
-  display: grid;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  overflow: hidden;
-}
-.topic-row {
-  display: flex; align-items: center; gap: 0.7rem;
-  padding: 0.7rem 0.9rem;
-}
-.topic-chevron {
-  flex-shrink: 0;
-  width: 24px; height: 24px;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  color: var(--text-secondary);
-  font-size: 0.8rem;
-  transition: transform 0.2s;
-  user-select: none;
-}
-.topic-chevron.open { transform: rotate(90deg); }
-.topic-chevron-placeholder { width: 24px; flex-shrink: 0; }
-.topic-links {
-  display: none;
-  flex-direction: column;
-  gap: 0.35rem;
-  padding: 0 0.9rem 0.7rem 2.7rem;
-  border-top: 1px solid var(--border);
-  padding-top: 0.5rem;
-  background: rgba(0,0,0,0.15);
-}
-.topic-links.open { display: flex; }
-.topic-link {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 0.45rem 0.65rem;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  text-decoration: none;
-  color: var(--text-primary);
-  font-size: 0.82rem;
-}
-.topic-link-name { font-weight: 500; }
-.topic-link-desc { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.1rem; }
-.topic-link-arrow { color: var(--text-muted); margin-left: 0.5rem; }
-.topic-checkbox {
-  width: 18px; height: 18px;
-  border: 2px solid var(--border-bright);
-  border-radius: 4px; cursor: pointer; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  background: transparent;
-}
-.topic-checkbox.checked { background: var(--subject-color, var(--accent)); border-color: var(--subject-color, var(--accent)); }
-.topic-checkbox.checked::after { content: '✓'; color: var(--bg-base); font-weight: 700; font-size: 0.85rem; }
-.topic-label { flex: 1; font-size: 0.9rem; color: var(--text-primary); }
-.topic-checkbox.checked ~ .topic-label { color: var(--text-muted); text-decoration: line-through; }
-
-.resources-list { display: grid; gap: 0.4rem; }
-.resource-link {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 0.8rem 0.95rem;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  text-decoration: none; color: var(--text-primary);
-}
-.resource-info { flex: 1; }
-.resource-name { font-weight: 600; font-size: 0.9rem; }
-.resource-desc { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.15rem; }
-.resource-arrow { font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 1rem; }
-
-.teacher-note {
-  background: var(--bg-elevated);
-  border-left: 3px solid var(--subject-color, var(--accent));
-  padding: 0.9rem 1.15rem;
-  border-radius: 0 8px 8px 0;
-  font-style: italic; font-size: 0.85rem; color: var(--text-secondary);
-}
-.teacher-note::before { content: 'Teacher (T5): '; font-style: normal; font-weight: 600; color: var(--subject-color, var(--text-primary)); }
-
-.exam-info {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 0.6rem;
-  margin-bottom: 0.5rem;
-}
-.exam-stat {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 0.65rem 0.85rem;
-}
-.exam-stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.2rem; }
-.exam-stat-value { font-weight: 700; font-size: 0.88rem; color: var(--text-primary); }
-
-.schedule-table {
-  width: 100%;
-  background: var(--bg-panel);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-  border-collapse: separate;
-  border-spacing: 0;
-  margin-bottom: 1rem;
-}
-.schedule-table th, .schedule-table td {
-  padding: 0.7rem 0.85rem;
-  text-align: left;
-  border-bottom: 1px solid var(--border);
-  font-size: 0.82rem;
-  vertical-align: top;
-}
-.schedule-table th {
-  background: var(--bg-elevated);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-secondary);
-}
-.schedule-table tbody tr:last-child td { border-bottom: none; }
-.schedule-table .day-cell { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--text-primary); width: 70px; }
-.schedule-table .today-row { background: rgba(0,217,163,0.05); }
-.schedule-table .today-row .day-cell { color: var(--accent); }
-
-.tools-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 0.65rem;
-  margin-bottom: 1.5rem;
-}
-.tool-button {
-  background: var(--bg-panel);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 0.85rem 1.1rem;
-  text-decoration: none;
-  color: var(--text-primary);
-  display: flex; align-items: center; gap: 0.7rem;
-}
-.tool-icon { font-family: 'JetBrains Mono', monospace; font-weight: 800; color: var(--accent); font-size: 1.05rem; }
-.tool-name { font-size: 0.85rem; font-weight: 600; }
-
-.install-banner {
-  display: none;
-  background: var(--bg-panel);
-  border: 1px solid var(--accent);
-  border-radius: 12px;
-  padding: 0.85rem 1.15rem;
-  margin-bottom: 1.5rem;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-.install-banner.show { display: flex; }
-.install-banner-text { font-size: 0.85rem; color: var(--text-secondary); flex: 1; min-width: 200px; }
-.install-banner-text strong { color: var(--accent); }
-.install-btn {
-  background: var(--accent);
-  color: var(--bg-base);
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.78rem;
-  font-weight: 700;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-.install-btn.dismiss { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
-
-footer {
-  border-top: 1px solid var(--border);
-  padding: 1.5rem; text-align: center;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem; color: var(--text-muted);
-}
-footer a { color: var(--text-secondary); text-decoration: none; }
-
-@media (max-width: 640px) {
-  main { padding: 1rem; }
-  .hero { padding: 1.5rem 1.25rem; }
-  .hero-grid { grid-template-columns: 1fr; }
-  .countdown { text-align: left; }
-  .countdown-number { font-size: 3rem; }
-  .hero-title { font-size: 1.45rem; }
-  .header-stats { width: 100%; justify-content: flex-start; gap: 0.85rem; }
-  .header-stat { font-size: 0.7rem; }
-  .subjects-grid { grid-template-columns: 1fr; }
-  .stats-row { grid-template-columns: repeat(2, 1fr); }
-  h2 { font-size: 1.15rem; }
+  position:absolute; top:16px; right:16px;
+  background:var(--surface2); border:1px solid var(--border);
+  color:var(--text); border-radius:50%; width:32px; height:32px;
+  font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.subject-card, .slot-card, .stat-card { animation: fadeIn 0.4s ease-out backwards; }
-.subject-card:nth-child(1) { animation-delay: 0.05s; }
-.subject-card:nth-child(2) { animation-delay: 0.1s; }
-.subject-card:nth-child(3) { animation-delay: 0.15s; }
-.subject-card:nth-child(4) { animation-delay: 0.2s; }
-.subject-card:nth-child(5) { animation-delay: 0.25s; }
-.subject-card:nth-child(6) { animation-delay: 0.3s; }
-.subject-card:nth-child(7) { animation-delay: 0.35s; }
-.subject-card:nth-child(8) { animation-delay: 0.4s; }
-.subject-card:nth-child(9) { animation-delay: 0.45s; }
 
-/* Timer Panel */
-.timer-panel {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 1rem 1.25rem;
-  margin-bottom: 1.25rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  backdrop-filter: blur(8px);
-  background: rgba(26,32,51,0.95);
+/* ── DRAW TAB ── */
+.tier-btns { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin:12px 0; }
+.tier-btn {
+  padding:12px 6px; border-radius:12px; border:2px solid transparent;
+  font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:1px;
+  cursor:pointer; text-align:center; background:var(--surface2); transition:opacity .15s;
 }
-.timer-panel.running { border-color: var(--accent); box-shadow: 0 0 16px rgba(0,217,163,0.2); }
-.timer-panel.paused { border-color: var(--warning); }
-.timer-display {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 1.85rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-.timer-panel.running .timer-display { color: var(--accent); }
-.timer-panel.paused .timer-display { color: var(--warning); }
-.timer-info {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-top: 0.25rem;
-}
-.timer-controls {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-.timer-btn {
-  background: var(--bg-base);
-  border: 1px solid var(--border);
-  color: var(--text-primary);
-  padding: 0.55rem 0.9rem;
-  border-radius: 8px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem;
-  font-weight: 700;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-.timer-btn:hover { border-color: var(--accent); }
-.timer-btn.primary { background: var(--accent); color: var(--bg-base); border-color: var(--accent); }
-.timer-btn.warning { background: var(--warning); color: var(--bg-base); border-color: var(--warning); }
-.timer-btn.danger { background: var(--urgent); color: white; border-color: var(--urgent); }
-.timer-btn.ghost { background: transparent; color: var(--text-muted); }
+.tier-btn .tier-label { font-size:10px; font-family:'Barlow Condensed',sans-serif;
+  letter-spacing:2px; text-transform:uppercase; display:block; margin-bottom:1px; }
+.tier-btn .tier-count { font-size:10px; font-family:'Inter',sans-serif;
+  font-weight:600; opacity:.6; display:block; margin-top:1px; }
+.tier-btn.t1c { border-color:#FF6B35; color:#FF6B35; }
+.tier-btn.t2c { border-color:#4A9EFF; color:#4A9EFF; }
+.tier-btn.t3c { border-color:#888; color:#888; }
+.tier-btn:disabled, .tier-btn.done { opacity:.25; cursor:not-allowed; }
 
-/* Slot timer indicator */
-.slot-timer-active {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
-  margin-left: 0.4rem;
-  animation: pulse 1.5s ease-in-out infinite;
+.slot-wrap {
+  background:var(--surface); border:2px solid var(--border); border-radius:16px;
+  padding:16px; margin-bottom:12px; text-align:center; min-height:120px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
 }
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.3); }
-}
+.slot-wrap.sp-t1 { border-color:#FF6B35; }
+.slot-wrap.sp-t2 { border-color:#4A9EFF; }
+.slot-wrap.sp-t3 { border-color:#888; }
+.slot-idle { font-size:13px; color:var(--muted); font-family:'Barlow Condensed',sans-serif;
+  letter-spacing:2px; text-transform:uppercase; }
+.slot-tier-lbl { font-family:'Barlow Condensed',sans-serif; font-size:11px;
+  font-weight:700; letter-spacing:3px; text-transform:uppercase; margin-bottom:6px; }
+.slot-flag { font-size:34px; line-height:1.1; }
+.slot-team-name { font-family:'Bebas Neue',sans-serif; font-size:36px; line-height:1; }
 
-/* Timer completion modal */
-.complete-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.85);
-  backdrop-filter: blur(8px);
-  z-index: 2000;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
+.draw-person-panel {
+  background:var(--surface2); border:1px solid var(--border); border-radius:10px;
+  padding:10px 14px; margin-bottom:12px; display:flex; align-items:center; gap:10px;
 }
-.complete-overlay.active { display: flex; }
-.complete-card {
-  background: var(--bg-panel);
-  border: 1px solid var(--accent);
-  border-radius: 16px;
-  padding: 2rem;
-  max-width: 420px;
-  width: 100%;
-  text-align: center;
-  box-shadow: 0 0 60px rgba(0,217,163,0.3);
-}
-.complete-icon { font-size: 3rem; margin-bottom: 0.5rem; }
-.complete-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--accent); }
-.complete-detail { color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem; }
-.complete-actions { display: flex; gap: 0.65rem; justify-content: center; flex-wrap: wrap; }
+.dpp-label { font-size:10px; font-family:'Barlow Condensed',sans-serif;
+  letter-spacing:2px; text-transform:uppercase; color:var(--muted); }
+.dpp-name { font-family:'Bebas Neue',sans-serif; font-size:26px; color:var(--gold); line-height:1; }
+.dpp-pills { display:flex; gap:5px; flex-wrap:wrap; margin-top:3px; }
+.dpp-pill { font-size:10px; font-family:'Barlow Condensed',sans-serif; font-weight:700;
+  padding:2px 7px; border-radius:20px; letter-spacing:.5px; }
+.dpp-pill.t1 { background:rgba(255,107,53,.2); color:#FF6B35; }
+.dpp-pill.t2 { background:rgba(74,158,255,.2); color:#4A9EFF; }
+.dpp-pill.t3 { background:rgba(136,136,136,.18); color:#aaa; }
 
-@media (max-width: 640px) {
-  .timer-panel { padding: 0.85rem 1rem; flex-wrap: wrap; }
-  .timer-display { font-size: 1.5rem; }
-  .timer-btn { font-size: 0.7rem; padding: 0.5rem 0.7rem; }
-}
+.draw-rtable { border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-bottom:12px; }
+.draw-rhead { display:grid; grid-template-columns:80px 1fr 1fr 1fr;
+  background:rgba(255,165,0,.08); padding:7px 10px; gap:4px; border-bottom:1px solid var(--border); }
+.draw-rth { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700;
+  letter-spacing:2px; text-transform:uppercase; }
+.draw-rth.c1 { color:#FF6B35; } .draw-rth.c2 { color:#4A9EFF; } .draw-rth.c3 { color:#888; }
+.draw-rrow { display:grid; grid-template-columns:80px 1fr 1fr 1fr;
+  padding:8px 10px; gap:4px; align-items:center;
+  border-bottom:1px solid rgba(255,255,255,.04); background:var(--surface); }
+.draw-rrow:last-child { border-bottom:none; }
+.draw-rrow.draw-active { background:rgba(255,215,0,.06); }
+.draw-rname { font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:700; }
+.draw-rcell { font-family:'Barlow Condensed',sans-serif; font-size:11px; color:var(--muted); }
+.draw-rcell.f1 { color:#FF6B35; } .draw-rcell.f2 { color:#4A9EFF; } .draw-rcell.f3 { color:var(--text); }
 
-@media (display-mode: standalone) {
-  header { padding-top: max(env(safe-area-inset-top), 0.5rem); }
+.lock-btn {
+  width:100%; padding:14px; border-radius:10px; margin-bottom:8px;
+  background:rgba(255,215,0,.12); border:2px solid var(--gold);
+  color:var(--gold); font-family:'Bebas Neue',sans-serif; font-size:20px;
+  letter-spacing:2px; cursor:pointer;
 }
+.reset-draw-btn {
+  width:100%; padding:12px; border-radius:10px;
+  background:rgba(255,59,48,.08); border:1px solid rgba(255,59,48,.25);
+  color:var(--red); font-family:'Barlow Condensed',sans-serif; font-size:14px;
+  font-weight:700; letter-spacing:2px; text-transform:uppercase; cursor:pointer;
+}
+.locked-banner {
+  background:rgba(255,215,0,.08); border:2px solid var(--gold);
+  border-radius:12px; padding:14px 16px; text-align:center; margin-bottom:12px;
+}
+.locked-banner-title { font-family:'Bebas Neue',sans-serif; font-size:28px;
+  color:var(--gold); letter-spacing:2px; }
+.locked-banner-sub { font-size:12px; color:rgba(255,255,255,.4);
+  font-family:'Barlow Condensed',sans-serif; letter-spacing:1px; margin-top:2px; }
 
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <div class="brand">
-      <div class="brand-title">harry.revision</div>
-      <span class="version">v3.1</span>
-    </div>
-    <div class="header-stats">
-      <span class="header-stat">EOY · <strong>29 Jun</strong></span>
-      <span class="header-stat">Ph <strong id="phase-num">1</strong></span>
-      <span class="header-stat">🔥 <strong id="streak-count">0</strong>d</span>
-    </div>
-  </div>
-</header>
+<div id="loading">
+  <div class="lb">⚽</div>
+  <div class="lt">LOADING MATCH DATA</div>
+  <div class="ls">Fetching live World Cup results…</div>
+</div>
 
-<main>
-
-  <!-- Install banner -->
-  <div class="install-banner" id="install-banner">
-    <div class="install-banner-text">
-      <strong>Install this app</strong> on your home screen for quick access offline.
-    </div>
-    <button class="install-btn dismiss" onclick="dismissInstall()">Later</button>
-    <button class="install-btn" id="install-btn" onclick="triggerInstall()">Install</button>
+<div class="app">
+  <div class="hero">
+    <div class="hero-ball">⚽</div>
+    <div class="hero-eyebrow">FIFA World Cup 2026 · USA · Canada · Mexico</div>
+    <div class="hero-title">HAZZER BET</div><div class="hero-sub2">Family Sweepstake 2026</div>
+    <div class="hero-sub">Live Results · Auto-Updates</div>
   </div>
 
-  <!-- Hero countdown -->
-  <section class="hero">
-    <div class="hero-grid">
-      <div>
-        <div class="hero-label">Year 9 End of Year Assessments</div>
-        <h1 class="hero-title" id="hero-greeting">Hey Harry — let's go.</h1>
-        <p class="hero-subtitle" id="hero-sub">Stay sharp. Stay consistent. Smash it.</p>
-      </div>
-      <div class="countdown" id="countdown">
-        <div class="countdown-number" id="days-left">45</div>
-        <div class="countdown-label">days until</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Reschedule notification (shown only when items carried over) -->
-  <div class="reschedule-notice" id="reschedule-notice" style="display:none;">
-    <div class="reschedule-notice-text">
-      <strong>📋 Missed work has been rescheduled.</strong>
-      <span id="reschedule-detail">2 slots carried over to this week.</span>
-    </div>
-    <button class="reschedule-btn" onclick="dismissRescheduleNotice()">Got it</button>
+  <div class="status-bar">
+    <div class="live-dot"></div>
+    <div>Data: <b id="status-text">Loading…</b> &nbsp;·&nbsp; <b id="refresh-time">—</b></div>
   </div>
 
-  <!-- Phase indicator -->
-  <div class="phase-bar">
-    <div class="phase-info">
-      <span class="phase-badge" id="phase-badge">Phase 1: Ramp-in</span>
-      <span class="phase-text" id="phase-desc"><strong>1h 15m weekdays</strong>, 2h weekend days</span>
-    </div>
-    <div class="phase-progress" id="phase-progress">Week 1 of 6</div>
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('sweepstake')">🏆 Sweepstake</button>
+    <button class="tab" onclick="showTab('league')">📊 League</button>
+    <button class="tab" onclick="showTab('fixtures')">📅 Fixtures</button>
+    <button class="tab" id="tab-draw" onclick="showTab('draw')">🎰 Draw</button>
   </div>
 
-  <!-- Stats -->
-  <div class="stats-row">
-    <div class="stat-card">
-      <div class="stat-label">Today</div>
-      <div class="stat-value" id="today-slots">2</div>
-      <div class="stat-sub" id="today-slots-sub">slots planned</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">This Week</div>
-      <div class="stat-value" id="week-hours">9h</div>
-      <div class="stat-sub">target</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Topics</div>
-      <div class="stat-value" id="topics-done">0</div>
-      <div class="stat-sub" id="topics-total">of 0</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Phase</div>
-      <div class="stat-value mono" id="phase-name">RAMP</div>
-      <div class="stat-sub" id="phase-dates">20 May – 2 Jun</div>
-    </div>
-  </div>
+  <div id="pane-sweepstake" class="pane active"></div>
+  <div id="pane-league" class="pane"></div>
+  <div id="pane-fixtures" class="pane"></div>
+  <div id="pane-draw" class="pane"></div>
 
-  <!-- Today's plan -->
-  <h2>Today's Plan</h2>
-  <div class="today-grid" id="today-grid"></div>
-
-  <!-- Quick tools -->
-  <h2>Quick Access</h2>
-  <div class="tools-grid">
-    <a href="https://turinghouseschool.org.uk/documents/molly/Year%209%20End%20of%20Year%20Assessments.pdf" target="_blank" rel="noopener" class="tool-button">
-      <span class="tool-icon">📄</span>
-      <span class="tool-name">EOY Assessment Info</span>
-    </a>
-    <a href="https://copilot.microsoft.com/" target="_blank" rel="noopener" class="tool-button">
-      <span class="tool-icon">[~]</span>
-      <span class="tool-name">Ask Copilot</span>
-    </a>
-    <a href="https://www.bbc.co.uk/bitesize/levels/zdhs34j" target="_blank" rel="noopener" class="tool-button">
-      <span class="tool-icon">BBC</span>
-      <span class="tool-name">BBC Bitesize</span>
-    </a>
-    <a href="https://www.drfrostmaths.com" target="_blank" rel="noopener" class="tool-button">
-      <span class="tool-icon">∑</span>
-      <span class="tool-name">DrFrost</span>
-    </a>
-    <a href="https://app.senecalearning.com" target="_blank" rel="noopener" class="tool-button">
-      <span class="tool-icon">📚</span>
-      <span class="tool-name">Seneca</span>
-    </a>
-    <a href="https://quizlet.com" target="_blank" rel="noopener" class="tool-button">
-      <span class="tool-icon">⚡</span>
-      <span class="tool-name">Quizlet</span>
-    </a>
-    <a href="https://thephatphox.github.io/HJAHGCSE/" target="_blank" rel="noopener" class="tool-button">
-      <span class="tool-icon">{}</span>
-      <span class="tool-name">CS Study Hub</span>
-    </a>
-  </div>
-
-  <!-- Subjects -->
-  <h2>Subjects</h2>
-  <div class="subjects-grid" id="subjects-grid"></div>
-
-  <!-- Weekly schedule -->
-  <h2>This Week</h2>
-  <div style="overflow-x: auto;">
-    <table class="schedule-table" id="schedule-table"></table>
-  </div>
-
-</main>
-
-<footer>
-  Built for Harry · v3.1 PWA · <a href="#" onclick="resetProgress(); return false;">Reset</a> · <a href="#" onclick="forceReschedule(); return false;">Force reschedule</a>
-</footer>
-
-<!-- Timer Completion Modal -->
-<div class="complete-overlay" id="complete-overlay">
-  <div class="complete-card">
-    <div class="complete-icon">🎯</div>
-    <div class="complete-title" id="complete-title">Slot complete!</div>
-    <div class="complete-detail" id="complete-detail">You spent 30 minutes on Computer Science.</div>
-    <div class="complete-actions">
-      <button class="timer-btn primary" onclick="confirmSlotDone()">Mark slot done</button>
-      <button class="timer-btn ghost" onclick="dismissComplete()">Not yet</button>
-    </div>
+  <div class="footer">
+    Hayes Family Sweepstake 2026 · Live data via ESPN · No login needed · Opens fresh each time
   </div>
 </div>
 
-<!-- Modal -->
-<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this) closeModal()">
-  <div class="modal" id="modal" style="--subject-color: var(--accent);">
-    <div class="modal-header">
-      <div>
-        <h2 class="modal-title" id="modal-title" style="margin:0; padding:0;">Subject</h2>
-        <div class="modal-subtitle" id="modal-subtitle">Details</div>
-      </div>
-      <button class="modal-close" onclick="closeModal()">×</button>
-    </div>
-    <div class="modal-body" id="modal-body"></div>
-  </div>
+<div id="modal-root" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);z-index:200;justify-content:center;align-items:flex-end;">
+  <div id="modal-box" style="background:#13131f;border:1px solid #2a2a3e;border-radius:20px 20px 0 0;width:100%;max-width:480px;max-height:85vh;overflow-y:auto;padding:20px 16px 40px;position:relative;"></div>
 </div>
 
 <script>
-// ============ CONSTANTS ============
+const ESPN = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world';
+const JSONBIN_ID  = '6a2ae20bf5f4af5e29e060c8';
+const JSONBIN_KEY = '$2a$10$b5DxpxQ1lxSrQX13fCQ1m.vmSaz1D3dJLyfy.TAh9yDhrr1OndnDm';
+const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
 
-const EXAM_START = new Date('2026-06-29');
-const PHASE_1_END = new Date('2026-06-02');
-const PHASE_2_END = new Date('2026-06-28');
-const PLAN_START = new Date('2026-05-20');
+const PARTICIPANTS = [
+  { name:"Nicola",  teams:[{name:"Iran",flag:"🇮🇷"},{name:"Australia",flag:"🇦🇺"},{name:"South Korea",flag:"🇰🇷"}] },
+  { name:"Harry",   teams:[{name:"Algeria",flag:"🇩🇿"},{name:"Scotland",flag:"🏴󠁧󠁢󠁳󠁣󠁴󠁿"},{name:"Croatia",flag:"🇭🇷"}] },
+  { name:"Jack",    teams:[{name:"Ghana",flag:"🇬🇭"},{name:"DR Congo",flag:"🇨🇩"},{name:"Brazil",flag:"🇧🇷"}] },
+  { name:"Paul",    teams:[{name:"Switzerland",flag:"🇨🇭"},{name:"Mexico",flag:"🇲🇽"},{name:"Ivory Coast",flag:"🇨🇮"}] },
+  { name:"Thomas",  teams:[{name:"USA",flag:"🇺🇸"},{name:"Iraq",flag:"🇮🇶"},{name:"Sweden",flag:"🇸🇪"}] },
+  { name:"Rick",    teams:[{name:"Colombia",flag:"🇨🇴"},{name:"Belgium",flag:"🇧🇪"},{name:"Curaçao",flag:"🇨🇼"}] },
+  { name:"Rachel",  teams:[{name:"Germany",flag:"🇩🇪"},{name:"Portugal",flag:"🇵🇹"},{name:"Panama",flag:"🇵🇦"}] },
+  { name:"Ethan",   teams:[{name:"Japan",flag:"🇯🇵"},{name:"Tunisia",flag:"🇹🇳"},{name:"Netherlands",flag:"🇳🇱"}] },
+  { name:"Elliot",  teams:[{name:"Senegal",flag:"🇸🇳"},{name:"Qatar",flag:"🇶🇦"},{name:"Saudi Arabia",flag:"🇸🇦"}] },
+  { name:"Tom",     teams:[{name:"Cape Verde",flag:"🇨🇻"},{name:"Uruguay",flag:"🇺🇾"},{name:"Norway",flag:"🇳🇴"}] },
+  { name:"Lisa",    teams:[{name:"Czech Republic",flag:"🇨🇿"},{name:"England",flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},{name:"Ecuador",flag:"🇪🇨"}] },
+  { name:"Ben",     teams:[{name:"Argentina",flag:"🇦🇷"},{name:"Spain",flag:"🇪🇸"},{name:"Uzbekistan",flag:"🇺🇿"}] },
+  { name:"Ella",    teams:[{name:"Bosnia & Herzegovina",flag:"🇧🇦"},{name:"Paraguay",flag:"🇵🇾"},{name:"South Africa",flag:"🇿🇦"}] },
+  { name:"Isobel",  teams:[{name:"New Zealand",flag:"🇳🇿"},{name:"Jordan",flag:"🇯🇴"},{name:"France",flag:"🇫🇷"}] },
+  { name:"Grandma", teams:[{name:"Canada",flag:"🇨🇦"},{name:"Morocco",flag:"🇲🇦"},{name:"Austria",flag:"🇦🇹"}] },
+  { name:"Grandad", teams:[{name:"Türkiye",flag:"🇹🇷"},{name:"Haiti",flag:"🇭🇹"},{name:"Egypt",flag:"🇪🇬"}] },
+];
 
-function todayDate() {
-  const d = new Date();
-  d.setHours(0,0,0,0);
-  return d;
-}
-
-function dateKey(d) {
-  return d.toISOString().split('T')[0];
-}
-
-function addDays(d, n) {
-  const r = new Date(d);
-  r.setDate(r.getDate() + n);
-  return r;
-}
-
-function getPhaseForDate(d) {
-  if (d <= PHASE_1_END) return 1;
-  if (d <= PHASE_2_END) return 2;
-  return 3;
-}
-
-function getDaysUntilExams() {
-  return Math.max(0, Math.ceil((EXAM_START - todayDate()) / 86400000));
-}
-
-function getWeekNumber() {
-  const diff = Math.floor((todayDate() - PLAN_START) / 86400000);
-  return Math.max(1, Math.min(7, Math.floor(diff / 7) + 1));
-}
-
-// dayIndex: 0=Mon..6=Sun
-function getDayIndex(d) {
-  const day = d.getDay();
-  return day === 0 ? 6 : day - 1;
-}
-
-// ============ SUBJECT DATA ============
-// Priority weights: lower number = higher priority for rescheduling
-const SUBJECTS = {
-  cs: {
-    name: 'Computer Science', color: 'var(--cs)', priority: 'critical', priorityLabel: 'Critical',
-    rescheduleWeight: 1,
-    weeklyTime: '2 hrs', weeklyTimeP2: '~2h 45m',
-    summary: 'Chosen GCSE (OCR J277). Currently target S4 — needs to dramatically exceed this. Building strong foundation for Y10.',
-    teacherNote: 'Steady progress. Basic Python (T2) and binary number system (T3) developed soundly. Currently working on cyber security. Benefits from step-by-step guidance but beginning to show more independence.',
-    examInfo: { 'GCSE Board': 'OCR J277', 'Likely Y9 topics': 'Python, Binary, Cyber Security', 'Format': 'Awaiting school', 'Y10 onwards': '2 papers, 1h30 each' },
-    topics: [
-      { name: 'Python: variables and data types', links: [
-        { name: "Harry's Study Hub: Python module", desc: 'Your custom app', url: 'https://thephatphox.github.io/HJAHGCSE/' },
-        { name: 'BBC Bitesize: Variables', desc: 'KS3 explanation', url: 'https://www.bbc.co.uk/bitesize/subjects/zvc9q6f' },
-        { name: 'W3Schools: Python variables', desc: 'Reference + examples', url: 'https://www.w3schools.com/python/python_variables.asp' },
-        { name: 'W3Schools: Python data types', desc: 'int, float, str, bool', url: 'https://www.w3schools.com/python/python_datatypes.asp' }
-      ]},
-      { name: 'Python: input/output and casting', links: [
-        { name: "Harry's Study Hub: Python module", desc: 'Your custom app', url: 'https://thephatphox.github.io/HJAHGCSE/' },
-        { name: 'W3Schools: Python input', desc: 'input() function', url: 'https://www.w3schools.com/python/ref_func_input.asp' },
-        { name: 'W3Schools: Type casting', desc: 'int(), str(), float()', url: 'https://www.w3schools.com/python/python_casting.asp' }
-      ]},
-      { name: 'Python: if/elif/else statements', links: [
-        { name: "Harry's Study Hub: Python module", desc: 'Your custom app', url: 'https://thephatphox.github.io/HJAHGCSE/' },
-        { name: 'BBC Bitesize: Selection', desc: 'Conditional logic', url: 'https://www.bbc.co.uk/bitesize/subjects/zvc9q6f' },
-        { name: 'W3Schools: Python if/else', desc: 'Syntax + examples', url: 'https://www.w3schools.com/python/python_conditions.asp' }
-      ]},
-      { name: 'Python: while and for loops', links: [
-        { name: "Harry's Study Hub: Python module", desc: 'Your custom app', url: 'https://thephatphox.github.io/HJAHGCSE/' },
-        { name: 'BBC Bitesize: Iteration', desc: 'Loop concepts', url: 'https://www.bbc.co.uk/bitesize/subjects/zvc9q6f' },
-        { name: 'W3Schools: while loops', desc: 'Syntax + breaks', url: 'https://www.w3schools.com/python/python_while_loops.asp' },
-        { name: 'W3Schools: for loops', desc: 'range() included', url: 'https://www.w3schools.com/python/python_for_loops.asp' }
-      ]},
-      { name: 'Python: code tracing practice', links: [
-        { name: 'Python Tutor', desc: 'Step through code visually', url: 'https://pythontutor.com' },
-        { name: 'Isaac Computer Science: Tracing', desc: 'GCSE practice', url: 'https://isaaccomputerscience.org' },
-        { name: '101 Computing: Python challenges', desc: 'Trace + predict output', url: 'https://www.101computing.net/category/python/' }
-      ]},
-      { name: 'Binary: place values (128-1)', links: [
-        { name: "Harry's Study Hub: Binary module", desc: 'Your custom app', url: 'https://thephatphox.github.io/HJAHGCSE/' },
-        { name: 'BBC Bitesize: Binary', desc: 'KS3 representation', url: 'https://www.bbc.co.uk/bitesize/subjects/zvc9q6f' },
-        { name: 'CSNewbs: Binary', desc: 'Clear explanation', url: 'https://www.csnewbs.com' }
-      ]},
-      { name: 'Binary: decimal ↔ binary conversion', links: [
-        { name: "Harry's Study Hub: Binary module", desc: 'Your custom app', url: 'https://thephatphox.github.io/HJAHGCSE/' },
-        { name: 'BBC Bitesize: Converting', desc: 'Step-by-step', url: 'https://www.bbc.co.uk/bitesize/subjects/zvc9q6f' },
-        { name: 'Craig n Dave: Binary conversion', desc: 'OCR J277 video', url: 'https://student.craigndave.org' }
-      ]},
-      { name: 'Binary: addition with overflow', links: [
-        { name: "Harry's Study Hub: Binary module", desc: 'Your custom app', url: 'https://thephatphox.github.io/HJAHGCSE/' },
-        { name: 'BBC Bitesize: Binary arithmetic', desc: 'Addition + overflow', url: 'https://www.bbc.co.uk/bitesize/subjects/zvc9q6f' },
-        { name: 'CSNewbs: Binary addition', desc: 'Worked examples', url: 'https://www.csnewbs.com' }
-      ]},
-      { name: 'Binary: binary shifts (×2, ÷2)', links: [
-        { name: "Harry's Study Hub: Binary module", desc: 'Your custom app', url: 'https://thephatphox.github.io/HJAHGCSE/' },
-        { name: 'BBC Bitesize: Binary shifts', desc: 'Left + right shifts', url: 'https://www.bbc.co.uk/bitesize/subjects/zvc9q6f' },
-        { name: 'CSNewbs: Binary shifts', desc: 'Practical examples', url: 'https://www.csnewbs.com' }
-      ]},
-      { name: 'Hexadecimal: hex ↔ binary ↔ decimal', links: [
-        { name: "Harry's Study Hub: Binary module", desc: 'Your custom app', url: 'https://thephatphox.github.io/HJAHGCSE/' },
-        { name: 'BBC Bitesize: Hexadecimal', desc: 'Conversion methods', url: 'https://www.bbc.co.uk/bitesize/subjects/zvc9q6f' },
-        { name: 'CSNewbs: Hexadecimal', desc: 'Why hex is useful', url: 'https://www.csnewbs.com' }
-      ]},
-      { name: 'Character encoding: ASCII and Unicode', links: [
-        { name: "Harry's Study Hub: Data rep module", desc: 'Your custom app', url: 'https://thephatphox.github.io/HJAHGCSE/' },
-        { name: 'BBC Bitesize: Character sets', desc: 'ASCII vs Unicode', url: 'https://www.bbc.co.uk/bitesize/subjects/zvc9q6f' },
-        { name: 'CSNewbs: Character sets', desc: 'Encoding explained', url: 'https://www.csnewbs.com' }
-      ]},
-      { name: 'Cyber security: malware types', links: [
-        { name: "Harry's Study Hub: Cyber security module", desc: 'Your custom app', url: 'https://thephatphox.github.io/HJAHGCSE/' },
-        { name: 'BBC Bitesize: Malware', desc: 'Virus, worm, trojan, etc.', url: 'https://www.bbc.co.uk/bitesize/subjects/zvc9q6f' },
-        { name: 'CSNewbs: Malware', desc: 'All malware types', url: 'https://www.csnewbs.com' }
-      ]},
-      { name: 'Cyber security: social engineering', links: [
-        { name: "Harry's Study Hub: Cyber security module", desc: 'Your custom app', url: 'https://thephatphox.github.io/HJAHGCSE/' },
-        { name: 'BBC Bitesize: Social engineering', desc: 'Phishing, vishing, etc.', url: 'https://www.bbc.co.uk/bitesize/subjects/zvc9q6f' },
-        { name: 'CSNewbs: Social engineering', desc: 'Attack types', url: 'https://www.csnewbs.com' }
-      ]},
-      { name: 'Cyber security: protection methods', links: [
-        { name: "Harry's Study Hub: Cyber security module", desc: 'Your custom app', url: 'https://thephatphox.github.io/HJAHGCSE/' },
-        { name: 'BBC Bitesize: Protecting systems', desc: 'Firewall, antivirus, etc.', url: 'https://www.bbc.co.uk/bitesize/subjects/zvc9q6f' },
-        { name: 'CSNewbs: Protection methods', desc: 'Layered defence', url: 'https://www.csnewbs.com' }
-      ]},
-      { name: 'Cyber security: UK laws (CMA, GDPR)', links: [
-        { name: "Harry's Study Hub: Cyber security module", desc: 'Your custom app', url: 'https://thephatphox.github.io/HJAHGCSE/' },
-        { name: 'BBC Bitesize: Legislation', desc: 'CMA, DPA, copyright', url: 'https://www.bbc.co.uk/bitesize/subjects/zvc9q6f' },
-        { name: 'CSNewbs: Computer Misuse Act', desc: 'CMA 1990 explained', url: 'https://www.csnewbs.com' }
-      ]}
-    ],
-    resources: [
-      { name: "Harry's Study Hub", desc: 'Your custom revision app', url: 'https://thephatphox.github.io/HJAHGCSE/' },
-      { name: 'BBC Bitesize KS3 Computing', desc: 'Topic explanations + activities', url: 'https://www.bbc.co.uk/bitesize/subjects/zvc9q6f' },
-      { name: 'CS GCSE Guru', desc: 'Beyond KS3, good for stretch', url: 'https://www.computerscience.gcse.guru' },
-      { name: 'Isaac Computer Science', desc: 'GCSE/A-Level stretch', url: 'https://isaaccomputerscience.org' },
-      { name: '101 Computing', desc: 'Programming challenges', url: 'https://www.101computing.net' },
-      { name: 'Python Tutor', desc: 'Visualise code execution', url: 'https://pythontutor.com' },
-      { name: 'CSNewbs', desc: 'Clear KS3/GCSE explanations', url: 'https://www.csnewbs.com' },
-      { name: 'Craig n Dave', desc: 'OCR J277 video tutorials', url: 'https://student.craigndave.org' }
-    ]
-  },
-  science: {
-    name: 'Triple Science', color: 'var(--science)', priority: 'critical', priorityLabel: 'Critical',
-    rescheduleWeight: 1,
-    weeklyTime: '2 hrs', weeklyTimeP2: '~2h 30m',
-    summary: 'Above target. Results determine triple vs combined pathway. 3 papers: Biology, Chemistry, Physics (40 marks / 40 min each).',
-    teacherNote: 'A lively and motivated student who handles Higher-tier assessments well, though confidence sometimes wanes. Focus on refining exam technique, particularly conciseness of responses. Complete extra Educake questions to strengthen long-term memory.',
-    examInfo: { 'Format': '3 papers (Bio, Chem, Phys)', 'Each': '40 marks · 40 mins', 'Topics': '9 total', 'Pathway': 'Triple/combined' },
-    topics: [
-      { name: 'BIO: Genes, evolution and inheritance', links: [
-        { name: 'BBC Bitesize: Inheritance & genetics', desc: 'KS3 Biology', url: 'https://www.bbc.co.uk/bitesize/topics/z2mttv4' },
-        { name: 'FreeScienceLessons: Inheritance', desc: 'YouTube playlist', url: 'https://www.youtube.com/@freesciencelessons' },
-        { name: 'Seneca: Genetics', desc: 'Interactive revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'BIO: Cell biology (B1)', links: [
-        { name: 'BBC Bitesize: Cell Biology', desc: 'B1', url: 'https://www.bbc.co.uk/bitesize/topics/z2mttv4' },
-        { name: 'FreeScienceLessons (YouTube)', desc: 'B1 videos', url: 'https://www.youtube.com/@freesciencelessons' },
-        { name: 'Seneca: Cell Biology', desc: 'Free revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'BIO: Organisation (B2)', links: [
-        { name: 'BBC Bitesize: Organisation', desc: 'B2', url: 'https://www.bbc.co.uk/bitesize/topics/zwtcng8' },
-        { name: 'FreeScienceLessons (YouTube)', desc: 'B2 videos', url: 'https://www.youtube.com/@freesciencelessons' },
-        { name: 'Educake', desc: 'Practice questions', url: 'https://www.educake.co.uk' }
-      ]},
-      { name: 'CHEM: Periodic Table and Atomic structure (C1)', links: [
-        { name: 'BBC Bitesize: Periodic Table', desc: 'C1', url: 'https://www.bbc.co.uk/bitesize/topics/zxnftv4' },
-        { name: 'FreeScienceLessons (YouTube)', desc: 'C1 videos', url: 'https://www.youtube.com/@freesciencelessons' },
-        { name: 'Seneca: Atomic Structure', desc: 'Free revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'CHEM: Chemical bonding (C2)', links: [
-        { name: 'BBC Bitesize: Chemical Bonding', desc: 'C2', url: 'https://www.bbc.co.uk/bitesize/topics/zd7t382' },
-        { name: 'FreeScienceLessons (YouTube)', desc: 'C2 videos', url: 'https://www.youtube.com/@freesciencelessons' },
-        { name: 'Educake', desc: 'Practice questions', url: 'https://www.educake.co.uk' }
-      ]},
-      { name: 'PHYS: Magnetism and electromagnetism', links: [
-        { name: 'BBC Bitesize: Magnetism', desc: 'Electromagnets + motor effect', url: 'https://www.bbc.co.uk/bitesize/topics/zxnftv4' },
-        { name: 'FreeScienceLessons (YouTube)', desc: 'Physics videos', url: 'https://www.youtube.com/@freesciencelessons' },
-        { name: 'Seneca: Magnetism', desc: 'Free revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'PHYS: Energy (P1)', links: [
-        { name: 'BBC Bitesize: Energy', desc: 'P1', url: 'https://www.bbc.co.uk/bitesize/topics/zycbsrd' },
-        { name: 'FreeScienceLessons (YouTube)', desc: 'P1 videos', url: 'https://www.youtube.com/@freesciencelessons' },
-        { name: 'Educake', desc: 'Practice questions', url: 'https://www.educake.co.uk' }
-      ]},
-      { name: 'PHYS: Particle model of matter (P3)', links: [
-        { name: 'BBC Bitesize: Particle Model', desc: 'P3', url: 'https://www.bbc.co.uk/bitesize/topics/z3ybb82' },
-        { name: 'FreeScienceLessons (YouTube)', desc: 'P3 videos', url: 'https://www.youtube.com/@freesciencelessons' },
-        { name: 'Seneca: Particle Model', desc: 'Free revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'PHYS: Atoms and radiation (P4)', links: [
-        { name: 'BBC Bitesize: Atoms and Radiation', desc: 'P4', url: 'https://www.bbc.co.uk/bitesize/topics/zqtmw6f' },
-        { name: 'FreeScienceLessons (YouTube)', desc: 'P4 videos', url: 'https://www.youtube.com/@freesciencelessons' },
-        { name: 'Educake', desc: 'Practice questions', url: 'https://www.educake.co.uk' }
-      ]}
-    ],
-    resources: [
-      { name: 'Seneca Learning', desc: 'Free, interactive (school recommended)', url: 'https://app.senecalearning.com' },
-      { name: 'Educake', desc: 'Extra questions (teacher recommendation)', url: 'https://www.educake.co.uk' },
-      { name: 'BBC Bitesize: Cell Biology', desc: 'B1', url: 'https://www.bbc.co.uk/bitesize/topics/z2mttv4' },
-      { name: 'BBC Bitesize: Periodic Table', desc: 'C1', url: 'https://www.bbc.co.uk/bitesize/topics/zxnftv4' },
-      { name: 'BBC Bitesize: Energy', desc: 'P1', url: 'https://www.bbc.co.uk/bitesize/topics/zycbsrd' },
-      { name: 'BBC Bitesize: Organisation', desc: 'B2', url: 'https://www.bbc.co.uk/bitesize/topics/zwtcng8' },
-      { name: 'BBC Bitesize: Chemical Bonding', desc: 'C2', url: 'https://www.bbc.co.uk/bitesize/topics/zd7t382' },
-      { name: 'BBC Bitesize: Particle Model', desc: 'P3', url: 'https://www.bbc.co.uk/bitesize/topics/z3ybb82' },
-      { name: 'BBC Bitesize: Atoms and Radiation', desc: 'P4', url: 'https://www.bbc.co.uk/bitesize/topics/zqtmw6f' },
-      { name: 'FreeScienceLessons (YouTube)', desc: 'High quality videos', url: 'https://www.youtube.com/@freesciencelessons' }
-    ]
-  },
-  geography: {
-    name: 'Geography', color: 'var(--geography)', priority: 'critical', priorityLabel: 'Critical',
-    rescheduleWeight: 2,
-    weeklyTime: '1h 45m', weeklyTimeP2: '~2h 30m',
-    summary: 'Chosen GCSE but BELOW target. Wide content (7+ topics). Needs disciplined coverage and case study mastery.',
-    teacherNote: 'Currently working below the expected level. Works well but can become distracted. Practise geographical skills on the Turing House School website, especially data interpretation and structured written responses.',
-    examInfo: { 'Format': '1 paper', 'Marks': '45', 'Topics': '7+ areas', 'Status': 'Below target' },
-    topics: [
-      { name: 'Population', links: [
-        { name: 'BBC Bitesize: Population', desc: 'KS3', url: 'https://www.bbc.co.uk/bitesize/topics/zg7nvcw/articles/zxv4cmn' },
-        { name: 'Internet Geography: Population Pyramids', desc: 'Age-sex structure', url: 'https://www.internetgeography.net/population-pyramids-in-geography/' },
-        { name: 'Internet Geography: Natural Change', desc: 'Birth/death rates', url: 'https://www.internetgeography.net/igcse-geography/population-and-settlement-igcse-geography/natural-population-change/' }
-      ]},
-      { name: 'Overpopulation', links: [
-        { name: 'BBC Bitesize: Population', desc: 'KS3', url: 'https://www.bbc.co.uk/bitesize/topics/zg7nvcw/articles/zxv4cmn' },
-        { name: 'Internet Geography', desc: 'Topic index', url: 'https://www.internetgeography.net' }
-      ]},
-      { name: 'Challenges of managing population', links: [
-        { name: 'BBC Bitesize: Population', desc: 'KS3', url: 'https://www.bbc.co.uk/bitesize/topics/zg7nvcw/articles/zxv4cmn' },
-        { name: 'Internet Geography', desc: 'Topic index', url: 'https://www.internetgeography.net' }
-      ]},
-      { name: 'Hazards: distribution of earthquakes and volcanoes', links: [
-        { name: 'BBC Bitesize: Plate Margins', desc: 'AQA GCSE', url: 'https://www.bbc.co.uk/bitesize/guides/z2vjxsg/revision/2' },
-        { name: 'Internet Geography', desc: 'Hazards topic index', url: 'https://www.internetgeography.net' }
-      ]},
-      { name: 'Plate boundaries', links: [
-        { name: 'BBC Bitesize: Plate Margins', desc: 'AQA GCSE', url: 'https://www.bbc.co.uk/bitesize/guides/z2vjxsg/revision/2' },
-        { name: 'Internet Geography', desc: 'Hazards topic index', url: 'https://www.internetgeography.net' }
-      ]},
-      { name: 'Earthquake Case Study – Haiti 2010', links: [
-        { name: 'Internet Geography: Haiti', desc: 'Full case study', url: 'https://www.internetgeography.net/topics/haiti-earthquake-2010/' },
-        { name: 'BBC Bitesize: Plate Margins', desc: 'Background', url: 'https://www.bbc.co.uk/bitesize/guides/z2vjxsg/revision/3' }
-      ]},
-      { name: 'Glaciation: key terms', links: [
-        { name: 'Internet Geography: What is glaciation?', desc: 'Intro', url: 'https://www.internetgeography.net/geotopics/what-is-glaciation/' },
-        { name: 'Internet Geography: Glaciation', desc: 'Topic hub', url: 'https://www.internetgeography.net/topics/glaciation/' }
-      ]},
-      { name: 'Glacial landforms', links: [
-        { name: 'Internet Geography: Glaciation', desc: 'Topic hub', url: 'https://www.internetgeography.net/topics/glaciation/' },
-        { name: 'BBC Bitesize: Glacial Processes', desc: 'AQA GCSE', url: 'https://www.bbc.co.uk/bitesize/guides/zxn87hv/revision/1' }
-      ]},
-      { name: 'Glacial processes', links: [
-        { name: 'BBC Bitesize: Glacial Processes', desc: 'AQA GCSE', url: 'https://www.bbc.co.uk/bitesize/guides/zxn87hv/revision/1' },
-        { name: 'Internet Geography: Glaciation', desc: 'Topic hub', url: 'https://www.internetgeography.net/topics/glaciation/' }
-      ]},
-      { name: 'Earning a living: employment sectors', links: [
-        { name: 'Internet Geography: Topics index', desc: 'Employment Structures section', url: 'https://www.internetgeography.net/topics/' },
-        { name: 'Internet Geography: Glacial economies', desc: 'Upland areas', url: 'https://www.internetgeography.net/topics/economic-activities-in-glaciated-upland-areas/' }
-      ]},
-      { name: 'Changes in employment structure', links: [
-        { name: 'Internet Geography: Topics index', desc: 'Employment Structures section', url: 'https://www.internetgeography.net/topics/' },
-        { name: 'Internet Geography', desc: 'Economy topic index', url: 'https://www.internetgeography.net' }
-      ]},
-      { name: 'Doncaster case study', links: [
-        { name: 'Internet Geography: Case Studies', desc: 'Browse UK case studies', url: 'https://www.internetgeography.net/geography-case-studies/' },
-        { name: 'TES: Doncaster Employment', desc: 'KS3 case study notes', url: 'https://www.tes.com/teaching-resource/doncaster-employment-case-study-12257036' }
-      ]},
-      { name: 'UK Resources: key terms and global distribution', links: [
-        { name: 'BBC Bitesize KS3 Geography', desc: 'Subject root', url: 'https://www.bbc.co.uk/bitesize/subjects/zrw76sg' },
-        { name: 'Internet Geography', desc: 'Resources topic', url: 'https://www.internetgeography.net' }
-      ]},
-      { name: 'Food: food miles and production', links: [
-        { name: 'Internet Geography: Food Miles', desc: 'Local sourcing', url: 'https://www.internetgeography.net/topics/food-miles/' },
-        { name: 'BBC Bitesize KS3 Geography', desc: 'Subject root', url: 'https://www.bbc.co.uk/bitesize/subjects/zrw76sg' }
-      ]},
-      { name: 'Africa: causes of underdevelopment', links: [
-        { name: 'BBC Bitesize KS3 Geography', desc: 'Subject root', url: 'https://www.bbc.co.uk/bitesize/subjects/zrw76sg' },
-        { name: 'Internet Geography', desc: 'Development topic', url: 'https://www.internetgeography.net' }
-      ]}
-    ],
-    resources: [
-      { name: 'BBC Bitesize: Population', desc: 'KS3', url: 'https://www.bbc.co.uk/bitesize/topics/zg7nvcw/articles/zxv4cmn' },
-      { name: 'Internet Geography: Haiti', desc: 'Case study', url: 'https://www.internetgeography.net/topics/haiti-earthquake-2010/' },
-      { name: 'BBC Bitesize: Plate Margins', desc: 'AQA GCSE', url: 'https://www.bbc.co.uk/bitesize/guides/z2vjxsg/revision/2' },
-      { name: 'BBC Bitesize: Glacial Processes', desc: 'AQA GCSE', url: 'https://www.bbc.co.uk/bitesize/guides/zxn87hv/revision/1' },
-      { name: 'Internet Geography: Topics index', desc: 'Employment Structures + more', url: 'https://www.internetgeography.net/topics/' },
-      { name: 'Internet Geography: Food Miles', desc: 'Local sourcing', url: 'https://www.internetgeography.net/topics/food-miles/' },
-      { name: 'Internet Geography', desc: 'Topic index', url: 'https://www.internetgeography.net' }
-    ]
-  },
-  maths: {
-    name: 'Mathematics', color: 'var(--maths)', priority: 'high', priorityLabel: 'Stretch',
-    rescheduleWeight: 3,
-    weeklyTime: '1h 15m', weeklyTimeP2: '1h 45m',
-    summary: 'Above target. Edexcel 1MA1 Higher tier confirmed. Strong algebraic reasoning. Possible AQA L2 Further Maths route in Y10/11.',
-    teacherNote: 'Excellent attitude, working above target. Attempt Parallel online tasks released weekly. Revisit DrFrostMaths course page. Attempt exam-level questions for GCSE preparation.',
-    examInfo: { 'Board': 'Edexcel 1MA1', 'Tier': 'Higher', 'Format': '2 papers', 'Non-calc': '50 mins', 'Calc': '50 mins', 'Stretch': 'AQA L2 Further Maths' },
-    topics: [
-      { name: 'Number: surds and indices', links: [
-        { name: 'Corbettmaths: Surds', desc: 'Video 305 + practice', url: 'https://corbettmaths.com/2019/08/29/surds-practice-questions/' },
-        { name: 'Corbettmaths: Contents', desc: 'Full topic index', url: 'https://corbettmaths.com/contents/' },
-        { name: 'DrFrostMaths', desc: 'School platform', url: 'https://www.drfrostmaths.com' }
-      ]},
-      { name: 'Algebra: factorising quadratics', links: [
-        { name: 'Corbettmaths: Contents', desc: 'Search "factorising quadratics"', url: 'https://corbettmaths.com/contents/' },
-        { name: 'Maths Genie', desc: 'GCSE practice papers', url: 'https://www.mathsgenie.co.uk' },
-        { name: 'DrFrostMaths', desc: 'School platform', url: 'https://www.drfrostmaths.com' }
-      ]},
-      { name: 'Algebra: simultaneous equations', links: [
-        { name: 'Corbettmaths: Contents', desc: 'Linear + advanced (V295/V298)', url: 'https://corbettmaths.com/contents/' },
-        { name: 'Maths Genie', desc: 'GCSE practice papers', url: 'https://www.mathsgenie.co.uk' },
-        { name: 'DrFrostMaths', desc: 'School platform', url: 'https://www.drfrostmaths.com' }
-      ]},
-      { name: 'Algebra: rearranging formulas', links: [
-        { name: 'Corbettmaths: Contents', desc: 'Full topic index', url: 'https://corbettmaths.com/contents/' },
-        { name: 'Maths Genie', desc: 'GCSE practice papers', url: 'https://www.mathsgenie.co.uk' },
-        { name: 'DrFrostMaths', desc: 'School platform', url: 'https://www.drfrostmaths.com' }
-      ]},
-      { name: 'Algebra: solving inequalities', links: [
-        { name: 'Corbettmaths: Contents', desc: 'Full topic index', url: 'https://corbettmaths.com/contents/' },
-        { name: 'Maths Genie', desc: 'GCSE practice papers', url: 'https://www.mathsgenie.co.uk' },
-        { name: 'DrFrostMaths', desc: 'School platform', url: 'https://www.drfrostmaths.com' }
-      ]},
-      { name: 'Geometry: angle facts and proofs', links: [
-        { name: 'Corbettmaths: Contents', desc: 'Full topic index', url: 'https://corbettmaths.com/contents/' },
-        { name: 'DrFrostMaths', desc: 'School platform', url: 'https://www.drfrostmaths.com' },
-        { name: 'Maths Genie', desc: 'Practice', url: 'https://www.mathsgenie.co.uk' }
-      ]},
-      { name: 'Geometry: Pythagoras and trigonometry', links: [
-        { name: 'Corbettmaths: Pythagoras with Surds', desc: 'Video tutorial', url: 'https://corbettmaths.com/2022/04/03/pythagoras-surds-video/' },
-        { name: 'Corbettmaths: Contents', desc: 'Pythag + trig index', url: 'https://corbettmaths.com/contents/' },
-        { name: 'Maths Genie', desc: 'GCSE practice', url: 'https://www.mathsgenie.co.uk' }
-      ]},
-      { name: 'Ratio, proportion and rates of change', links: [
-        { name: 'Corbettmaths: Contents', desc: 'Full topic index', url: 'https://corbettmaths.com/contents/' },
-        { name: 'DrFrostMaths', desc: 'School platform', url: 'https://www.drfrostmaths.com' },
-        { name: 'Maths Genie', desc: 'Practice', url: 'https://www.mathsgenie.co.uk' }
-      ]},
-      { name: 'Probability: tree diagrams', links: [
-        { name: 'Corbettmaths: Contents', desc: 'Full topic index', url: 'https://corbettmaths.com/contents/' },
-        { name: 'Maths Genie', desc: 'GCSE practice', url: 'https://www.mathsgenie.co.uk' },
-        { name: 'DrFrostMaths', desc: 'School platform', url: 'https://www.drfrostmaths.com' }
-      ]},
-      { name: 'Statistics: averages and spread', links: [
-        { name: 'Corbettmaths: Contents', desc: 'Full topic index', url: 'https://corbettmaths.com/contents/' },
-        { name: 'Maths Genie', desc: 'GCSE practice', url: 'https://www.mathsgenie.co.uk' },
-        { name: 'DrFrostMaths', desc: 'School platform', url: 'https://www.drfrostmaths.com' }
-      ]},
-      { name: 'Functions and graphs', links: [
-        { name: 'Corbettmaths: Contents', desc: 'Full topic index', url: 'https://corbettmaths.com/contents/' },
-        { name: 'Maths Genie', desc: 'GCSE practice', url: 'https://www.mathsgenie.co.uk' },
-        { name: 'DrFrostMaths', desc: 'School platform', url: 'https://www.drfrostmaths.com' }
-      ]},
-      { name: 'Sequences (linear and quadratic)', links: [
-        { name: 'Corbettmaths: Further Maths', desc: 'Linear+quad sequences', url: 'https://corbettmaths.com/more/further-maths/' },
-        { name: 'Corbettmaths: Contents', desc: 'Full topic index', url: 'https://corbettmaths.com/contents/' },
-        { name: 'DrFrostMaths', desc: 'School platform', url: 'https://www.drfrostmaths.com' }
-      ]},
-      { name: 'Vectors (intro)', links: [
-        { name: 'Corbettmaths: Contents', desc: 'Full topic index', url: 'https://corbettmaths.com/contents/' },
-        { name: 'Maths Genie', desc: 'GCSE practice', url: 'https://www.mathsgenie.co.uk' },
-        { name: 'DrFrostMaths', desc: 'School platform', url: 'https://www.drfrostmaths.com' }
-      ]},
-      { name: 'Circle theorems (intro)', links: [
-        { name: 'Corbettmaths: Contents', desc: 'Full topic index', url: 'https://corbettmaths.com/contents/' },
-        { name: 'Maths Genie', desc: 'GCSE practice', url: 'https://www.mathsgenie.co.uk' },
-        { name: 'DrFrostMaths', desc: 'School platform', url: 'https://www.drfrostmaths.com' }
-      ]},
-      { name: 'Problem solving: Parallel weekly tasks', links: [
-        { name: 'Parallel Maths', desc: 'Weekly problem-solving tasks', url: 'https://parallel.org.uk' },
-        { name: 'Mr Barton: AQA L2 Further Maths', desc: 'Forward planning', url: 'https://www.mrbartonmaths.com/exams/aqa-level-2-certificate-in-further-mathematics/' },
-        { name: 'Algebra Power-up (YouTube)', desc: 'School recommended', url: 'https://youtu.be/OxNSxvJb6fs' }
-      ]}
-    ],
-    resources: [
-      { name: 'DrFrostMaths', desc: 'Main school resource', url: 'https://www.drfrostmaths.com' },
-      { name: 'Parallel Maths', desc: 'Weekly problem-solving', url: 'https://parallel.org.uk' },
-      { name: 'Corbett Maths', desc: 'Topic videos', url: 'https://corbettmaths.com' },
-      { name: 'Maths Genie: Edexcel 1MA1', desc: 'Higher tier practice papers', url: 'https://www.mathsgenie.co.uk/gcse.html' },
-      { name: 'Mr Barton: AQA L2 Further Maths', desc: 'Forward planning', url: 'https://www.mrbartonmaths.com/exams/aqa-level-2-certificate-in-further-mathematics/' },
-      { name: 'Algebra Power-up (YouTube)', desc: 'School recommended', url: 'https://youtu.be/OxNSxvJb6fs' }
-    ]
-  },
-  english: {
-    name: 'English', color: 'var(--english)', priority: 'medium', priorityLabel: 'Core',
-    rescheduleWeight: 4,
-    weeklyTime: '1 hr', weeklyTimeP2: '1h 30m',
-    summary: 'On track at A grade. Reading + creative writing paper across a full double lesson.',
-    teacherNote: 'Good term, positive attitude. Works hard on written tasks. To improve: develop single-word analysis and explore writers\' intentions in more depth.',
-    examInfo: { 'Format': '1 paper, 2 sections', 'Section 1': 'Reading', 'Section 2': 'Creative writing', 'Length': 'Double lesson' },
-    topics: [
-      { name: 'Reading: making inferences', links: [
-        { name: 'BBC Bitesize: Analysis', desc: 'KS3 English', url: 'https://www.bbc.co.uk/bitesize/topics/zfdh8xs/articles/z4ck8hv' },
-        { name: 'Mr Bruff (YouTube)', desc: 'Inference videos', url: 'https://www.youtube.com/@mrbruff' }
-      ]},
-      { name: 'Reading: analysing language techniques', links: [
-        { name: 'BBC Bitesize: Analysis', desc: 'KS3 English', url: 'https://www.bbc.co.uk/bitesize/topics/zfdh8xs/articles/z4ck8hv' },
-        { name: 'Mr Bruff (YouTube)', desc: 'Language analysis', url: 'https://www.youtube.com/@mrbruff' }
-      ]},
-      { name: 'Reading: analysing structure', links: [
-        { name: 'BBC Bitesize: Analysis', desc: 'KS3 English', url: 'https://www.bbc.co.uk/bitesize/topics/zfdh8xs/articles/z4ck8hv' },
-        { name: 'Mr Bruff (YouTube)', desc: 'Structural analysis', url: 'https://www.youtube.com/@mrbruff' }
-      ]},
-      { name: 'Reading: explaining effects on readers', links: [
-        { name: 'BBC Bitesize: Analysis', desc: 'KS3 English', url: 'https://www.bbc.co.uk/bitesize/topics/zfdh8xs/articles/z4ck8hv' },
-        { name: 'Mr Bruff (YouTube)', desc: 'Effect on reader', url: 'https://www.youtube.com/@mrbruff' }
-      ]},
-      { name: 'Reading: evaluating texts', links: [
-        { name: 'BBC Bitesize: Analysis', desc: 'KS3 English', url: 'https://www.bbc.co.uk/bitesize/topics/zfdh8xs/articles/z4ck8hv' },
-        { name: 'Mr Bruff (YouTube)', desc: 'Evaluation techniques', url: 'https://www.youtube.com/@mrbruff' }
-      ]},
-      { name: 'Writing: planning and structuring', links: [
-        { name: 'BBC Bitesize: Descriptive Writing', desc: 'KS3 English', url: 'https://www.bbc.co.uk/bitesize/topics/zn8tkmn/articles/zhwkkty' },
-        { name: 'Mr Bruff (YouTube)', desc: 'Writing technique', url: 'https://www.youtube.com/@mrbruff' }
-      ]},
-      { name: 'Writing: techniques to influence reader', links: [
-        { name: 'BBC Bitesize: Descriptive Writing', desc: 'KS3 English', url: 'https://www.bbc.co.uk/bitesize/topics/zn8tkmn/articles/zhwkkty' },
-        { name: 'Mr Bruff (YouTube)', desc: 'Persuasive techniques', url: 'https://www.youtube.com/@mrbruff' }
-      ]},
-      { name: 'Writing: precise word choices', links: [
-        { name: 'BBC Bitesize: Descriptive Writing', desc: 'KS3 English', url: 'https://www.bbc.co.uk/bitesize/topics/zn8tkmn/articles/zhwkkty' },
-        { name: 'Sparx Reading', desc: 'Vocabulary building', url: 'https://www.sparxreading.com' }
-      ]},
-      { name: 'Writing: accurate punctuation', links: [
-        { name: 'BBC Bitesize: Descriptive Writing', desc: 'KS3 English', url: 'https://www.bbc.co.uk/bitesize/topics/zn8tkmn/articles/zhwkkty' },
-        { name: 'Mr Bruff (YouTube)', desc: 'Punctuation videos', url: 'https://www.youtube.com/@mrbruff' }
-      ]},
-      { name: 'Writing: proofreading and editing', links: [
-        { name: 'BBC Bitesize: Descriptive Writing', desc: 'KS3 English', url: 'https://www.bbc.co.uk/bitesize/topics/zn8tkmn/articles/zhwkkty' },
-        { name: 'Mr Bruff (YouTube)', desc: 'Editing technique', url: 'https://www.youtube.com/@mrbruff' }
-      ]}
-    ],
-    resources: [
-      { name: 'BBC Bitesize: Analysis', desc: 'KS3 English', url: 'https://www.bbc.co.uk/bitesize/topics/zfdh8xs/articles/z4ck8hv' },
-      { name: 'BBC Bitesize: Descriptive Writing', desc: 'KS3 English', url: 'https://www.bbc.co.uk/bitesize/topics/zn8tkmn/articles/zhwkkty' },
-      { name: 'Sparx Reading', desc: 'School reading platform', url: 'https://www.sparxreading.com' },
-      { name: 'Mr Bruff (YouTube)', desc: 'Analysis technique videos', url: 'https://www.youtube.com/@mrbruff' }
-    ]
-  },
-  spanish: {
-    name: 'Spanish', color: 'var(--spanish)', priority: 'medium', priorityLabel: 'Maintain',
-    rescheduleWeight: 4,
-    weeklyTime: '30 min', weeklyTimeP2: '45 min',
-    summary: 'Above+ target. Strong A grade. Viva Edexcel GCSE Modules 1-3. Reading, listening and writing.',
-    teacherNote: 'Excellent student, high engagement and enthusiasm. Very strong grasp of vocabulary and grammar. Revise all vocabulary from GCSE modules 1-3.',
-    examInfo: { 'Format': 'Reading, listening, writing', 'M1': 'Holidays', 'M2': 'School', 'M3': 'Family/tech', 'Writing': '3 tenses + opinions' },
-    topics: [
-      { name: 'Module 1: Holiday vocabulary', links: [
-        { name: 'Quizlet: Viva Module 1', desc: 'Holidays flashcards', url: 'https://quizlet.com/search?query=viva+module+1+las+vacaciones' },
-        { name: 'Active Learn (Pearson)', desc: 'Viva course platform', url: 'https://www.activelearnprimary.co.uk' }
-      ]},
-      { name: 'Module 1: Past tense (preterite)', links: [
-        { name: 'Quizlet: Viva Module 1', desc: 'Vocab + grammar', url: 'https://quizlet.com/search?query=viva+module+1+las+vacaciones' },
-        { name: 'BBC Bitesize KS3 Spanish', desc: 'Grammar reference', url: 'https://www.bbc.co.uk/bitesize/subjects/zfckjxs' }
-      ]},
-      { name: 'Module 2: School subjects and opinions', links: [
-        { name: 'Quizlet: Viva Module 2', desc: 'School flashcards', url: 'https://quizlet.com/search?query=viva+module+2+mi+vida' },
-        { name: 'Active Learn (Pearson)', desc: 'Viva course platform', url: 'https://www.activelearnprimary.co.uk' }
-      ]},
-      { name: 'Module 2: Daily routine', links: [
-        { name: 'Quizlet: Viva Module 2', desc: 'School flashcards', url: 'https://quizlet.com/search?query=viva+module+2+mi+vida' },
-        { name: 'BBC Bitesize KS3 Spanish', desc: 'Daily routine', url: 'https://www.bbc.co.uk/bitesize/subjects/zfckjxs' }
-      ]},
-      { name: 'Module 3: Family vocabulary', links: [
-        { name: 'BBC Bitesize: Family Spanish', desc: 'Module 3', url: 'https://www.bbc.co.uk/bitesize/topics/zmc4t39' },
-        { name: 'Quizlet: Viva Module 3', desc: 'Family/tech', url: 'https://quizlet.com/search?query=viva+module+3+mi+gente' }
-      ]},
-      { name: 'Module 3: Friendship vocabulary', links: [
-        { name: 'Quizlet: Viva Module 3', desc: 'Family/tech', url: 'https://quizlet.com/search?query=viva+module+3+mi+gente' },
-        { name: 'BBC Bitesize: Family Spanish', desc: 'Module 3', url: 'https://www.bbc.co.uk/bitesize/topics/zmc4t39' }
-      ]},
-      { name: 'Module 3: Technology vocabulary', links: [
-        { name: 'Quizlet: Viva Module 3', desc: 'Family/tech', url: 'https://quizlet.com/search?query=viva+module+3+mi+gente' },
-        { name: 'Active Learn (Pearson)', desc: 'Viva course platform', url: 'https://www.activelearnprimary.co.uk' }
-      ]},
-      { name: 'Module 3: Reading habits', links: [
-        { name: 'Quizlet: Viva Module 3', desc: 'Family/tech', url: 'https://quizlet.com/search?query=viva+module+3+mi+gente' },
-        { name: 'Active Learn (Pearson)', desc: 'Viva course platform', url: 'https://www.activelearnprimary.co.uk' }
-      ]},
-      { name: 'Grammar: Present tense', links: [
-        { name: 'BBC Bitesize KS3 Spanish', desc: 'Grammar reference', url: 'https://www.bbc.co.uk/bitesize/subjects/zfckjxs' },
-        { name: 'Active Learn (Pearson)', desc: 'Viva grammar drills', url: 'https://www.activelearnprimary.co.uk' }
-      ]},
-      { name: 'Grammar: Preterite tense', links: [
-        { name: 'BBC Bitesize KS3 Spanish', desc: 'Grammar reference', url: 'https://www.bbc.co.uk/bitesize/subjects/zfckjxs' },
-        { name: 'Active Learn (Pearson)', desc: 'Viva grammar drills', url: 'https://www.activelearnprimary.co.uk' }
-      ]},
-      { name: 'Grammar: Near future (ir a + infinitive)', links: [
-        { name: 'BBC Bitesize KS3 Spanish', desc: 'Grammar reference', url: 'https://www.bbc.co.uk/bitesize/subjects/zfckjxs' },
-        { name: 'Active Learn (Pearson)', desc: 'Viva grammar drills', url: 'https://www.activelearnprimary.co.uk' }
-      ]},
-      { name: 'Grammar: Opinions with reasons', links: [
-        { name: 'BBC Bitesize KS3 Spanish', desc: 'Grammar reference', url: 'https://www.bbc.co.uk/bitesize/subjects/zfckjxs' },
-        { name: 'Blooket', desc: 'Gamified vocab practice', url: 'https://blooket.com' }
-      ]},
-      { name: 'Skill: Photo description structure', links: [
-        { name: 'Active Learn (Pearson)', desc: 'Viva skills practice', url: 'https://www.activelearnprimary.co.uk' },
-        { name: 'BBC Bitesize KS3 Spanish', desc: 'Speaking technique', url: 'https://www.bbc.co.uk/bitesize/subjects/zfckjxs' }
-      ]}
-    ],
-    resources: [
-      { name: 'Active Learn (Pearson)', desc: 'Viva course platform', url: 'https://www.activelearnprimary.co.uk' },
-      { name: 'Quizlet: Viva Module 1', desc: 'Holidays flashcards', url: 'https://quizlet.com/search?query=viva+module+1+las+vacaciones' },
-      { name: 'Quizlet: Viva Module 2', desc: 'School flashcards', url: 'https://quizlet.com/search?query=viva+module+2+mi+vida' },
-      { name: 'Quizlet: Viva Module 3', desc: 'Family/tech', url: 'https://quizlet.com/search?query=viva+module+3+mi+gente' },
-      { name: 'BBC Bitesize: Family Spanish', desc: 'Module 3', url: 'https://www.bbc.co.uk/bitesize/topics/zmc4t39' },
-      { name: 'Blooket', desc: 'Gamified vocabulary', url: 'https://blooket.com' }
-    ]
-  },
-  rs: {
-    name: 'Religious Studies', color: 'var(--rs)', priority: 'medium', priorityLabel: 'Y10 Exam',
-    rescheduleWeight: 5,
-    weeklyTime: '15 min', weeklyTimeP2: '1 hr',
-    summary: 'Real GCSE — sat in Year 10. AQA 8061D Short Course (Christianity only). Christianity unit assessed in EOY.',
-    teacherNote: 'Good commitment. Positive class participation, written work generally well organised. To develop: include more detailed examples and evidence to strengthen explanations.',
-    examInfo: { 'Board': 'AQA 8061D', 'Type': 'Short Course', 'Topic': 'Christianity', 'Format': '5 questions', 'Marks': '1+2+4+5+12', 'Total': '24' },
-    topics: [
-      { name: 'Nature of God: omnipotent, omniscient, benevolent', links: [
-        { name: 'BBC Bitesize AQA Christianity', desc: 'Beliefs and teachings', url: 'https://www.bbc.co.uk/bitesize/guides/zqfp34j/revision/1' },
-        { name: 'Seneca: AQA RS Christianity', desc: 'Free revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'The Trinity', links: [
-        { name: 'BBC Bitesize AQA Christianity', desc: 'Beliefs and teachings', url: 'https://www.bbc.co.uk/bitesize/guides/zqfp34j/revision/1' },
-        { name: 'Seneca: AQA RS Christianity', desc: 'Free revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'Creation: Genesis 1', links: [
-        { name: 'BBC Bitesize AQA Christianity', desc: 'Beliefs and teachings', url: 'https://www.bbc.co.uk/bitesize/guides/zqfp34j/revision/1' },
-        { name: 'Seneca: AQA RS Christianity', desc: 'Free revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'The Incarnation', links: [
-        { name: 'BBC Bitesize AQA Christianity', desc: 'Beliefs and teachings', url: 'https://www.bbc.co.uk/bitesize/guides/zqfp34j/revision/1' },
-        { name: 'Seneca: AQA RS Christianity', desc: 'Free revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'The crucifixion and resurrection', links: [
-        { name: 'BBC Bitesize AQA Christianity', desc: 'Beliefs and teachings', url: 'https://www.bbc.co.uk/bitesize/guides/zqfp34j/revision/1' },
-        { name: 'Seneca: AQA RS Christianity', desc: 'Free revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'Salvation: atonement and grace', links: [
-        { name: 'BBC Bitesize AQA Christianity', desc: 'Beliefs and teachings', url: 'https://www.bbc.co.uk/bitesize/guides/zqfp34j/revision/1' },
-        { name: 'Seneca: AQA RS Christianity', desc: 'Free revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'Worship: liturgical, non-liturgical, private', links: [
-        { name: 'BBC Bitesize AQA Christianity', desc: 'Practices', url: 'https://www.bbc.co.uk/bitesize/guides/zqfp34j/revision/1' },
-        { name: 'Seneca: AQA RS Christianity', desc: 'Free revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'Prayer', links: [
-        { name: 'BBC Bitesize AQA Christianity', desc: 'Practices', url: 'https://www.bbc.co.uk/bitesize/guides/zqfp34j/revision/1' },
-        { name: 'Seneca: AQA RS Christianity', desc: 'Free revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'Sacraments: baptism and eucharist', links: [
-        { name: 'BBC Bitesize AQA Christianity', desc: 'Practices', url: 'https://www.bbc.co.uk/bitesize/guides/zqfp34j/revision/1' },
-        { name: 'Seneca: AQA RS Christianity', desc: 'Free revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'Pilgrimage: Lourdes and Iona', links: [
-        { name: 'BBC Bitesize AQA Christianity', desc: 'Practices', url: 'https://www.bbc.co.uk/bitesize/guides/zqfp34j/revision/1' },
-        { name: 'Seneca: AQA RS Christianity', desc: 'Free revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'Christmas and Easter celebrations', links: [
-        { name: 'BBC Bitesize AQA Christianity', desc: 'Practices', url: 'https://www.bbc.co.uk/bitesize/guides/zqfp34j/revision/1' },
-        { name: 'Seneca: AQA RS Christianity', desc: 'Free revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'The role of the church', links: [
-        { name: 'BBC Bitesize AQA Christianity', desc: 'Practices', url: 'https://www.bbc.co.uk/bitesize/guides/zqfp34j/revision/1' },
-        { name: 'Seneca: AQA RS Christianity', desc: 'Free revision', url: 'https://app.senecalearning.com' }
-      ]}
-    ],
-    resources: [
-      { name: 'Bromcom Knowledge Organiser', desc: 'School-provided', url: '#' },
-      { name: 'BBC Bitesize AQA Christianity', desc: 'Beliefs and teachings', url: 'https://www.bbc.co.uk/bitesize/guides/zqfp34j/revision/1' },
-      { name: 'Seneca: AQA RS Christianity', desc: 'Free revision', url: 'https://app.senecalearning.com' }
-    ]
-  },
-  history: {
-    name: 'History', color: 'var(--history)', priority: 'medium', priorityLabel: 'Light',
-    rescheduleWeight: 6,
-    weeklyTime: '1h 15m', weeklyTimeP2: '1h 30m',
-    summary: 'Solid B/A. Topic is the early Cold War. 40-min paper.',
-    teacherNote: 'Good knowledge of twentieth-century history. To progress: take more active role, contribute more regularly, show greater independence.',
-    examInfo: { 'Format': '40-min paper', 'Q1': 'Explain consequence ×2', 'Q2': 'Analytical narrative', 'Q3': 'Importance of event' },
-    topics: [
-      { name: 'The Grand Alliance', links: [
-        { name: 'Seneca: Edexcel Cold War', desc: 'Superpower Relations 1941-91', url: 'https://senecalearning.com/en-GB/revision-notes/gcse/history/edexcel/superpower-relations-and-the-cold-war' },
-        { name: 'Seneca: Superpower Relations', desc: 'Free GCSE revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'Tehran, Yalta and Potsdam conferences', links: [
-        { name: 'Seneca: Edexcel Cold War', desc: 'Superpower Relations 1941-91', url: 'https://senecalearning.com/en-GB/revision-notes/gcse/history/edexcel/superpower-relations-and-the-cold-war' },
-        { name: 'Seneca: Superpower Relations', desc: 'Free GCSE revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'Development of the atomic bomb', links: [
-        { name: 'Seneca: Edexcel Cold War', desc: 'Superpower Relations 1941-91', url: 'https://senecalearning.com/en-GB/revision-notes/gcse/history/edexcel/superpower-relations-and-the-cold-war' },
-        { name: 'Seneca: Superpower Relations', desc: 'Free GCSE revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'Long and Novikov telegrams', links: [
-        { name: 'Seneca: Edexcel Cold War', desc: 'Superpower Relations 1941-91', url: 'https://senecalearning.com/en-GB/revision-notes/gcse/history/edexcel/superpower-relations-and-the-cold-war' },
-        { name: 'Seneca: Superpower Relations', desc: 'Free GCSE revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'Soviet satellite states in Eastern Europe', links: [
-        { name: 'Seneca: Edexcel Cold War', desc: 'Superpower Relations 1941-91', url: 'https://senecalearning.com/en-GB/revision-notes/gcse/history/edexcel/superpower-relations-and-the-cold-war' },
-        { name: 'Seneca: Superpower Relations', desc: 'Free GCSE revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'Truman Doctrine and Marshall Plan', links: [
-        { name: 'Seneca: Edexcel Cold War', desc: 'Superpower Relations 1941-91', url: 'https://senecalearning.com/en-GB/revision-notes/gcse/history/edexcel/superpower-relations-and-the-cold-war' },
-        { name: 'Seneca: Superpower Relations', desc: 'Free GCSE revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'Cominform (1947) and Comecon (1949)', links: [
-        { name: 'Seneca: Edexcel Cold War', desc: 'Superpower Relations 1941-91', url: 'https://senecalearning.com/en-GB/revision-notes/gcse/history/edexcel/superpower-relations-and-the-cold-war' },
-        { name: 'Seneca: Superpower Relations', desc: 'Free GCSE revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'Berlin: division into zones', links: [
-        { name: 'Seneca: Edexcel Cold War', desc: 'Superpower Relations 1941-91', url: 'https://senecalearning.com/en-GB/revision-notes/gcse/history/edexcel/superpower-relations-and-the-cold-war' },
-        { name: 'Seneca: Superpower Relations', desc: 'Free GCSE revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'Berlin Crisis 1948-49', links: [
-        { name: 'Seneca: Edexcel Cold War', desc: 'Superpower Relations 1941-91', url: 'https://senecalearning.com/en-GB/revision-notes/gcse/history/edexcel/superpower-relations-and-the-cold-war' },
-        { name: 'Seneca: Superpower Relations', desc: 'Free GCSE revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'Formation of FRG and GDR', links: [
-        { name: 'Seneca: Edexcel Cold War', desc: 'Superpower Relations 1941-91', url: 'https://senecalearning.com/en-GB/revision-notes/gcse/history/edexcel/superpower-relations-and-the-cold-war' },
-        { name: 'Seneca: Superpower Relations', desc: 'Free GCSE revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'The arms race', links: [
-        { name: 'Seneca: Edexcel Cold War', desc: 'Superpower Relations 1941-91', url: 'https://senecalearning.com/en-GB/revision-notes/gcse/history/edexcel/superpower-relations-and-the-cold-war' },
-        { name: 'Seneca: Superpower Relations', desc: 'Free GCSE revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'NATO and Warsaw Pact', links: [
-        { name: 'Seneca: Edexcel Cold War', desc: 'Superpower Relations 1941-91', url: 'https://senecalearning.com/en-GB/revision-notes/gcse/history/edexcel/superpower-relations-and-the-cold-war' },
-        { name: 'Seneca: Superpower Relations', desc: 'Free GCSE revision', url: 'https://app.senecalearning.com' }
-      ]},
-      { name: 'Hungarian Uprising', links: [
-        { name: 'Seneca: Edexcel Cold War', desc: 'Superpower Relations 1941-91', url: 'https://senecalearning.com/en-GB/revision-notes/gcse/history/edexcel/superpower-relations-and-the-cold-war' },
-        { name: 'Seneca: Superpower Relations', desc: 'Free GCSE revision', url: 'https://app.senecalearning.com' }
-      ]}
-    ],
-    resources: [
-      { name: 'Seneca: Edexcel Cold War', desc: 'Superpower Relations 1941-91', url: 'https://senecalearning.com/en-GB/revision-notes/gcse/history/edexcel/superpower-relations-and-the-cold-war' },
-      { name: 'Seneca: Superpower Relations', desc: 'Free GCSE revision', url: 'https://app.senecalearning.com' }
-    ]
-  },
-  music: {
-    name: 'Music', color: 'var(--music)', priority: 'light', priorityLabel: 'Light',
-    rescheduleWeight: 7,
-    weeklyTime: '15 min', weeklyTimeP2: '15 min',
-    summary: 'Below target but holistic grading. Online listening quiz is main piece.',
-    teacherNote: 'Working below target. Satisfactory attitude — benefit from more effort. Use feedback to improve performances and compositions.',
-    examInfo: { 'Format': 'Online listening quiz', 'Type': 'Multiple choice', 'Based on': 'Recorded extracts' },
-    topics: [
-      { name: 'Musical elements vocabulary', links: [
-        { name: 'Focus on Sound', desc: 'School-recommended platform', url: 'https://www.focusonsound.com' },
-        { name: 'BBC Bitesize KS3 Music', desc: 'Elements + theory', url: 'https://www.bbc.co.uk/bitesize/subjects/zmsvr82' }
-      ]},
-      { name: 'Texture (Pachelbel\'s Canon)', links: [
-        { name: 'Focus on Sound', desc: 'School-recommended platform', url: 'https://www.focusonsound.com' },
-        { name: 'BBC Bitesize KS3 Music', desc: 'Texture topic', url: 'https://www.bbc.co.uk/bitesize/subjects/zmsvr82' }
-      ]},
-      { name: 'EDM composition', links: [
-        { name: 'Focus on Sound', desc: 'School-recommended platform', url: 'https://www.focusonsound.com' },
-        { name: 'BBC Bitesize KS3 Music', desc: 'Composition topic', url: 'https://www.bbc.co.uk/bitesize/subjects/zmsvr82' }
-      ]},
-      { name: 'Melody and harmony in film music', links: [
-        { name: 'Focus on Sound', desc: 'School-recommended platform', url: 'https://www.focusonsound.com' },
-        { name: 'BBC Bitesize KS3 Music', desc: 'Film music', url: 'https://www.bbc.co.uk/bitesize/subjects/zmsvr82' }
-      ]},
-      { name: 'Game music composition', links: [
-        { name: 'Focus on Sound', desc: 'School-recommended platform', url: 'https://www.focusonsound.com' },
-        { name: 'BBC Bitesize KS3 Music', desc: 'Composition topic', url: 'https://www.bbc.co.uk/bitesize/subjects/zmsvr82' }
-      ]},
-      { name: 'Recognising instruments by ear', links: [
-        { name: 'Focus on Sound', desc: 'Listening practice', url: 'https://www.focusonsound.com' },
-        { name: 'BBC Bitesize KS3 Music', desc: 'Instruments', url: 'https://www.bbc.co.uk/bitesize/subjects/zmsvr82' }
-      ]},
-      { name: 'Tempo, dynamics, articulation', links: [
-        { name: 'Focus on Sound', desc: 'School-recommended platform', url: 'https://www.focusonsound.com' },
-        { name: 'BBC Bitesize KS3 Music', desc: 'Elements + theory', url: 'https://www.bbc.co.uk/bitesize/subjects/zmsvr82' }
-      ]}
-    ],
-    resources: [
-      { name: 'Focus on Sound', desc: 'School-recommended platform', url: 'https://www.focusonsound.com' }
-    ]
-  }
+const ODDS = {
+  "Spain":{win:16.4,esc:97},"France":{win:16.1,esc:96},"England":{win:10.9,esc:95},
+  "Portugal":{win:10.9,esc:94},"Brazil":{win:9.5,esc:92},"Argentina":{win:9.5,esc:92},
+  "Germany":{win:6.7,esc:94},"Netherlands":{win:4.8,esc:88},"Norway":{win:2.8,esc:72},
+  "Belgium":{win:2.4,esc:82},"Colombia":{win:2.4,esc:78},"Uruguay":{win:2.0,esc:76},
+  "Mexico":{win:1.8,esc:74},"Morocco":{win:1.8,esc:72},"Switzerland":{win:1.7,esc:70},
+  "USA":{win:1.9,esc:72},"Türkiye":{win:1.1,esc:58},"Croatia":{win:1.4,esc:65},
+  "Ecuador":{win:1.5,esc:62},"Canada":{win:0.5,esc:40},"South Korea":{win:0.4,esc:32},
+  "Australia":{win:0.4,esc:30},"Ivory Coast":{win:0.4,esc:38},"Czech Republic":{win:0.3,esc:35},
+  "Senegal":{win:0.8,esc:42},"Japan":{win:0.7,esc:55},"Austria":{win:0.4,esc:38},
+  "Paraguay":{win:0.5,esc:40},"Scotland":{win:0.3,esc:28},"Tunisia":{win:0.1,esc:20},
+  "Algeria":{win:0.2,esc:22},"Ghana":{win:0.2,esc:24},"Iran":{win:0.2,esc:20},
+  "South Africa":{win:0.1,esc:22},"New Zealand":{win:0.1,esc:14},
+  "Bosnia & Herzegovina":{win:0.3,esc:25},"Egypt":{win:0.3,esc:28},"Panama":{win:0.1,esc:12},
+  "Saudi Arabia":{win:0.1,esc:18},"Qatar":{win:0.1,esc:10},"Jordan":{win:0.1,esc:10},
+  "Iraq":{win:0.1,esc:12},"DR Congo":{win:0.1,esc:12},"Cape Verde":{win:0.0,esc:10},
+  "Haiti":{win:0.0,esc:5},"Uzbekistan":{win:0.1,esc:8},"Curaçao":{win:0.0,esc:6},
+  "Sweden":{win:0.0,esc:0},
 };
 
-// ============ BASE SCHEDULE TEMPLATES ============
-// Each block: { subject, focus, mins }
+const SWEEP_TEAMS = new Set(PARTICIPANTS.flatMap(p => p.teams.map(t => t.name)));
 
-const SCHEDULE_P1 = {
-  0: [ // Mon (75min)
-    { subject: 'cs', focus: 'Diagnostic / weak topics', mins: 30 },
-    { subject: 'english', focus: 'Analysis practice', mins: 30 },
-    { subject: 'history', focus: 'Cold War origins', mins: 15 }
-  ],
-  1: [ // Tue (75min)
-    { subject: 'science', focus: 'Bio / Chem / Phys rotating', mins: 30 },
-    { subject: 'maths', focus: 'Parallel / DrFrost exam-level', mins: 30 },
-    { subject: 'history', focus: 'Tehran / Yalta / Potsdam', mins: 15 }
-  ],
-  2: [ // Wed (75min)
-    { subject: 'cs', focus: 'Binary / hex practice', mins: 30 },
-    { subject: 'geography', focus: 'Population & hazards', mins: 30 },
-    { subject: 'maths', focus: 'Mixed topics', mins: 15 }
-  ],
-  3: [ // Thu (75min)
-    { subject: 'science', focus: 'Bio / Chem / Phys rotating', mins: 30 },
-    { subject: 'english', focus: 'Reading comprehension', mins: 30 },
-    { subject: 'history', focus: 'Long & Novikov telegrams', mins: 15 }
-  ],
-  4: [ // Fri (75min)
-    { subject: 'cs', focus: 'Cyber security', mins: 30 },
-    { subject: 'spanish', focus: 'Vocab Module 1', mins: 30 },
-    { subject: 'history', focus: 'Truman / Marshall Plan', mins: 15 }
-  ],
-  5: [ // Sat (120min)
-    { subject: 'science', focus: 'Deep dive', mins: 60 },
-    { subject: 'geography', focus: 'Glaciation case study', mins: 45 },
-    { subject: 'music', focus: 'Focus on Sound', mins: 15 }
-  ],
-  6: [ // Sun (120min)
-    { subject: 'cs', focus: 'Deep dive', mins: 30 },
-    { subject: 'maths', focus: 'Stretch', mins: 30 },
-    { subject: 'geography', focus: 'Case studies review', mins: 30 },
-    { subject: 'history', focus: 'Berlin Crisis', mins: 15 },
-    { subject: 'rs', focus: 'Knowledge organiser', mins: 15 }
-  ]
+// Normalise ESPN team names to our names
+const NAME_MAP = {
+  "Korea Republic":"South Korea","Republic of Korea":"South Korea","South Korea":"South Korea",
+  "Czechia":"Czech Republic","Czech Republic":"Czech Republic",
+  "Congo DR":"DR Congo","DR Congo":"DR Congo","Congo, DR":"DR Congo",
+  "Côte d'Ivoire":"Ivory Coast","Cote d'Ivoire":"Ivory Coast","Ivory Coast":"Ivory Coast",
+  "Bosnia-Herzegovina":"Bosnia & Herzegovina","Bosnia and Herzegovina":"Bosnia & Herzegovina",
+  "Turkey":"Türkiye","Türkiye":"Türkiye",
+  "Cape Verde Islands":"Cape Verde","United States":"USA","USA":"USA",
+  "Curacao":"Curaçao","Curaçao":"Curaçao",
+  "England":"England","Scotland":"Scotland",
 };
+function norm(n) { if(!n) return ''; return NAME_MAP[n] || n; }
 
-const SCHEDULE_P2 = {
-  0: [ // Mon (90min)
-    { subject: 'cs', focus: 'Python / code tracing', mins: 30 },
-    { subject: 'geography', focus: 'Case studies', mins: 30 },
-    { subject: 'english', focus: 'Past questions', mins: 30 }
-  ],
-  1: [ // Tue (90min)
-    { subject: 'science', focus: 'Topic deep dive', mins: 30 },
-    { subject: 'maths', focus: 'Parallel / DrFrost', mins: 30 },
-    { subject: 'english', focus: 'Writing practice', mins: 30 }
-  ],
-  2: [ // Wed (90min)
-    { subject: 'cs', focus: 'Binary / hex / data rep', mins: 30 },
-    { subject: 'geography', focus: 'Case studies', mins: 30 },
-    { subject: 'history', focus: 'Cold War events', mins: 30 }
-  ],
-  3: [ // Thu (105min)
-    { subject: 'science', focus: 'Topic deep dive', mins: 30 },
-    { subject: 'maths', focus: 'Stretch problems', mins: 30 },
-    { subject: 'geography', focus: 'Case studies', mins: 45 }
-  ],
-  4: [ // Fri (105min)
-    { subject: 'cs', focus: 'Cyber security + laws', mins: 30 },
-    { subject: 'history', focus: 'Cold War events', mins: 30 },
-    { subject: 'rs', focus: 'Christianity beliefs', mins: 30 },
-    { subject: 'spanish', focus: 'Writing 3 tenses', mins: 15 }
-  ],
-  5: [ // Sat (195min)
-    { subject: 'science', focus: 'Deep dive', mins: 60 },
-    { subject: 'geography', focus: 'Case studies', mins: 45 },
-    { subject: 'cs', focus: 'Past Qs', mins: 30 },
-    { subject: 'science', focus: 'Past paper section', mins: 30 },
-    { subject: 'spanish', focus: 'Vocab', mins: 30 }
-  ],
-  6: [ // Sun (195min)
-    { subject: 'cs', focus: 'Deep dive', mins: 45 },
-    { subject: 'maths', focus: 'Review + stretch', mins: 45 },
-    { subject: 'rs', focus: 'Knowledge organiser', mins: 30 },
-    { subject: 'history', focus: 'Cold War review', mins: 30 },
-    { subject: 'english', focus: 'Weak topic', mins: 30 },
-    { subject: 'music', focus: 'Focus on Sound', mins: 15 }
-  ]
-};
+let teamData   = {};
+let allMatches = [];
 
-// Day capacity in mins
-const DAY_CAPACITY_P1 = { weekday: 75, weekend: 120 };
-const DAY_CAPACITY_P2 = { weekday: 105, weekend: 195 };
-const OVERFLOW_ALLOWANCE = 30;
-
-function getCapacity(dayIndex, phase) {
-  const cap = phase === 2 ? DAY_CAPACITY_P2 : DAY_CAPACITY_P1;
-  return (dayIndex >= 5) ? cap.weekend : cap.weekday;
+// ── ESPN DATA FETCH (no auth, open CORS) ─────────────────────────────────────
+function tFetch(url, ms=3000) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), ms);
+  return fetch(url, {signal: ctrl.signal}).finally(() => clearTimeout(timer));
 }
 
-function getBaseSchedule(dayIndex, phase) {
-  const schedule = phase === 2 ? SCHEDULE_P2 : SCHEDULE_P1;
-  return JSON.parse(JSON.stringify(schedule[dayIndex] || []));
+// Parse ESPN scoreboard event into our match format
+function parseESPNEvent(e) {
+  const comp = e.competitions?.[0] || {};
+  const home = comp.competitors?.find(c => c.homeAway === 'home');
+  const away = comp.competitors?.find(c => c.homeAway === 'away');
+  const status = e.status?.type?.name || 'STATUS_SCHEDULED';
+  const note = comp.notes?.[0]?.headline || '';
+  // Derive stage from notes/season type
+  let stage = 'GROUP_STAGE';
+  if (/round of 32/i.test(note))      stage = 'ROUND_OF_32';
+  else if (/round of 16/i.test(note)) stage = 'ROUND_OF_16';
+  else if (/quarter/i.test(note))     stage = 'QUARTER_FINALS';
+  else if (/semi/i.test(note))        stage = 'SEMI_FINALS';
+  else if (/third|3rd/i.test(note))   stage = 'THIRD_PLACE';
+  else if (/final/i.test(note))       stage = 'FINAL';
+
+  return {
+    id: e.id,
+    utcDate: e.date,
+    stage,
+    status: status === 'STATUS_FINAL' ? 'FINISHED'
+          : status === 'STATUS_IN_PROGRESS' ? 'IN_PLAY'
+          : 'SCHEDULED',
+    homeTeam: { name: norm(home?.team?.displayName || '') },
+    awayTeam: { name: norm(away?.team?.displayName || '') },
+    score: {
+      fullTime: {
+        home: status === 'STATUS_FINAL' || status === 'STATUS_IN_PROGRESS' ? parseInt(home?.score||0) : null,
+        away: status === 'STATUS_FINAL' || status === 'STATUS_IN_PROGRESS' ? parseInt(away?.score||0) : null,
+      }
+    },
+    venue: comp.venue?.fullName || '',
+  };
 }
 
-// ============ STORAGE ============
-
-const STORAGE_KEY = 'harry_revision_v2';
-
-function loadData() {
+async function loadData() {
   try {
-    const d = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-    if (!d.topics) d.topics = {};
-    if (!d.daily) d.daily = {};  // dateKey -> { slots: [...], done: {0:bool,1:bool,...}, generated: bool }
-    if (!d.streak) d.streak = 0;
-    if (!d.carriedOverNotice) d.carriedOverNotice = null;
-    return d;
-  } catch { return { topics: {}, daily: {}, streak: 0, carriedOverNotice: null }; }
-}
+    const [boardRes, schedRes] = await Promise.all([
+      tFetch(`${ESPN}/scoreboard`, 3000).then(r=>r.json()),
+      tFetch(`${ESPN}/scoreboard?dates=20260611-20260719&limit=200`, 3000).then(r=>r.json()).catch(()=>null),
+    ]);
 
-function saveData(d) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
-}
+    const events = new Map();
+    for (const e of (boardRes.events||[])) events.set(e.id, e);
+    if (schedRes) for (const e of (schedRes.events||[])) events.set(e.id, e);
 
-// ============ TIMER ENGINE ============
-// One active timer at a time, stored in localStorage so it persists across reloads
-// State: { subject, startedAt (ms), pausedAt (ms|null), elapsedBeforePause (ms), targetMins }
+    allMatches = [...events.values()].map(parseESPNEvent);
 
-let timerInterval = null;
-
-function getTimer() {
-  const data = loadData();
-  return data.timer || null;
-}
-
-function setTimer(t) {
-  const data = loadData();
-  if (t === null) delete data.timer;
-  else data.timer = t;
-  saveData(data);
-}
-
-function getTimerElapsedMs() {
-  const t = getTimer();
-  if (!t) return 0;
-  if (t.pausedAt) return t.elapsedBeforePause;
-  return t.elapsedBeforePause + (Date.now() - t.startedAt);
-}
-
-function startTimer(subjectKey, targetMins) {
-  // Default target: lookup from today's first matching slot, else 30
-  if (!targetMins) {
-    const today = todayDate();
-    const day = getOrGenerateSchedule(today);
-    const matchingSlot = day.slots.find(s => s.subject === subjectKey);
-    targetMins = matchingSlot ? matchingSlot.mins : 30;
-  }
-  setTimer({
-    subject: subjectKey,
-    startedAt: Date.now(),
-    pausedAt: null,
-    elapsedBeforePause: 0,
-    targetMins: targetMins,
-    completionShown: false
-  });
-  startTimerInterval();
-  renderTimerPanel();
-  renderToday();
-}
-
-function pauseTimer() {
-  const t = getTimer();
-  if (!t || t.pausedAt) return;
-  const newElapsed = t.elapsedBeforePause + (Date.now() - t.startedAt);
-  setTimer({ ...t, pausedAt: Date.now(), elapsedBeforePause: newElapsed });
-  renderTimerPanel();
-}
-
-function resumeTimer() {
-  const t = getTimer();
-  if (!t || !t.pausedAt) return;
-  setTimer({ ...t, startedAt: Date.now(), pausedAt: null });
-  renderTimerPanel();
-}
-
-function stopTimer() {
-  if (!confirm('Stop the timer? Your time will be lost.')) return;
-  setTimer(null);
-  stopTimerInterval();
-  renderTimerPanel();
-  renderToday();
-}
-
-function startTimerInterval() {
-  stopTimerInterval();
-  timerInterval = setInterval(() => {
-    const t = getTimer();
-    if (!t) { stopTimerInterval(); return; }
-    renderTimerPanel(false); // re-render display without re-running other logic
-    // Check completion
-    if (!t.completionShown && !t.pausedAt) {
-      const elapsedMin = getTimerElapsedMs() / 60000;
-      if (elapsedMin >= t.targetMins) {
-        showCompletionModal();
-        setTimer({ ...t, completionShown: true });
+    // Build teamData from finished matches
+    for (const m of allMatches) {
+      if (m.status !== 'FINISHED') continue;
+      const home = m.homeTeam.name, away = m.awayTeam.name;
+      const hs = m.score.fullTime.home ?? 0, as_ = m.score.fullTime.away ?? 0;
+      for (const [tname, tf, ta] of [[home, hs, as_],[away, as_, hs]]) {
+        if (!tname) continue;
+        if (!teamData[tname]) teamData[tname] = {played:0,won:0,drawn:0,lost:0,gf:0,ga:0,gd:0,pts:0,stage:'group',alive:true};
+        const td = teamData[tname];
+        td.played++; td.gf+=tf; td.ga+=ta; td.gd = td.gf-td.ga;
+        if (tf>ta){ td.won++; td.pts+=3; }
+        else if (tf===ta){ td.drawn++; td.pts+=1; }
+        else td.lost++;
       }
     }
-  }, 1000);
+    processStages(allMatches);
+
+    document.getElementById('status-text').textContent = 'Live · ESPN';
+    document.getElementById('refresh-time').textContent =
+      new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  } catch(e) {
+    console.warn('API error:', e);
+    document.getElementById('status-text').textContent = 'Pre-tournament odds (no data yet)';
+    document.getElementById('refresh-time').textContent =
+      new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  }
 }
 
-function stopTimerInterval() {
-  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+function stageKey(s) {
+  return {GROUP_STAGE:'group',ROUND_OF_32:'r32',ROUND_OF_16:'r16',
+          QUARTER_FINALS:'qf',SEMI_FINALS:'sf',THIRD_PLACE:'sf',FINAL:'final'}[s]||'group';
 }
 
-function formatTime(ms) {
-  const totalSec = Math.floor(ms / 1000);
-  const m = Math.floor(totalSec / 60);
-  const s = totalSec % 60;
-  return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-}
+const STAGE_ORDER = ['GROUP_STAGE','ROUND_OF_32','ROUND_OF_16','QUARTER_FINALS','SEMI_FINALS','THIRD_PLACE','FINAL'];
 
-function showCompletionModal() {
-  const t = getTimer();
-  if (!t) return;
-  const subj = SUBJECTS[t.subject];
-  document.getElementById('complete-title').textContent = 'Slot complete!';
-  document.getElementById('complete-detail').textContent =
-    `You spent ${t.targetMins} minutes on ${subj.name}. Nice work.`;
-  document.getElementById('complete-overlay').classList.add('active');
-  // Play a sound if possible
-  try {
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.frequency.value = 880;
-    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
-    osc.start();
-    osc.stop(audioCtx.currentTime + 0.5);
-  } catch(e) { /* ignore */ }
-  // Vibrate if mobile
-  if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
-}
-
-function dismissComplete() {
-  document.getElementById('complete-overlay').classList.remove('active');
-}
-
-function confirmSlotDone() {
-  // Find the first un-done slot for this subject in today's schedule, mark it done, stop timer
-  const t = getTimer();
-  if (!t) { dismissComplete(); return; }
-  const data = loadData();
-  const todayKey = dateKey(todayDate());
-  const day = data.daily[todayKey];
-  if (day) {
-    const idx = day.slots.findIndex(s => s.subject === t.subject && !day.done[day.slots.indexOf(s)]);
-    // Above is buggy — just iterate properly
-    for (let i = 0; i < day.slots.length; i++) {
-      if (day.slots[i].subject === t.subject && !day.done[i]) {
-        day.done[i] = true;
-        break;
-      }
+function processStages(matches) {
+  const reached = {}, eliminated = {};
+  for (const m of matches) {
+    if (m.status !== 'FINISHED') continue;
+    const home = m.homeTeam.name, away = m.awayTeam.name;
+    const hs = m.score?.fullTime?.home??0, as_ = m.score?.fullTime?.away??0;
+    for (const t of [home,away]) {
+      if (!t) continue;
+      if (!reached[t]||STAGE_ORDER.indexOf(m.stage)>STAGE_ORDER.indexOf(reached[t])) reached[t]=m.stage;
     }
-    saveData(data);
-  }
-  setTimer(null);
-  stopTimerInterval();
-  dismissComplete();
-  renderToday();
-  renderTimerPanel();
-  updateStreak();
-}
-
-function renderTimerPanel(fullRefresh = true) {
-  const panel = document.getElementById('timer-panel');
-  if (!panel) return;
-  const t = getTimer();
-  if (!t || !currentModalSubject || t.subject !== currentModalSubject) {
-    // Show "no timer running" state if modal is open for this subject
-    if (currentModalSubject) {
-      panel.className = 'timer-panel';
-      panel.innerHTML = `
-        <div>
-          <div class="timer-display">00:00</div>
-          <div class="timer-info">No timer running</div>
-        </div>
-        <div class="timer-controls">
-          <button class="timer-btn primary" onclick="startTimer('${currentModalSubject}')">▶ Start</button>
-        </div>
-      `;
-    }
-    return;
-  }
-  // Timer running for this subject
-  const elapsedMs = getTimerElapsedMs();
-  const remainingMs = Math.max(0, t.targetMins * 60000 - elapsedMs);
-  const isPaused = !!t.pausedAt;
-  const isOvertime = elapsedMs >= t.targetMins * 60000;
-
-  panel.className = 'timer-panel ' + (isPaused ? 'paused' : 'running');
-  const display = isOvertime ? `+${formatTime(elapsedMs - t.targetMins * 60000)}` : formatTime(remainingMs);
-  const infoText = isPaused ? `Paused · target ${t.targetMins} min` :
-                    isOvertime ? `Over target by ${formatTime(elapsedMs - t.targetMins * 60000)}` :
-                    `${t.targetMins} min target · ${formatTime(elapsedMs)} elapsed`;
-
-  panel.innerHTML = `
-    <div>
-      <div class="timer-display">${display}</div>
-      <div class="timer-info">${infoText}</div>
-    </div>
-    <div class="timer-controls">
-      ${isPaused
-        ? `<button class="timer-btn primary" onclick="resumeTimer()">▶ Resume</button>`
-        : `<button class="timer-btn warning" onclick="pauseTimer()">⏸ Pause</button>`}
-      <button class="timer-btn primary" onclick="confirmSlotDone()">✓ Done</button>
-      <button class="timer-btn ghost" onclick="stopTimer()">✕</button>
-    </div>
-  `;
-}
-
-// ============ SCHEDULER ============
-//
-// Core principle: each day has a "schedule" — a list of blocks.
-// On first access of a date, schedule is generated from base template + any carried-over.
-// Once generated and saved, the schedule is fixed for that date (won't regenerate).
-//
-// Rescheduler runs at start of new day:
-// 1. Look at all previous days (where the date < today)
-// 2. For each, find slots that weren't marked done
-// 3. Collect them as "carry-over candidates"
-// 4. Try to place them in upcoming days using smart fitting:
-//    - Same week first (current week boundary = Mon-Sun containing today)
-//    - Weekday with capacity > weekend if weekday has room
-//    - Else weekend
-//    - Allow overflow up to OVERFLOW_ALLOWANCE per day
-//    - Match by rescheduleWeight (lower weight = priority subjects placed first)
-// 5. Mark carried-over slots with {rescheduled: true}
-// 6. If a slot can't be placed (no capacity anywhere in week), drop it but log
-
-function getOrGenerateSchedule(d) {
-  const key = dateKey(d);
-  const data = loadData();
-  if (data.daily[key] && data.daily[key].generated) {
-    return data.daily[key];
-  }
-  // Generate fresh
-  const phase = getPhaseForDate(d);
-  const dayIdx = getDayIndex(d);
-  const base = getBaseSchedule(dayIdx, phase);
-  const slots = base.map(b => ({ ...b, rescheduled: false, overflow: false }));
-  const dayRecord = { slots, done: {}, generated: true, date: key };
-  data.daily[key] = dayRecord;
-  saveData(data);
-  return dayRecord;
-}
-
-function runRescheduler() {
-  const data = loadData();
-  const today = todayDate();
-  const todayKey = dateKey(today);
-
-  // Find missed slots from past days that weren't already carried over
-  const missed = [];
-  for (const [key, day] of Object.entries(data.daily)) {
-    const d = new Date(key);
-    d.setHours(0,0,0,0);
-    // v2.2: ignore anything before the plan even started (purges stale test data)
-    if (d < PLAN_START) { delete data.daily[key]; continue; }
-    if (d >= today) continue;
-    if (!day.slots) continue;
-    day.slots.forEach((slot, idx) => {
-      if (!day.done[idx] && !slot.carriedAway) {
-        missed.push({
-          fromDate: key,
-          fromIndex: idx,
-          slot: slot
-        });
-      }
-    });
-  }
-
-  if (missed.length === 0) return { rescheduled: 0, dropped: 0 };
-
-  // Sort missed by rescheduleWeight ASC (highest priority first)
-  missed.sort((a, b) => {
-    const wa = SUBJECTS[a.slot.subject]?.rescheduleWeight ?? 99;
-    const wb = SUBJECTS[b.slot.subject]?.rescheduleWeight ?? 99;
-    return wa - wb;
-  });
-
-  // Determine target days: today through end of current week (Mon-Sun containing today)
-  // Then if still missed, weekend of next week
-  const todayIdx = getDayIndex(today);
-  const targetDays = [];
-  // Add today + rest of week
-  for (let i = 0; i <= (6 - todayIdx); i++) {
-    targetDays.push(addDays(today, i));
-  }
-  // Add weekend of next week as overflow
-  const nextSat = addDays(today, (6 - todayIdx) + 6);
-  const nextSun = addDays(today, (6 - todayIdx) + 7);
-  if (!targetDays.find(d => dateKey(d) === dateKey(nextSat))) targetDays.push(nextSat);
-  if (!targetDays.find(d => dateKey(d) === dateKey(nextSun))) targetDays.push(nextSun);
-
-  // Ensure target days have schedules generated
-  targetDays.forEach(d => getOrGenerateSchedule(d));
-
-  let rescheduledCount = 0;
-  let droppedCount = 0;
-  const detail = [];
-
-  for (const item of missed) {
-    const slot = { ...item.slot, rescheduled: true };
-    let placed = false;
-
-    // Strategy: try to place in priority order:
-    // 1. Today (if has capacity)
-    // 2. Upcoming weekdays in current week (capacity check)
-    // 3. Weekend of current week
-    // 4. Next week weekend (overflow zone)
-
-    // For each target day, check current load + this slot vs capacity + overflow
-    for (const d of targetDays) {
-      const dKey = dateKey(d);
-      const dPhase = getPhaseForDate(d);
-      const dIdx = getDayIndex(d);
-      const capacity = getCapacity(dIdx, dPhase);
-
-      const dayData = loadData().daily[dKey];
-      if (!dayData) continue;
-
-      const currentLoad = dayData.slots.reduce((s, x) => s + (x.mins || 30), 0);
-      const overflow = currentLoad + slot.mins - capacity;
-
-      // Don't double-place same subject in same day (avoid back-to-back same subject)
-      const alreadyHasSubject = dayData.slots.some(x => x.subject === slot.subject);
-
-      // Place if:
-      // - Within capacity, OR
-      // - Within overflow allowance (+30 min)
-      // - AND not duplicating same-subject (preference, can override if no other option)
-      const fitsClean = (currentLoad + slot.mins <= capacity);
-      const fitsOverflow = (currentLoad + slot.mins <= capacity + OVERFLOW_ALLOWANCE);
-
-      if (fitsClean && !alreadyHasSubject) {
-        // Best case: clean fit, no duplicate
-        slot.rescheduled = true;
-        slot.overflow = false;
-        slot.carriedFrom = item.fromDate;
-        dayData.slots.push(slot);
-        const data2 = loadData();
-        data2.daily[dKey] = dayData;
-        // Mark original as carried away
-        if (data2.daily[item.fromDate]) {
-          data2.daily[item.fromDate].slots[item.fromIndex].carriedAway = true;
-        }
-        saveData(data2);
-        placed = true;
-        rescheduledCount++;
-        detail.push(`${SUBJECTS[slot.subject].name} (from ${formatShortDate(item.fromDate)}) → ${formatShortDate(dKey)}`);
-        break;
-      }
-    }
-
-    if (!placed) {
-      // Try again allowing overflow + same-subject
-      for (const d of targetDays) {
-        const dKey = dateKey(d);
-        const dPhase = getPhaseForDate(d);
-        const dIdx = getDayIndex(d);
-        const capacity = getCapacity(dIdx, dPhase);
-        const dayData = loadData().daily[dKey];
-        if (!dayData) continue;
-
-        const currentLoad = dayData.slots.reduce((s, x) => s + (x.mins || 30), 0);
-        const fitsOverflow = (currentLoad + slot.mins <= capacity + OVERFLOW_ALLOWANCE);
-
-        if (fitsOverflow) {
-          slot.rescheduled = true;
-          slot.overflow = true;
-          slot.carriedFrom = item.fromDate;
-          dayData.slots.push(slot);
-          const data2 = loadData();
-          data2.daily[dKey] = dayData;
-          if (data2.daily[item.fromDate]) {
-            data2.daily[item.fromDate].slots[item.fromIndex].carriedAway = true;
-          }
-          saveData(data2);
-          placed = true;
-          rescheduledCount++;
-          detail.push(`${SUBJECTS[slot.subject].name} (from ${formatShortDate(item.fromDate)}) → ${formatShortDate(dKey)} (overflow)`);
-          break;
-        }
-      }
-    }
-
-    if (!placed) {
-      // Couldn't place — mark as dropped
-      const data2 = loadData();
-      if (data2.daily[item.fromDate]) {
-        data2.daily[item.fromDate].slots[item.fromIndex].carriedAway = true;
-        data2.daily[item.fromDate].slots[item.fromIndex].dropped = true;
-      }
-      saveData(data2);
-      droppedCount++;
+    if (m.stage !== 'GROUP_STAGE') {
+      const loser = hs>as_?away:hs<as_?home:null;
+      if (loser) eliminated[loser]=true;
     }
   }
-
-  // Record notice for UI
-  if (rescheduledCount > 0 || droppedCount > 0) {
-    const data2 = loadData();
-    data2.carriedOverNotice = {
-      lastRun: dateKey(today),
-      rescheduled: rescheduledCount,
-      dropped: droppedCount,
-      detail: detail,
-      acknowledged: false
-    };
-    saveData(data2);
+  for (const [name,stage] of Object.entries(reached)) {
+    if (!teamData[name]) teamData[name]={played:0,won:0,drawn:0,lost:0,gf:0,ga:0,gd:0,pts:0,stage:'group',alive:true};
+    teamData[name].stage=stageKey(stage);
   }
-
-  return { rescheduled: rescheduledCount, dropped: droppedCount };
-}
-
-function formatShortDate(key) {
-  const d = new Date(key);
-  return d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
-}
-
-// Determine if rescheduler should run
-function maybeRunRescheduler() {
-  const data = loadData();
-  const todayKey = dateKey(todayDate());
-  // Run if not run today OR if user hits "force"
-  if (data.lastRescheduleRun !== todayKey) {
-    runRescheduler();
-    const data2 = loadData();
-    data2.lastRescheduleRun = todayKey;
-    saveData(data2);
+  for (const name of Object.keys(eliminated)) {
+    if (teamData[name]) teamData[name].alive=false;
   }
-}
-
-function forceReschedule() {
-  if (!confirm('Force the rescheduler to run? This will pull any missed slots from past days into the current week.')) return;
-  const data = loadData();
-  delete data.lastRescheduleRun;
-  saveData(data);
-  runRescheduler();
-  location.reload();
-}
-
-// ============ INTERACTION ============
-
-function toggleSlot(slotIdx) {
-  const data = loadData();
-  const key = dateKey(todayDate());
-  if (!data.daily[key]) return;
-  data.daily[key].done[slotIdx] = !data.daily[key].done[slotIdx];
-  saveData(data);
-  renderToday();
-  updateStreak();
-}
-
-function toggleTopic(subjectKey, topicIndex) {
-  const data = loadData();
-  if (!data.topics[subjectKey]) data.topics[subjectKey] = {};
-  data.topics[subjectKey][topicIndex] = !data.topics[subjectKey][topicIndex];
-  saveData(data);
-  renderSubjects();
-  renderStats();
-  if (currentModalSubject) openSubject(currentModalSubject, true);
-}
-
-// Track which topic link-sections are expanded so re-renders preserve them
-const expandedTopicLinks = new Set();
-function toggleTopicLinks(subjectKey, topicIndex) {
-  const id = `${subjectKey}-${topicIndex}`;
-  const linksEl = document.getElementById(`links-${id}`);
-  const chevEl = document.getElementById(`chev-${id}`);
-  if (!linksEl) return;
-  const isOpen = linksEl.classList.toggle('open');
-  if (chevEl) chevEl.classList.toggle('open', isOpen);
-  if (isOpen) expandedTopicLinks.add(id);
-  else expandedTopicLinks.delete(id);
-}
-// Re-apply expanded state after openSubject re-renders the modal body
-function restoreExpandedTopicLinks() {
-  expandedTopicLinks.forEach(id => {
-    const linksEl = document.getElementById(`links-${id}`);
-    const chevEl = document.getElementById(`chev-${id}`);
-    if (linksEl) linksEl.classList.add('open');
-    if (chevEl) chevEl.classList.add('open');
-  });
-}
-
-function getTopicProgress(key) {
-  const data = loadData();
-  if (!data.topics[key]) return { done: 0, total: SUBJECTS[key].topics.length };
-  const done = Object.values(data.topics[key]).filter(v => v).length;
-  return { done, total: SUBJECTS[key].topics.length };
-}
-
-function updateStreak() {
-  const data = loadData();
-  const todayKey = dateKey(todayDate());
-  const todayData = data.daily[todayKey];
-  if (todayData && Object.values(todayData.done || {}).filter(v => v).length > 0) {
-    if (data.lastActiveDate !== todayKey) {
-      const yesterdayKey = dateKey(addDays(todayDate(), -1));
-      if (data.lastActiveDate === yesterdayKey) {
-        data.streak = (data.streak || 0) + 1;
-      } else {
-        data.streak = 1;
-      }
-      data.lastActiveDate = todayKey;
-      saveData(data);
+  const knockoutsLive = matches.some(m=>m.stage==='ROUND_OF_32'&&m.status==='FINISHED');
+  if (knockoutsLive) {
+    for (const [name,td] of Object.entries(teamData)) {
+      if (td.stage==='group') td.alive=false;
     }
   }
-  document.getElementById('streak-count').textContent = data.streak || 0;
 }
 
-function dismissRescheduleNotice() {
-  const data = loadData();
-  if (data.carriedOverNotice) {
-    data.carriedOverNotice.acknowledged = true;
-    saveData(data);
-  }
-  document.getElementById('reschedule-notice').style.display = 'none';
-}
+// ── SWEEPSTAKE ───────────────────────────────────────────────────────────────
+function closeModal() { document.getElementById("modal-root").style.display="none"; }
 
-function resetProgress() {
-  if (confirm('Reset ALL progress? This cannot be undone.')) {
-    localStorage.removeItem(STORAGE_KEY);
-    location.reload();
-  }
-}
+// ── TEAM FIXTURES MODAL ──────────────────────────────────────────────────────
+function showTeamFixtures(teamName, flag) {
+  const matches = allMatches.filter(m => {
+    const h = m.homeTeam?.name||'', a = m.awayTeam?.name||'';
+    return h===teamName || a===teamName;
+  }).sort((a,b)=>new Date(a.utcDate)-new Date(b.utcDate));
 
-// ============ RENDER ============
+  const STAGE_LABEL = {
+    GROUP_STAGE:'Group',ROUND_OF_32:'Rd of 32',ROUND_OF_16:'Rd of 16',
+    QUARTER_FINALS:'QF',SEMI_FINALS:'SF',THIRD_PLACE:'3rd Place',FINAL:'FINAL'
+  };
 
-function renderHero() {
-  const days = getDaysUntilExams();
-  document.getElementById('days-left').textContent = days;
-  const c = document.getElementById('countdown');
-  c.classList.remove('warning', 'urgent');
-  if (days <= 14) c.classList.add('urgent');
-  else if (days <= 28) c.classList.add('warning');
-
-  const hour = new Date().getHours();
-  let greeting = 'Hey Harry — let\'s go.';
-  if (hour < 12) greeting = 'Morning Harry — let\'s crack on.';
-  else if (hour < 17) greeting = 'Afternoon Harry — time to revise.';
-  else if (hour < 21) greeting = 'Evening Harry — let\'s get a slot done.';
-  else greeting = 'Late one Harry — keep it light.';
-  document.getElementById('hero-greeting').textContent = greeting;
-
-  const sub = days <= 7 ? 'Final stretch. Sleep matters more than cramming now.' :
-              days <= 21 ? 'Past papers and weak topics. Show what you know.' :
-              days <= 35 ? 'Build phase. Layer the knowledge.' :
-              'Stay sharp. Stay consistent. Smash it.';
-  document.getElementById('hero-sub').textContent = sub;
-}
-
-function renderPhase() {
-  const phase = getPhaseForDate(todayDate());
-  const week = getWeekNumber();
-  const badge = document.getElementById('phase-badge');
-  const desc = document.getElementById('phase-desc');
-  const progress = document.getElementById('phase-progress');
-  const pn = document.getElementById('phase-name');
-  const pd = document.getElementById('phase-dates');
-  const pNum = document.getElementById('phase-num');
-  const wh = document.getElementById('week-hours');
-
-  badge.classList.remove('phase-2', 'phase-3');
-
-  if (phase === 1) {
-    badge.textContent = 'Phase 1: Ramp-in';
-    desc.innerHTML = '<strong>1h 15m weekdays</strong>, 2h weekend days';
-    pn.textContent = 'RAMP';
-    pd.textContent = '20 May – 2 Jun';
-    wh.textContent = '10h';
-  } else if (phase === 2) {
-    badge.classList.add('phase-2');
-    badge.textContent = 'Phase 2: Build';
-    desc.innerHTML = '<strong>1h 30m–1h 45m weekdays</strong>, 3h 15m weekend days';
-    pn.textContent = 'BUILD';
-    pd.textContent = '3-28 Jun';
-    wh.textContent = '14.5h';
+  let rows = '';
+  if (!matches.length) {
+    rows = '<div class="empty" style="padding:20px">No fixtures found yet</div>';
   } else {
-    badge.classList.add('phase-3');
-    badge.textContent = 'Exam Phase';
-    desc.innerHTML = '<strong>Light review only.</strong> Sleep, water, exercise.';
-    pn.textContent = 'EXAMS';
-    pd.textContent = '29 Jun+';
-    wh.textContent = '—';
+    for (const m of matches) {
+      const home = m.homeTeam.name, away = m.awayTeam.name;
+      const hFlag = getFlag(home), aFlag = getFlag(away);
+      const dt = new Date(m.utcDate);
+      const dateStr = dt.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+      const timeStr = dt.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+      const isHome = home===teamName;
+      // Who else in sweepstake has the opponent?
+      const opp = isHome ? away : home;
+      const oppOwners = PARTICIPANTS.filter(p=>p.teams.some(t=>t.name===opp)).map(p=>p.name);
+      const oppOwnerStr = oppOwners.length ? `<span style="color:var(--gold);font-size:10px"> · ${oppOwners.join(', ')}'s team</span>` : '';
+
+      let scoreStr, statusStr;
+      if (m.status==='FINISHED') {
+        const hs=m.score?.fullTime?.home??'?', as_=m.score?.fullTime?.away??'?';
+        scoreStr=`${hs}–${as_}`; statusStr='FT';
+      } else if (m.status==='IN_PLAY') {
+        const hs=m.score?.fullTime?.home??0, as_=m.score?.fullTime?.away??0;
+        scoreStr=`🔴 ${hs}–${as_}`; statusStr='LIVE';
+      } else {
+        scoreStr=timeStr; statusStr=dateStr;
+      }
+
+      rows += `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:8px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;color:var(--muted)">${STAGE_LABEL[m.stage]||m.stage} · ${statusStr}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;">${hFlag} ${home}</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:3px 8px;text-align:center;min-width:56px;">${scoreStr}</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;text-align:right;">${away} ${aFlag}</div>
+        </div>
+        <div style="margin-top:4px;font-size:11px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;">${oppOwnerStr}</div>
+      </div>`;
+    }
   }
-  pNum.textContent = phase;
-  progress.textContent = `Week ${week} of 6`;
+
+  const root = document.getElementById('modal-root');
+  const box  = document.getElementById('modal-box');
+  box.innerHTML = `
+    <div style="width:40px;height:4px;background:#2a2a3e;border-radius:2px;margin:0 auto 16px;"></div>
+    <button onclick="closeModal()" style="position:absolute;top:16px;right:16px;background:#1c1c2e;border:1px solid #2a2a3e;color:#f0f0f0;border-radius:50%;width:32px;height:32px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;color:#FFD700;margin-bottom:4px;">${flag} ${teamName}</div>
+    <div style="font-size:12px;color:#777;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;margin-bottom:16px;">TAP OUTSIDE TO CLOSE · ${matches.length} FIXTURES</div>
+    ${rows}`;
+  root.style.display = 'flex';
+  root.onclick = e => { if(e.target===root) closeModal(); };
 }
 
-function renderRescheduleNotice() {
-  const data = loadData();
-  const notice = data.carriedOverNotice;
-  const el = document.getElementById('reschedule-notice');
-  if (!notice || notice.acknowledged || notice.rescheduled === 0) {
-    el.style.display = 'none';
+function renderSweepstake() {
+  if (!drawAllDone()) {
+    document.getElementById('pane-sweepstake').innerHTML =
+`<div class="empty">🎰 Complete the draw first<br><span style="font-size:12px;opacity:.6">Tap the Draw tab to assign teams</span></div>`;
     return;
   }
-  el.style.display = 'flex';
-  const txt = document.getElementById('reschedule-detail');
-  let msg = `${notice.rescheduled} slot${notice.rescheduled > 1 ? 's' : ''} carried over.`;
-  if (notice.dropped > 0) msg += ` ${notice.dropped} dropped (no capacity).`;
-  if (notice.detail && notice.detail.length) {
-    msg += ' ' + notice.detail.slice(0, 3).join('; ');
-    if (notice.detail.length > 3) msg += '...';
+  const rows = PARTICIPANTS.map(p => {
+    let totalWin=0, escSum=0, escCount=0;
+    for (const t of p.teams) {
+      const o = ODDS[t.name]||{win:0,esc:0};
+      const td = teamData[t.name];
+      const alive = td ? td.alive : true;
+      totalWin += o.win;
+      if (alive) { escSum+=o.esc; escCount++; }
+    }
+    const allOut = p.teams.every(t => teamData[t.name] && !teamData[t.name].alive);
+    return { ...p,
+      win: parseFloat(totalWin.toFixed(1)),
+      esc: escCount>0 ? parseFloat((escSum/escCount).toFixed(1)) : 0,
+      score: totalWin*0.7 + (escCount>0?(escSum/escCount):0)*0.3,
+      eliminated: allOut,
+    };
+  });
+
+  const active = rows.filter(r=>!r.eliminated).sort((a,b)=>b.score-a.score);
+  const elim   = rows.filter(r=>r.eliminated).sort((a,b)=>b.score-a.score);
+  const ranked = [...active,...elim];
+  const maxWin = Math.max(...ranked.map(r=>r.win),0.1);
+  const maxEsc = Math.max(...ranked.map(r=>r.esc),0.1);
+  const groupsDone = allMatches.some(m=>m.stage==='ROUND_OF_32'&&m.status==='FINISHED');
+
+  let html = '';
+  ranked.forEach((p,i) => {
+    const rank = i+1;
+    const rc = p.eliminated ? 'eliminated' : rank===1?'r1':rank===2?'r2':rank===3?'r3':'';
+    const medal = !p.eliminated&&rank<=3 ? ['🥇','🥈','🥉'][rank-1] : '';
+
+    const teamsHtml = p.teams.map(t => {
+      const td = teamData[t.name];
+      const alive = td ? td.alive : true;
+      const o = ODDS[t.name]||{win:0,esc:0};
+      const goalsStr = td ? `<span class="s-team-stat goals">⚽${td.gf}</span>` : '';
+      const winStr = o.win>0 ? `<span class="s-team-stat win">🏆${o.win}%</span>` : '';
+      const escStr = !groupsDone && o.esc>0 ? `<span class="s-team-stat" style="color:var(--green)">🚀${o.esc}%</span>` : '';
+      return `<div class="s-team${!alive?' out':''}" onclick="showTeamFixtures('${t.name.replace(/'/g,"\'")}','${t.flag}')" style="cursor:pointer">
+        <span class="s-team-flag">${t.flag}</span>
+        <span class="s-team-name">${t.name}</span>
+        <span class="s-team-stats">${winStr}${escStr}${goalsStr}</span>
+        <span style="color:var(--muted);font-size:11px;margin-left:2px">›</span>
+      </div>`;
+    }).join('');
+
+    html += `<div class="s-card ${rc}">
+      <div class="s-top">
+        <div class="s-rank">${medal||rank}</div>
+        <div class="s-name-wrap">
+          <div class="s-name">${p.name}</div>
+          ${p.eliminated?'<div class="s-elim">ALL TEAMS ELIMINATED</div>':''}
+        </div>
+        <div class="s-pcts">
+          <div class="s-pct-block">
+            <div class="s-pct-label">WIN</div>
+            <div class="s-pct-val win">${p.win}%</div>
+          </div>
+          ${!groupsDone ? `<div class="s-pct-block">
+            <div class="s-pct-label">ESC</div>
+            <div class="s-pct-val esc">${p.esc}%</div>
+          </div>` : ''}
+        </div>
+      </div>
+      <div class="s-teams">${teamsHtml}</div>
+      <div class="s-bar-row">
+        <div class="s-bar-wrap">
+          <div class="s-bar-label">WIN CHANCE</div>
+          <div class="bar-bg"><div class="bar-fill win-fill" style="width:${(p.win/maxWin)*100}%"></div></div>
+        </div>
+        ${!groupsDone ? `<div class="s-bar-wrap">
+          <div class="s-bar-label">ESCAPE CHANCE</div>
+          <div class="bar-bg"><div class="bar-fill esc-fill" style="width:${(p.esc/maxEsc)*100}%"></div></div>
+        </div>` : ''}
+      </div>
+    </div>`;
+  });
+
+  document.getElementById('pane-sweepstake').innerHTML = html;
+}
+
+// ── LEAGUE TABLE ─────────────────────────────────────────────────────────────
+function renderLeague() {
+  if (!drawAllDone()) {
+    document.getElementById('pane-league').innerHTML =
+`<div class="empty">🎰 Complete the draw first<br><span style="font-size:12px;opacity:.6">League table appears once teams are assigned</span></div>`;
+    return;
   }
-  txt.textContent = msg;
-}
+  const stageRank = {winner:7,final:6,sf:5,qf:4,r16:3,r32:2,group:1};
 
-function renderToday() {
-  const today = todayDate();
-  const day = getOrGenerateSchedule(today);
-  const data = loadData();
-  const grid = document.getElementById('today-grid');
-  grid.innerHTML = '';
-
-  day.slots.forEach((slot, i) => {
-    const subj = SUBJECTS[slot.subject];
-    if (!subj) return;
-    const isDone = data.daily[dateKey(today)].done[i];
-    const activeTimer = getTimer();
-    const isTimerActive = activeTimer && activeTimer.subject === slot.subject && !activeTimer.pausedAt;
-    const card = document.createElement('div');
-    card.className = 'slot-card';
-    if (slot.rescheduled) card.classList.add('rescheduled');
-    if (slot.overflow) card.classList.add('overflow');
-    card.style.setProperty('--subject-color', subj.color);
-    card.innerHTML = `
-      <div class="slot-time">${slot.mins} min</div>
-      <div class="slot-subject">${subj.name}${isTimerActive ? '<span class="slot-timer-active"></span>' : ''}</div>
-      <div class="slot-focus">${slot.focus || ''}</div>
-      <button class="slot-done-btn ${isDone ? 'done' : ''}" onclick="toggleSlot(${i})">${isDone ? '✓ Done' : 'Mark done'}</button>
-    `;
-    grid.appendChild(card);
+  const rows = PARTICIPANTS.map(p => {
+    let gf=0, ga=0, gd=0, bestStage='group', allOut=true;
+    for (const t of p.teams) {
+      const td = teamData[t.name];
+      if (!td) continue;
+      if (td.alive) { allOut=false; gf+=td.gf; ga+=td.ga; gd+=td.gd; }
+      if ((stageRank[td.stage]||0) > (stageRank[bestStage]||0)) bestStage=td.stage;
+    }
+    // bestTeamName for display
+    let bestTeam = p.teams.find(t => teamData[t.name]?.stage===bestStage) || p.teams[0];
+    return { name:p.name, gf, ga, gd, stage:bestStage, eliminated:allOut, bestTeam };
   });
 
-  document.getElementById('today-slots').textContent = day.slots.length;
-  const totalMins = day.slots.reduce((s, x) => s + (x.mins || 30), 0);
-  document.getElementById('today-slots-sub').textContent = `${totalMins} min total`;
-}
+  const active = rows.filter(r=>!r.eliminated).sort((a,b)=>(stageRank[b.stage]||0)-(stageRank[a.stage]||0)||b.gf-a.gf||b.gd-a.gd);
+  const elim   = rows.filter(r=>r.eliminated).sort((a,b)=>(stageRank[b.stage]||0)-(stageRank[a.stage]||0)||b.gf-a.gf);
+  const ranked = [...active,...elim];
 
-function renderSubjects() {
-  const grid = document.getElementById('subjects-grid');
-  grid.innerHTML = '';
-  const phase = getPhaseForDate(todayDate());
-  Object.entries(SUBJECTS).forEach(([key, subj]) => {
-    const { done, total } = getTopicProgress(key);
-    const pct = total > 0 ? (done / total) * 100 : 0;
-    const time = phase === 2 ? subj.weeklyTimeP2 : subj.weeklyTime;
-    const card = document.createElement('div');
-    card.className = 'subject-card';
-    card.style.setProperty('--subject-color', subj.color);
-    card.onclick = () => openSubject(key);
-    card.innerHTML = `
-      <div class="subject-header">
-        <div class="subject-name">${subj.name}</div>
-        <div class="subject-priority priority-${subj.priority}">${subj.priorityLabel}</div>
-      </div>
-      <div class="subject-time">⌚ ${time} / week</div>
-      <div class="subject-meta">${subj.summary}</div>
-      <div class="subject-progress">
-        <div class="progress-label">
-          <span>Topics</span>
-          <span>${done}/${total}</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width:${pct}%; background:${subj.color};"></div>
-        </div>
-      </div>
-      <button class="btn-open">Open →</button>
-    `;
-    grid.appendChild(card);
-  });
-}
+  const stagePill = (s, alive) => {
+    if (!alive) return `<span class="stage-pill sp-out">Out</span>`;
+    const cls = {group:'sp-group',r32:'sp-r32',r16:'sp-r16',qf:'sp-qf',sf:'sp-sf',final:'sp-final'};
+    const lbl = {group:'Groups',r32:'Rd 32',r16:'Rd 16',qf:'QF',sf:'Semi',final:'Final'};
+    return `<span class="stage-pill ${cls[s]||'sp-group'}">${lbl[s]||s}</span>`;
+  };
 
-function renderStats() {
-  let totalDone = 0, totalAll = 0;
-  Object.keys(SUBJECTS).forEach(key => {
-    const { done, total } = getTopicProgress(key);
-    totalDone += done;
-    totalAll += total;
-  });
-  document.getElementById('topics-done').textContent = totalDone;
-  document.getElementById('topics-total').textContent = `of ${totalAll}`;
-}
+  let html = `<div class="l-header">
+    <div class="lth">#</div><div class="lth">PLAYER</div>
+    <div class="lth r">GF</div><div class="lth r">GD</div><div class="lth r">STAGE</div>
+  </div><div class="l-wrap">`;
 
-function renderSchedule() {
-  const table = document.getElementById('schedule-table');
-  const today = todayDate();
-  const todayIdx = getDayIndex(today);
-  const dayLabels = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-
-  // Build week schedule by looking at each day's actual stored schedule (or generating)
-  // Find Monday of current week
-  const monday = addDays(today, -todayIdx);
-
-  const weekDays = [];
-  for (let i = 0; i < 7; i++) {
-    const d = addDays(monday, i);
-    weekDays.push({
-      date: d,
-      day: dayLabels[i],
-      schedule: getOrGenerateSchedule(d),
-      isToday: i === todayIdx
+  if (!Object.keys(teamData).length) {
+    html += `<div class="empty">⚽ League table fills in once matches kick off<br><span style="font-size:12px;opacity:.6">Goals & stage progress will appear here</span></div>`;
+  } else {
+    ranked.forEach((p,i) => {
+      const rank = i+1;
+      const rc = p.eliminated?'eliminated':rank===1?'lr1':rank===2?'lr2':rank===3?'lr3':'';
+      const medal = !p.eliminated&&rank<=3?['🥇','🥈','🥉'][rank-1]:'';
+      const gdClass = p.gd>0?'pos':p.gd<0?'neg':'';
+      html += `<div class="l-row ${rc}">
+        <div class="l-rank">${medal||rank}</div>
+        <div><div class="l-name">${p.name}</div><div class="l-name-sub">${p.bestTeam.flag} ${p.bestTeam.name}</div></div>
+        <div class="lval g">${p.gf}</div>
+        <div class="lval ${gdClass}">${p.gd>0?'+':''}${p.gd}</div>
+        <div>${stagePill(p.stage,!p.eliminated)}</div>
+      </div>`;
     });
   }
 
-  const maxBlocks = Math.max(...weekDays.map(d => d.schedule.slots.length));
+  html += '</div>';
+  document.getElementById('pane-league').innerHTML = html;
+}
 
-  let html = '<thead><tr><th>Day</th>';
-  for (let i = 0; i < maxBlocks; i++) html += `<th>${i+1}</th>`;
-  html += '</tr></thead><tbody>';
+// ── FIXTURES ─────────────────────────────────────────────────────────────────
+function renderFixtures() {
+  if (!drawAllDone()) {
+    document.getElementById('pane-fixtures').innerHTML =
+`<div class="empty">🎰 Complete the draw first<br><span style="font-size:12px;opacity:.6">Fixtures appear once teams are assigned</span></div>`;
+    return;
+  }
+  const relevant = allMatches.filter(m =>
+    SWEEP_TEAMS.has(norm(m.homeTeam?.name||'')) || SWEEP_TEAMS.has(norm(m.awayTeam?.name||''))
+  );
 
-  weekDays.forEach((dayInfo, idx) => {
-    html += `<tr class="${dayInfo.isToday ? 'today-row' : ''}"><td class="day-cell">${dayInfo.day}${dayInfo.isToday ? ' ←' : ''}</td>`;
-    for (let i = 0; i < maxBlocks; i++) {
-      const slot = dayInfo.schedule.slots[i];
-      if (slot && SUBJECTS[slot.subject]) {
-        const subj = SUBJECTS[slot.subject];
-        const tag = slot.rescheduled ? ' ⤴' : '';
-        html += `<td><span style="color:${subj.color}; font-weight:600;">${subj.name.split(' ')[0]}${tag}</span><br><span style="color:var(--text-muted); font-size:0.75rem;">${slot.mins}m</span></td>`;
+  if (!relevant.length) {
+    document.getElementById('pane-fixtures').innerHTML =
+      '<div class="empty">⚽ Fixtures loading…<br><span style="font-size:12px;opacity:.6">Will show all sweepstake team games</span></div>';
+    return;
+  }
+
+  const STAGE_LABEL = {
+    GROUP_STAGE:'Group Stage',ROUND_OF_32:'Round of 32',ROUND_OF_16:'Round of 16',
+    QUARTER_FINALS:'Quarter-Finals',SEMI_FINALS:'Semi-Finals',THIRD_PLACE:'3rd Place Play-off',FINAL:'⭐ FINAL'
+  };
+  const STAGE_SORT = {GROUP_STAGE:1,ROUND_OF_32:2,ROUND_OF_16:3,QUARTER_FINALS:4,SEMI_FINALS:5,THIRD_PLACE:6,FINAL:7};
+
+  const byStage = {};
+  for (const m of relevant) {
+    const s = m.stage;
+    if (!byStage[s]) byStage[s] = [];
+    byStage[s].push(m);
+  }
+
+  const stages = Object.keys(byStage).sort((a,b)=>(STAGE_SORT[a]||0)-(STAGE_SORT[b]||0));
+
+  let html = '';
+  for (const stage of stages) {
+    const matches = byStage[stage].sort((a,b)=>new Date(a.utcDate)-new Date(b.utcDate));
+    html += `<div class="f-group"><div class="f-group-title">⚽ <span>${STAGE_LABEL[stage]||stage}</span></div>`;
+
+    for (const m of matches) {
+      const home = norm(m.homeTeam?.name||'?');
+      const away = norm(m.awayTeam?.name||'?');
+      const hFlag = getFlag(home); const aFlag = getFlag(away);
+      const both = SWEEP_TEAMS.has(home) && SWEEP_TEAMS.has(away);
+      const hOwners = PARTICIPANTS.filter(p=>p.teams.some(t=>t.name===home)).map(p=>p.name);
+      const aOwners = PARTICIPANTS.filter(p=>p.teams.some(t=>t.name===away)).map(p=>p.name);
+      const dt = new Date(m.utcDate);
+      const dateStr = dt.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+      const timeStr = dt.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+
+      let scoreHtml, metaText, scoreClass;
+      if (m.status==='FINISHED') {
+        const hs=m.score?.fullTime?.home??'?', as_=m.score?.fullTime?.away??'?';
+        scoreHtml=`${hs} – ${as_}`; scoreClass='ft'; metaText=`FT · ${dateStr}`;
+      } else if (m.status==='IN_PLAY'||m.status==='PAUSED') {
+        const hs=m.score?.fullTime?.home??0, as_=m.score?.fullTime?.away??0;
+        scoreHtml=`🔴 ${hs}–${as_}`; scoreClass='live'; metaText='LIVE NOW';
       } else {
-        html += '<td style="color:var(--text-muted);">—</td>';
+        scoreHtml=timeStr; scoreClass='upcoming'; metaText=dateStr;
+      }
+
+      html += `<div class="f-match${both?' highlight':''}">
+        <div class="f-score-row">
+          <div class="f-team-home">${hFlag} ${home}</div>
+          <div class="f-score ${scoreClass}">${scoreHtml}</div>
+          <div class="f-team-away">${away} ${aFlag}</div>
+        </div>
+        <div class="f-meta">${metaText}${both?' · 🔥 Sweepstake clash':''}</div>
+        ${hOwners.length||aOwners.length ? `<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--gold);font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;margin-top:3px;padding:0 2px"><span>${hOwners.join(', ')}</span><span>${aOwners.join(', ')}</span></div>` : ''}
+      </div>`;
+    }
+    html += '</div>';
+  }
+
+  document.getElementById('pane-fixtures').innerHTML = html;
+}
+
+function getFlag(name) {
+  for (const p of PARTICIPANTS) {
+    const t = p.teams.find(t=>t.name===name);
+    if (t) return t.flag;
+  }
+  return '🏳️';
+}
+
+
+// ── DRAW SYSTEM ──────────────────────────────────────────────────────────────
+const DRAW_PEOPLE = ["Nicola","Harry","Jack","Paul","Thomas","Rick","Rachel","Ethan",
+                     "Elliot","Tom","Lisa","Ben","Ella","Isobel","Grandma","Grandad"];
+
+const DRAW_TIERS = {
+  1: { label:"Tier 1", cls:"t1c", pill:"t1", col:"#FF6B35", teams:[
+    {name:"Spain",flag:"🇪🇸"},{name:"France",flag:"🇫🇷"},{name:"England",flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
+    {name:"Portugal",flag:"🇵🇹"},{name:"Brazil",flag:"🇧🇷"},{name:"Argentina",flag:"🇦🇷"},
+    {name:"Germany",flag:"🇩🇪"},{name:"Netherlands",flag:"🇳🇱"},{name:"Norway",flag:"🇳🇴"},
+    {name:"Belgium",flag:"🇧🇪"},{name:"Colombia",flag:"🇨🇴"},{name:"Uruguay",flag:"🇺🇾"},
+    {name:"USA",flag:"🇺🇸"},{name:"Mexico",flag:"🇲🇽"},{name:"Morocco",flag:"🇲🇦"},
+    {name:"Switzerland",flag:"🇨🇭"}
+  ]},
+  2: { label:"Tier 2", cls:"t2c", pill:"t2", col:"#4A9EFF", teams:[
+    {name:"Croatia",flag:"🇭🇷"},{name:"Ecuador",flag:"🇪🇨"},{name:"Türkiye",flag:"🇹🇷"},
+    {name:"Senegal",flag:"🇸🇳"},{name:"Japan",flag:"🇯🇵"},{name:"Canada",flag:"🇨🇦"},
+    {name:"Serbia",flag:"🇷🇸"},{name:"Paraguay",flag:"🇵🇾"},{name:"South Korea",flag:"🇰🇷"},
+    {name:"Australia",flag:"🇦🇺"},{name:"Ivory Coast",flag:"🇨🇮"},{name:"Austria",flag:"🇦🇹"},
+    {name:"Czech Republic",flag:"🇨🇿"},{name:"Scotland",flag:"🏴󠁧󠁢󠁳󠁣󠁴󠁿"},
+    {name:"Bosnia & Herzegovina",flag:"🇧🇦"},{name:"Egypt",flag:"🇪🇬"}
+  ]},
+  3: { label:"Tier 3", cls:"t3c", pill:"t3", col:"#888", teams:[
+    {name:"Algeria",flag:"🇩🇿"},{name:"Ghana",flag:"🇬🇭"},{name:"Iran",flag:"🇮🇷"},
+    {name:"Tunisia",flag:"🇹🇳"},{name:"South Africa",flag:"🇿🇦"},{name:"New Zealand",flag:"🇳🇿"},
+    {name:"Panama",flag:"🇵🇦"},{name:"Saudi Arabia",flag:"🇸🇦"},{name:"Qatar",flag:"🇶🇦"},
+    {name:"Jordan",flag:"🇯🇴"},{name:"Iraq",flag:"🇮🇶"},{name:"DR Congo",flag:"🇨🇩"},
+    {name:"Uzbekistan",flag:"🇺🇿"},{name:"Cape Verde",flag:"🇨🇻"},
+    {name:"Haiti",flag:"🇭🇹"},{name:"Curaçao",flag:"🇨🇼"}
+  ]},
+};
+
+let drawState = {
+  results: {},      // { "Nicola": { t1:{name,flag}, t2:..., t3:... } }
+  remaining: {
+    1: [...DRAW_TIERS[1].teams],
+    2: [...DRAW_TIERS[2].teams],
+    3: [...DRAW_TIERS[3].teams],
+  },
+  spinning: false,
+  locked: false,
+};
+
+function drawSave() {
+  // Always save locally as backup
+  try { localStorage.setItem('hazzerbet_draw_v2', JSON.stringify(drawState)); } catch(e) {}
+  // Push to cloud
+  fetch(JSONBIN_URL, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Master-Key': JSONBIN_KEY,
+      'X-Bin-Versioning': 'false',
+    },
+    body: JSON.stringify(drawState)
+  }).catch(e => console.warn('Cloud save failed:', e));
+}
+
+async function drawLoad() {
+  // Try cloud first (skip on preview/local)
+  const onRealHost = location.hostname === 'thephatphox.github.io';
+  if (onRealHost) try {
+    const r = await fetch(JSONBIN_URL + '/latest', {
+      headers: { 'X-Master-Key': JSONBIN_KEY }
+    });
+    if (r.ok) {
+      const data = await r.json();
+      const record = data.record;
+      if (record && (record.locked || Object.keys(record.results||{}).length > 0)) {
+        drawState = record;
+        // Restore remaining from what hasn't been drawn yet
+        if (!drawState.remaining) {
+          drawState.remaining = {
+            1: DRAW_TIERS[1].teams.filter(t => !Object.values(drawState.results||{}).some(r => r.t1?.name===t.name)),
+            2: DRAW_TIERS[2].teams.filter(t => !Object.values(drawState.results||{}).some(r => r.t2?.name===t.name)),
+            3: DRAW_TIERS[3].teams.filter(t => !Object.values(drawState.results||{}).some(r => r.t3?.name===t.name)),
+          };
+        }
+        return;
       }
     }
-    html += '</tr>';
+  } catch(e) {
+    console.warn('Cloud load failed, trying local:', e);
+  }
+  // Fallback to localStorage
+  try {
+    const s = localStorage.getItem('hazzerbet_draw_v2');
+    if (s) drawState = JSON.parse(s);
+  } catch(e) {}
+}
+
+function drawCurrentPerson() {
+  for (let i = 0; i < DRAW_PEOPLE.length; i++) {
+    const r = drawState.results[DRAW_PEOPLE[i]] || {};
+    if (!r.t1 || !r.t2 || !r.t3) return i;
+  }
+  return DRAW_PEOPLE.length;
+}
+
+function drawAllDone() {
+  return drawState.locked || drawCurrentPerson() >= DRAW_PEOPLE.length;
+}
+
+function renderDraw() {
+  const locked = drawState.locked;
+  const cpIdx = drawCurrentPerson();
+  const isDone = cpIdx >= DRAW_PEOPLE.length;
+  let html = '';
+
+  if (locked) {
+    html += `<div class="locked-banner">
+      <div class="locked-banner-title">🔒 DRAW LOCKED</div>
+      <div class="locked-banner-sub">The draw is final · No changes can be made</div>
+    </div>`;
+  } else if (isDone) {
+    // Show lock button
+    html += `<div style="background:rgba(0,200,81,.08);border:1px solid rgba(0,200,81,.3);border-radius:12px;padding:14px 16px;text-align:center;margin-bottom:12px;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--green);letter-spacing:2px;">🎉 DRAW COMPLETE!</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.4);font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;margin-top:2px;">Happy? Lock it in — this cannot be undone.</div>
+    </div>
+    <button class="lock-btn" onclick="lockDraw()">🔒 LOCK THE DRAW — NO GOING BACK</button>`;
+  } else {
+    // Person panel
+    const name = DRAW_PEOPLE[cpIdx];
+    const r = drawState.results[name] || {};
+    let pills = '';
+    if (r.t1) pills += `<span class="dpp-pill t1">${r.t1.flag} ${r.t1.name}</span>`;
+    if (r.t2) pills += `<span class="dpp-pill t2">${r.t2.flag} ${r.t2.name}</span>`;
+    if (r.t3) pills += `<span class="dpp-pill t3">${r.t3.flag} ${r.t3.name}</span>`;
+    html += `<div class="draw-person-panel">
+      <div style="flex:1">
+        <div class="dpp-label">Now drawing for</div>
+        <div class="dpp-name">${name}</div>
+        <div class="dpp-pills">${pills}</div>
+      </div>
+      <div style="text-align:right">
+        <div class="dpp-label">To go</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;">${DRAW_PEOPLE.length - cpIdx}</div>
+      </div>
+    </div>`;
+    // Slot
+    html += `<div class="slot-wrap" id="draw-slot"><div class="slot-idle">Pick a tier to spin</div></div>`;
+    // Tier buttons
+    html += `<div class="tier-btns">`;
+    for (const tier of [1,2,3]) {
+      const r2 = drawState.results[name] || {};
+      const has = !!r2[`t${tier}`];
+      const left = drawState.remaining[tier].length;
+      const dis = has || drawState.spinning ? 'disabled' : '';
+      const doneCls = has ? 'done' : '';
+      html += `<button class="tier-btn ${DRAW_TIERS[tier].cls} ${doneCls}" ${dis} onclick="drawSpin(${tier})">
+        <span class="tier-label">${DRAW_TIERS[tier].label}</span>
+        SPIN
+        <span class="tier-count">${left} left</span>
+      </button>`;
+    }
+    html += `</div>`;
+  }
+
+  // Results table (always shown)
+  html += `<div class="draw-rtable">
+    <div class="draw-rhead">
+      <div class="draw-rth">PLAYER</div>
+      <div class="draw-rth c1">TIER 1</div>
+      <div class="draw-rth c2">TIER 2</div>
+      <div class="draw-rth c3">TIER 3</div>
+    </div>`;
+  DRAW_PEOPLE.forEach((name, i) => {
+    const r = drawState.results[name] || {};
+    const isActive = !isDone && !locked && i === cpIdx;
+    const t1 = r.t1 ? `${r.t1.flag} ${r.t1.name}` : '—';
+    const t2 = r.t2 ? `${r.t2.flag} ${r.t2.name}` : '—';
+    const t3 = r.t3 ? `${r.t3.flag} ${r.t3.name}` : '—';
+    html += `<div class="draw-rrow${isActive?' draw-active':''}">
+      <div class="draw-rname">${name}</div>
+      <div class="draw-rcell ${r.t1?'f1':''}">${t1}</div>
+      <div class="draw-rcell ${r.t2?'f2':''}">${t2}</div>
+      <div class="draw-rcell ${r.t3?'f3':''}">${t3}</div>
+    </div>`;
   });
-  html += '</tbody>';
-  table.innerHTML = html;
-}
+  html += `</div>`;
 
-// ============ MODAL ============
-
-let currentModalSubject = null;
-
-function openSubject(key, keepScroll = false) {
-  const subj = SUBJECTS[key];
-  // Clear expanded topic-link state when opening a different subject
-  if (currentModalSubject !== key) expandedTopicLinks.clear();
-  currentModalSubject = key;
-  const modal = document.getElementById('modal');
-  const overlay = document.getElementById('modal-overlay');
-  modal.style.setProperty('--subject-color', subj.color);
-  document.getElementById('modal-title').textContent = subj.name;
-  document.getElementById('modal-title').style.color = subj.color;
-  document.getElementById('modal-subtitle').textContent = `${subj.weeklyTime} / week · ${subj.priorityLabel.toLowerCase()} priority`;
-
-  const data = loadData();
-  const topicProgress = data.topics[key] || {};
-
-  const examInfoHtml = Object.entries(subj.examInfo).map(([k,v]) =>
-    `<div class="exam-stat"><div class="exam-stat-label">${k}</div><div class="exam-stat-value">${v}</div></div>`
-  ).join('');
-
-  const topicsHtml = subj.topics.map((topic, i) => {
-    const checked = topicProgress[i];
-    // Topics can be strings (legacy) or objects { name, links }
-    const isObj = typeof topic === 'object' && topic !== null;
-    const name = isObj ? topic.name : topic;
-    const links = isObj && Array.isArray(topic.links) ? topic.links : [];
-    const hasLinks = links.length > 0;
-    const chevron = hasLinks
-      ? `<span class="topic-chevron" onclick="toggleTopicLinks('${key}', ${i})" id="chev-${key}-${i}">▶</span>`
-      : `<span class="topic-chevron-placeholder"></span>`;
-    const linksHtml = hasLinks ? `
-      <div class="topic-links" id="links-${key}-${i}">
-        ${links.map(l => `
-          <a href="${l.url}" target="_blank" rel="noopener" class="topic-link">
-            <div>
-              <div class="topic-link-name">${l.name}</div>
-              ${l.desc ? `<div class="topic-link-desc">${l.desc}</div>` : ''}
-            </div>
-            <span class="topic-link-arrow">→</span>
-          </a>
-        `).join('')}
-      </div>` : '';
-    return `<li class="topic-item">
-      <div class="topic-row">
-        <div class="topic-checkbox ${checked ? 'checked' : ''}" onclick="toggleTopic('${key}', ${i})"></div>
-        <span class="topic-label">${name}</span>
-        ${chevron}
-      </div>
-      ${linksHtml}
-    </li>`;
-  }).join('');
-
-  const resourcesHtml = subj.resources.map(r => `
-    <a href="${r.url}" target="_blank" rel="noopener" class="resource-link">
-      <div class="resource-info">
-        <div class="resource-name">${r.name}</div>
-        <div class="resource-desc">${r.desc}</div>
-      </div>
-      <span class="resource-arrow">→</span>
-    </a>
-  `).join('');
-
-  document.getElementById('modal-body').innerHTML = `
-    <div class="timer-panel" id="timer-panel"></div>
-    <div class="section-h">Why it matters</div>
-    <p style="color: var(--text-secondary); margin-bottom: 1rem;">${subj.summary}</p>
-    <div class="section-h">Exam info</div>
-    <div class="exam-info">${examInfoHtml}</div>
-    <div class="section-h">Teacher feedback</div>
-    <div class="teacher-note">${subj.teacherNote}</div>
-    <div class="section-h">Topics to cover</div>
-    <ul class="topics-list">${topicsHtml}</ul>
-    <div class="section-h">Resources</div>
-    <div class="resources-list">${resourcesHtml}</div>
-  `;
-
-  overlay.classList.add('active');
-  // Re-apply any previously-expanded topic link sections (preserved across re-renders)
-  restoreExpandedTopicLinks();
-  if (!keepScroll) {
-    document.body.style.overflow = 'hidden';
-    document.querySelector('.modal').scrollTop = 0;
+  if (!locked) {
+    html += `<button class="reset-draw-btn" onclick="resetDrawConfirm()">↺ Reset Draw</button>`;
   }
-  renderTimerPanel();
+
+  document.getElementById('pane-draw').innerHTML = html;
+
+  // Scroll active row
+  const ar = document.querySelector('.draw-active');
+  if (ar) ar.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
-function closeModal() {
-  document.getElementById('modal-overlay').classList.remove('active');
-  document.body.style.overflow = '';
-  currentModalSubject = null;
+function drawSpin(tier) {
+  if (drawState.spinning || drawState.locked) return;
+  const cpIdx = drawCurrentPerson();
+  if (cpIdx >= DRAW_PEOPLE.length) return;
+  const name = DRAW_PEOPLE[cpIdx];
+  const r = drawState.results[name] || {};
+  if (r[`t${tier}`]) return;
+  if (drawState.remaining[tier].length === 0) return;
+
+  drawState.spinning = true;
+  renderDraw();
+
+  const slot = document.getElementById('draw-slot');
+  if (!slot) return;
+  const col = DRAW_TIERS[tier].col;
+  slot.className = `slot-wrap sp-t${tier}`;
+
+  const pool = [...drawState.remaining[tier]];
+  const winner = pool[Math.floor(Math.random()*pool.length)];
+  const allT = DRAW_TIERS[tier].teams;
+  let ticks = 0;
+  const maxTicks = 18 + Math.floor(Math.random()*8);
+
+  const iv = setInterval(() => {
+    ticks++;
+    const t = allT[Math.floor(Math.random()*allT.length)];
+    slot.innerHTML = `<div class="slot-tier-lbl" style="color:${col}">${DRAW_TIERS[tier].label}</div>
+      <div class="slot-flag">${t.flag}</div>
+      <div class="slot-team-name" style="color:${col}">${t.name}</div>`;
+
+    if (ticks >= maxTicks) {
+      clearInterval(iv);
+      slot.innerHTML = `<div class="slot-tier-lbl" style="color:${col}">${DRAW_TIERS[tier].label}</div>
+        <div class="slot-flag" style="font-size:44px">${winner.flag}</div>
+        <div class="slot-team-name" style="color:${col};font-size:42px">${winner.name}</div>
+        <div style="font-size:10px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;letter-spacing:2px;margin-top:6px;text-transform:uppercase">Tap next tier ›</div>`;
+      if (!drawState.results[name]) drawState.results[name] = {};
+      drawState.results[name][`t${tier}`] = winner;
+      drawState.remaining[tier].splice(drawState.remaining[tier].findIndex(t=>t.name===winner.name),1);
+      drawState.spinning = false;
+      drawSave();
+      // Update PARTICIPANTS with new draw if all done
+      if (drawAllDone()) syncDrawToSweepstake();
+      renderDraw();
+    }
+  }, ticks < maxTicks*0.5 ? 60 : ticks < maxTicks*0.8 ? 120 : 220);
 }
 
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+function lockDraw() {
+  if (!confirm('Lock the draw permanently? The lock button will disappear and the draw cannot be changed.')) return;
+  drawState.locked = true;
+  drawSave();
+  syncDrawToSweepstake();
+  renderDraw();
+}
 
-// ============ PWA INSTALL ============
+function syncDrawToSweepstake() {
+  // Push draw results into PARTICIPANTS so sweepstake/league/fixtures use them
+  if (!drawAllDone()) return;
+  DRAW_PEOPLE.forEach(name => {
+    const r = drawState.results[name];
+    if (!r) return;
+    const p = PARTICIPANTS.find(p=>p.name===name);
+    if (!p) return;
+    p.teams = [
+      {name:r.t1.name, flag:r.t1.flag},
+      {name:r.t2.name, flag:r.t2.flag},
+      {name:r.t3.name, flag:r.t3.flag},
+    ];
+  });
+  // Re-render other tabs
+  renderSweepstake();
+  renderLeague();
+  renderFixtures();
+  renderDraw();
+}
 
-let deferredPrompt = null;
+function resetDrawConfirm() {
+  if (!confirm('Reset the entire draw? Cannot be undone.')) return;
+  drawState = {
+    results:{},
+    remaining:{
+      1:[...DRAW_TIERS[1].teams],
+      2:[...DRAW_TIERS[2].teams],
+      3:[...DRAW_TIERS[3].teams],
+    },
+    spinning:false, locked:false,
+  };
+  drawSave();
+  renderDraw();
+}
 
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  const banner = document.getElementById('install-banner');
-  const data = loadData();
-  if (!data.installDismissed) banner.classList.add('show');
-});
+function showTab(id) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.getElementById(`pane-${id}`).classList.add('active');
+}
 
-function triggerInstall() {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(() => {
-      deferredPrompt = null;
-      document.getElementById('install-banner').classList.remove('show');
-    });
+function dismissLoading() {
+  const el = document.getElementById('loading');
+  if (el) { el.classList.add('fade'); setTimeout(()=>el.remove(),600); }
+}
+
+async function init() {
+  // Hard timeout — loading screen gone in 6s no matter what
+  const bail = setTimeout(dismissLoading, 3000);
+  try {
+    await drawLoad();
+    if(drawAllDone()) syncDrawToSweepstake();
+    await loadData();
+    renderSweepstake();
+    renderLeague();
+    renderFixtures();
+    renderDraw();
+  } catch(e) {
+    console.warn('Init error:', e);
+  } finally {
+    clearTimeout(bail);
+    dismissLoading();
   }
 }
 
-function dismissInstall() {
-  const data = loadData();
-  data.installDismissed = true;
-  saveData(data);
-  document.getElementById('install-banner').classList.remove('show');
-}
-
-// ============ SERVICE WORKER ============
-
-if ('serviceWorker' in navigator) {
+init();
+</script>
+<script>
+if ('serviceWorker' in navigator && location.hostname === 'thephatphox.github.io') {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(err => console.warn('SW registration failed:', err));
+    navigator.serviceWorker.register('./sw.js')
+      .catch(e => console.log('SW reg failed:', e));
   });
 }
-
-// ============ INIT ============
-
-maybeRunRescheduler();
-renderHero();
-renderPhase();
-renderRescheduleNotice();
-renderToday();
-renderSubjects();
-renderStats();
-renderSchedule();
-updateStreak();
-
-// Resume timer interval if one was active
-if (getTimer()) startTimerInterval();
-
-setInterval(renderHero, 60000);
-
-// Check for new day every 30 minutes (handles overnight reopens)
-setInterval(() => {
-  maybeRunRescheduler();
-  renderHero();
-  renderToday();
-  renderSchedule();
-}, 30 * 60 * 1000);
 </script>
 </body>
 </html>
