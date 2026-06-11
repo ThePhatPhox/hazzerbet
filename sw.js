@@ -1,4 +1,4 @@
-const CACHE = 'hazzerbet-v1';
+const CACHE = 'hazzerbet-v3';
 const ASSETS = [
   '/hazzerbet/',
   '/hazzerbet/index.html',
