@@ -474,8 +474,6 @@ body::before {
   color:var(--text); cursor:pointer; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:14px;
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis; transition:all .12s; }
 .name-pick.sel { background:rgba(255,215,0,.16); border-color:var(--gold); color:var(--gold); }
-.name-other { width:100%; padding:9px 10px; border:1px solid var(--border); border-radius:9px; margin-bottom:12px;
-  background:var(--surface2); color:var(--text); font-family:'Barlow Condensed',sans-serif; font-size:15px; }
 .name-submit { width:100%; padding:12px; border:none; border-radius:10px; cursor:pointer;
   background:var(--gold); color:#1a1300; font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:1px; }
 .name-submit:disabled { opacity:.4; cursor:not-allowed; }
@@ -537,7 +535,7 @@ body::before {
   <div id="pane-draw" class="pane"></div>
 
   <div class="footer">
-    Sweepstake 2026 · Live data via ESPN · No login needed · <span style="color:var(--gold)">v2.6</span> · Opens fresh each time
+    Sweepstake 2026 · Live data via ESPN · No login needed · <span style="color:var(--gold)">v2.7</span> · Opens fresh each time
     <br><button onclick="if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(regs=>Promise.all(regs.map(r=>r.unregister()))).then(()=>caches.keys().then(keys=>Promise.all(keys.map(k=>caches.delete(k))))).then(()=>location.reload(true))}else{location.reload(true)}" style="margin-top:8px;background:none;border:1px solid var(--border);color:var(--muted2);font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;">🔄 Force update</button>
     <br><span id="whoami" class="whoami"></span>
   </div>
@@ -548,7 +546,6 @@ body::before {
     <div class="name-title">👋 Who are you?</div>
     <div class="name-sub">Pick your name so your cheers &amp; boos are signed. Just the once.</div>
     <div class="name-grid" id="nameGrid"></div>
-    <input id="nameOther" class="name-other" placeholder="…or type a name" maxlength="20" autocomplete="off">
     <button id="nameSubmit" class="name-submit" disabled>Lock it in</button>
   </div>
 </div>
@@ -1583,17 +1580,15 @@ try {
   }
 
   // ── name gate ──
-  const gate=$('nameGate'), grid=$('nameGrid'), other=$('nameOther'), submit=$('nameSubmit');
+  const gate=$('nameGate'), grid=$('nameGrid'), submit=$('nameSubmit');
   let picked=null;
   NAMES.forEach(n => {
     const b=document.createElement('button'); b.className='name-pick'; b.textContent=n;
-    b.addEventListener('click', ()=>{ picked=n; other.value='';
+    b.addEventListener('click', ()=>{ picked=n;
       [...grid.children].forEach(c=>c.classList.toggle('sel', c===b)); submit.disabled=false; });
     grid.appendChild(b);
   });
-  other.addEventListener('input', ()=>{ picked=other.value.trim()||null;
-    [...grid.children].forEach(c=>c.classList.remove('sel')); submit.disabled=!picked; });
-  function openGate(){ picked=null; other.value=''; submit.disabled=true;
+  function openGate(){ picked=null; submit.disabled=true;
     [...grid.children].forEach(c=>c.classList.remove('sel')); gate.classList.add('show'); }
   function closeGate(){ gate.classList.remove('show'); }
   submit.addEventListener('click', ()=>{ if(picked){ localStorage.setItem('hb_name',picked); renderWho(); closeGate(); } });
