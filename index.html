@@ -471,7 +471,7 @@ body::before {
   <div id="pane-draw" class="pane"></div>
 
   <div class="footer">
-    Sweepstake 2026 · Live data via ESPN · No login needed · <span style="color:var(--gold)">v2.1</span> · Opens fresh each time
+    Sweepstake 2026 · Live data via ESPN · No login needed · <span style="color:var(--gold)">v2.2</span> · Opens fresh each time
     <br><button onclick="if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(regs=>Promise.all(regs.map(r=>r.unregister()))).then(()=>caches.keys().then(keys=>Promise.all(keys.map(k=>caches.delete(k))))).then(()=>location.reload(true))}else{location.reload(true)}" style="margin-top:8px;background:none;border:1px solid var(--border);color:var(--muted2);font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;">🔄 Force update</button>
   </div>
 </div>
@@ -506,22 +506,24 @@ const PARTICIPANTS = [
 ];
 
 const ODDS = {
-  "Spain":{win:16.4,esc:97},"France":{win:16.1,esc:96},"England":{win:10.9,esc:95},
-  "Portugal":{win:10.9,esc:94},"Brazil":{win:9.5,esc:92},"Argentina":{win:9.5,esc:92},
-  "Germany":{win:6.7,esc:94},"Netherlands":{win:4.8,esc:88},"Norway":{win:2.8,esc:72},
-  "Belgium":{win:2.4,esc:82},"Colombia":{win:2.4,esc:78},"Uruguay":{win:2.0,esc:76},
-  "Mexico":{win:1.8,esc:74},"Morocco":{win:1.8,esc:72},"Switzerland":{win:1.7,esc:70},
-  "USA":{win:1.9,esc:72},"Türkiye":{win:1.1,esc:58},"Croatia":{win:1.4,esc:65},
-  "Ecuador":{win:1.5,esc:62},"Canada":{win:0.5,esc:40},"South Korea":{win:0.4,esc:32},
-  "Australia":{win:0.4,esc:30},"Ivory Coast":{win:0.4,esc:38},"Czech Republic":{win:0.3,esc:35},
-  "Senegal":{win:0.8,esc:42},"Japan":{win:0.7,esc:55},"Austria":{win:0.4,esc:38},
-  "Paraguay":{win:0.5,esc:40},"Scotland":{win:0.3,esc:28},"Tunisia":{win:0.1,esc:20},
-  "Algeria":{win:0.2,esc:22},"Ghana":{win:0.2,esc:24},"Iran":{win:0.2,esc:20},
-  "South Africa":{win:0.1,esc:22},"New Zealand":{win:0.1,esc:14},
-  "Sweden":{win:1.0,esc:55},"Bosnia & Herzegovina":{win:0.3,esc:25},"Egypt":{win:0.3,esc:28},"Panama":{win:0.1,esc:12},
-  "Saudi Arabia":{win:0.1,esc:18},"Qatar":{win:0.1,esc:10},"Jordan":{win:0.1,esc:10},
-  "Iraq":{win:0.1,esc:12},"DR Congo":{win:0.1,esc:12},"Cape Verde":{win:0.05,esc:10},
-  "Haiti":{win:0.05,esc:5},"Uzbekistan":{win:0.1,esc:8},"Curaçao":{win:0.05,esc:6},
+  // win% = current bookmaker outright odds, margin-stripped & normalised to 100% (Yahoo/Oddschecker, 11 Jun 2026).
+  // esc% = chance to escape the group (manual baseline). Refresh win% via "update the odds".
+  "Spain":{win:14.9,esc:97},"France":{win:13.7,esc:96},"England":{win:10.2,esc:95},
+  "Portugal":{win:8.2,esc:94},"Brazil":{win:9.1,esc:92},"Argentina":{win:8.2,esc:92},
+  "Germany":{win:5.5,esc:94},"Netherlands":{win:3.9,esc:88},"Norway":{win:2.4,esc:72},
+  "Belgium":{win:2.4,esc:82},"Colombia":{win:2.0,esc:78},"Uruguay":{win:1.2,esc:76},
+  "Mexico":{win:1.2,esc:74},"Morocco":{win:2.0,esc:72},"Switzerland":{win:1.2,esc:70},
+  "USA":{win:1.6,esc:72},"Türkiye":{win:1.2,esc:58},"Croatia":{win:1.0,esc:65},
+  "Ecuador":{win:1.0,esc:62},"Canada":{win:0.5,esc:40},"South Korea":{win:0.3,esc:32},
+  "Australia":{win:0.2,esc:30},"Ivory Coast":{win:0.4,esc:38},"Czech Republic":{win:0.3,esc:35},
+  "Senegal":{win:1.2,esc:42},"Japan":{win:1.6,esc:55},"Austria":{win:0.5,esc:38},
+  "Paraguay":{win:0.3,esc:40},"Scotland":{win:0.3,esc:28},"Tunisia":{win:0.2,esc:20},
+  "Algeria":{win:0.3,esc:22},"Ghana":{win:0.2,esc:24},"Iran":{win:0.2,esc:20},
+  "South Africa":{win:0.08,esc:22},"New Zealand":{win:0.08,esc:14},"Sweden":{win:0.8,esc:55},
+  "Bosnia & Herzegovina":{win:0.3,esc:25},"Egypt":{win:0.3,esc:28},"Panama":{win:0.08,esc:12},
+  "Saudi Arabia":{win:0.08,esc:18},"Qatar":{win:0.08,esc:10},"Jordan":{win:0.08,esc:10},
+  "Iraq":{win:0.08,esc:12},"DR Congo":{win:0.1,esc:12},"Cape Verde":{win:0.08,esc:10},
+  "Haiti":{win:0.03,esc:5},"Uzbekistan":{win:0.08,esc:8},"Curaçao":{win:0.03,esc:6},
 
 };
 
