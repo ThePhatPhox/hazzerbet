@@ -115,6 +115,9 @@ body::before {
 .react-mute { flex:0 0 auto; width:38px; border:1px solid var(--border); border-radius:10px;
   background:var(--surface2); cursor:pointer; font-size:16px; color:var(--text); }
 .react-mute.muted { opacity:.45; }
+.react-last { text-align:center; font-family:'Barlow Condensed',sans-serif; font-size:13px; letter-spacing:.5px;
+  color:var(--muted); margin:-6px 0 14px; min-height:16px; }
+.react-last b { color:var(--gold); }
 .react-fx { position:fixed; inset:0; pointer-events:none; z-index:50; overflow:hidden; }
 .react-float { position:absolute; display:flex; flex-direction:column; align-items:center; line-height:1;
   will-change:transform,opacity; animation:floatUp 1.5s cubic-bezier(.25,.8,.3,1) forwards; }
@@ -517,12 +520,13 @@ body::before {
       <button class="tab" id="tab-draw" onclick="showTab('draw')">🎰 Draw</button>
     </div>
     <div class="react-bar">
-      <button class="react-btn cheer" data-type="cheer"><span class="react-emoji">👏</span><span class="react-label">Cheer</span><span class="react-count" id="c-cheer">0</span></button>
-      <button class="react-btn boo" data-type="boo"><span class="react-emoji">👎</span><span class="react-label">Boo</span><span class="react-count" id="c-boo">0</span></button>
-      <button class="react-btn pen" data-type="penalty"><span class="react-emoji">🥅</span><span class="react-label">Pen</span><span class="react-count" id="c-penalty">0</span></button>
-      <button class="react-btn ref" data-type="referee"><span class="react-emoji">🟨</span><span class="react-label">Ref</span><span class="react-count" id="c-referee">0</span></button>
+      <button class="react-btn cheer" data-type="cheer"><span class="react-emoji">👏</span><span class="react-label">Cheer</span></button>
+      <button class="react-btn boo" data-type="boo"><span class="react-emoji">👎</span><span class="react-label">Boo</span></button>
+      <button class="react-btn pen" data-type="penalty"><span class="react-emoji">🥅</span><span class="react-label">Pen</span></button>
+      <button class="react-btn ref" data-type="referee"><span class="react-emoji">🟨</span><span class="react-label">Ref</span></button>
       <button class="react-mute" id="muteBtn" aria-label="Mute reaction voices">🔊</button>
     </div>
+    <div class="react-last" id="reactLast">No reactions yet</div>
   </div>
   <div id="reactFx" class="react-fx" aria-hidden="true"></div>
 
@@ -533,7 +537,7 @@ body::before {
   <div id="pane-draw" class="pane"></div>
 
   <div class="footer">
-    Sweepstake 2026 · Live data via ESPN · No login needed · <span style="color:var(--gold)">v2.4</span> · Opens fresh each time
+    Sweepstake 2026 · Live data via ESPN · No login needed · <span style="color:var(--gold)">v2.5</span> · Opens fresh each time
     <br><button onclick="if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(regs=>Promise.all(regs.map(r=>r.unregister()))).then(()=>caches.keys().then(keys=>Promise.all(keys.map(k=>caches.delete(k))))).then(()=>location.reload(true))}else{location.reload(true)}" style="margin-top:8px;background:none;border:1px solid var(--border);color:var(--muted2);font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;">🔄 Force update</button>
     <br><span id="whoami" class="whoami"></span>
   </div>
@@ -546,7 +550,6 @@ body::before {
     <div class="name-grid" id="nameGrid"></div>
     <input id="nameOther" class="name-other" placeholder="…or type a name" maxlength="20" autocomplete="off">
     <button id="nameSubmit" class="name-submit" disabled>Lock it in</button>
-    <button id="nameSkip" class="name-skip">stay anonymous</button>
   </div>
 </div>
 
@@ -1543,7 +1546,7 @@ if ('serviceWorker' in navigator && location.hostname === 'thephatphox.github.io
 <!-- ── BOO / CHEER reaction bar (Firebase Realtime Database) ───────────────── -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-import { getDatabase, ref, onValue, set, runTransaction } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBAyfRalpfCKYxQsyrz04PI1htFQzDXcho",
@@ -1563,10 +1566,10 @@ try {
   const NAMES = ["Nicola","Harry","Jack","Paul","Thomas","Rick","Rachel","Ethan",
                  "Elliot","Tom","Lisa","Ben","Ella","Isobel","Grandma","Grandad"];
   const REACT = {
-    cheer:   { emoji:'👏', say:w=>`${w} cheers!`,             pitch:1.3, rate:1.05 },
-    boo:     { emoji:'👎', say:w=>`${w} says, boooo!`,        pitch:0.7, rate:0.95 },
-    penalty: { emoji:'🥅', say:w=>`${w} wants a penalty!`,    pitch:1.1, rate:1.05 },
-    referee: { emoji:'🟨', say:w=>`${w} blames the referee!`, pitch:1.0, rate:1.0  },
+    cheer:   { emoji:'👏', say:w=>`${w} cheers!`,             last:'cheered',           pitch:1.3, rate:1.05 },
+    boo:     { emoji:'👎', say:w=>`${w} says, boooo!`,        last:'booed',             pitch:0.7, rate:0.95 },
+    penalty: { emoji:'🥅', say:w=>`${w} wants a penalty!`,    last:'wants a penalty',   pitch:1.1, rate:1.05 },
+    referee: { emoji:'🟨', say:w=>`${w} blames the referee!`, last:'blames the ref',    pitch:1.0, rate:1.0  },
   };
 
   // ── identity (stored once on this device) ──
@@ -1592,10 +1595,9 @@ try {
     [...grid.children].forEach(c=>c.classList.remove('sel')); gate.classList.add('show'); }
   function closeGate(){ gate.classList.remove('show'); }
   submit.addEventListener('click', ()=>{ if(picked){ localStorage.setItem('hb_name',picked); renderWho(); closeGate(); } });
-  $('nameSkip').addEventListener('click', ()=>{ localStorage.setItem('hb_name',''); renderWho(); closeGate(); });
   $('whoami')?.addEventListener('click', openGate);
   renderWho();
-  if(getName()===null) openGate();   // first-ever visit
+  if(!getName()) openGate();   // require a name (no anonymous option)
 
   // ── mute ──
   let muted = localStorage.getItem('hb_muted')==='1';
@@ -1639,13 +1641,22 @@ try {
     lastVoice=now; speak(v.type, signed ? String(v.by) : 'Someone');
   }
 
-  // ── live counters (4 types) ──
-  Object.keys(REACT).forEach(type =>
-    onValue(ref(db,'counts/'+type), s => { const el=$('c-'+type); if(el) el.textContent=s.val()||0; }));
+  // ── "last reaction from…" line ──
+  function updateLast(v){
+    const el=$('reactLast'); if(!el) return;
+    if(!v || !REACT[v.type]){ el.textContent='No reactions yet'; return; }
+    const who = (v.by && String(v.by).trim()) ? String(v.by) : 'Someone';
+    el.innerHTML = `${REACT[v.type].emoji} <b>${who}</b> ${REACT[v.type].last}`;
+  }
 
-  // ── react to the latest reaction from any device (incl. self) ──
+  // ── latest reaction from any device (incl. self) ──
   let pulseReady=false;
-  onValue(ref(db,'pulse'), s => { if(!pulseReady){ pulseReady=true; return; } reactTo(s.val()); });
+  onValue(ref(db,'pulse'), s => {
+    const v=s.val();
+    updateLast(v);                                  // always reflect who reacted last
+    if(!pulseReady){ pulseReady=true; return; }     // don't sound/animate on initial load
+    reactTo(v);
+  });
 
   // ── send (rate-limited per device) ──
   let lastSent=0;
@@ -1653,7 +1664,6 @@ try {
     warmSpeech();
     const now=Date.now(); if(now-lastSent<1200) return; lastSent=now;
     set(ref(db,'pulse'), { type, ts:now, by:getName()||'' });
-    runTransaction(ref(db,'counts/'+type), c => (c||0)+1);
   }
   document.querySelectorAll('.react-btn').forEach(btn => btn.addEventListener('click', ()=>send(btn.dataset.type)));
 } catch(e){ console.warn('Reactions unavailable:', e); }
