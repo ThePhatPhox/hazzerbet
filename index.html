@@ -72,6 +72,9 @@ body::before {
   letter-spacing:4px; text-transform:uppercase; color:rgba(255,255,255,0.4);
 }
 .hero-ball { font-size:38px; margin-bottom:4px; display:inline-block;  }
+.hero-titlerow { display:flex; align-items:center; justify-content:center; gap:10px; }
+.hero-trophy { height:clamp(46px,13vw,68px); width:auto; flex:0 0 auto;
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,.55)); }
  }
 
 /* ── STATUS ── */
@@ -440,7 +443,11 @@ body::before {
   <div class="hero">
     <div class="hero-ball">⚽</div>
     <div class="hero-eyebrow">FIFA World Cup 2026 · USA · Canada · Mexico</div>
-    <div class="hero-title">HAZZER BET</div><div class="hero-sub2">Family Sweepstake 2026</div>
+    <div class="hero-titlerow">
+      <img class="hero-trophy" src="trophy.png" alt="World Cup trophy" width="152" height="180">
+      <div class="hero-title">HAZZER BET</div>
+    </div>
+    <div class="hero-sub2">Family Sweepstake 2026</div>
     <div class="hero-sub">Live Results · Auto-Updates</div>
   </div>
 
@@ -464,7 +471,7 @@ body::before {
   <div id="pane-draw" class="pane"></div>
 
   <div class="footer">
-    Sweepstake 2026 · Live data via ESPN · No login needed · <span style="color:var(--gold)">v1.9</span> · Opens fresh each time
+    Sweepstake 2026 · Live data via ESPN · No login needed · <span style="color:var(--gold)">v2.0</span> · Opens fresh each time
     <br><button onclick="if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(regs=>Promise.all(regs.map(r=>r.unregister()))).then(()=>caches.keys().then(keys=>Promise.all(keys.map(k=>caches.delete(k))))).then(()=>location.reload(true))}else{location.reload(true)}" style="margin-top:8px;background:none;border:1px solid var(--border);color:var(--muted2);font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;">🔄 Force update</button>
   </div>
 </div>
