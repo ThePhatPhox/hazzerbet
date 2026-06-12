@@ -79,10 +79,13 @@ body::before {
   display:flex; align-items:center; justify-content:center; gap:8px;
   background:var(--surface2); border:1px solid var(--border); border-radius:8px;
   padding:9px 14px; margin:0 auto 16px; font-size:12px; color:var(--muted);
+  flex-wrap:nowrap;
 }
-.live-dot { width:7px;height:7px;background:var(--green);border-radius:50%;flex-shrink:0; }
- 50%{opacity:.5;transform:scale(1.4)} }
+.live-dot { width:7px;height:7px;background:var(--green);border-radius:50%;flex-shrink:0;
+  animation:livePulse 1.6s ease-in-out infinite; }
+@keyframes livePulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
 .status-bar b { color:var(--text); }
+.status-line { white-space:nowrap; }
 
 /* ── TABS ── */
 .tabs {
@@ -442,8 +445,8 @@ body::before {
   </div>
 
   <div class="status-bar">
-    <div class="live-dot"></div>
-    <div>Data: <b id="status-text">Loading…</b> &nbsp;·&nbsp; <b id="refresh-time">—</b></div>
+    <span class="live-dot"></span>
+    <span class="status-line">Data: <b id="status-text">Loading…</b> &nbsp;·&nbsp; <b id="refresh-time">—</b></span>
   </div>
 
   <div class="tabs">
@@ -461,7 +464,7 @@ body::before {
   <div id="pane-draw" class="pane"></div>
 
   <div class="footer">
-    Sweepstake 2026 · Live data via ESPN · No login needed · <span style="color:var(--gold)">v1.8</span> · Opens fresh each time
+    Sweepstake 2026 · Live data via ESPN · No login needed · <span style="color:var(--gold)">v1.9</span> · Opens fresh each time
     <br><button onclick="if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(regs=>Promise.all(regs.map(r=>r.unregister()))).then(()=>caches.keys().then(keys=>Promise.all(keys.map(k=>caches.delete(k))))).then(()=>location.reload(true))}else{location.reload(true)}" style="margin-top:8px;background:none;border:1px solid var(--border);color:var(--muted2);font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;">🔄 Force update</button>
   </div>
 </div>
@@ -811,8 +814,8 @@ function renderSweepstake() {
       const alive = td ? td.alive : true;
       const o = ODDS[t.name]||{win:0,esc:0};
       const goalsStr = td ? `<span class="s-team-stat goals">⚽${td.gf}</span>` : '';
-      const winStr = o.win>0 ? `<span class="s-team-stat win">🏆${o.win}%</span>` : '';
-      const escStr = !groupsDone && o.esc>0 ? `<span class="s-team-stat" style="color:var(--green)">🚀${o.esc}%</span>` : '';
+      const winStr = o.win>0 ? `<span class="s-team-stat win">${o.win}%</span>` : '';
+      const escStr = !groupsDone && o.esc>0 ? `<span class="s-team-stat" style="color:var(--green)">${o.esc}%</span>` : '';
       return `<div class="s-team${!alive?' out':''}" onclick="showTeamFixtures('${t.name.replace(/'/g,"\'")}','${t.flag}')" style="cursor:pointer">
         <span class="s-team-flag">${t.flag}</span>
         <span class="s-team-name">${t.name}</span>
