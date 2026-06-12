@@ -535,7 +535,7 @@ body::before {
   <div id="pane-draw" class="pane"></div>
 
   <div class="footer">
-    Sweepstake 2026 · Live data via ESPN · No login needed · <span style="color:var(--gold)">v2.9</span> · Opens fresh each time
+    Sweepstake 2026 · Live data via ESPN · No login needed · <span style="color:var(--gold)">v2.10</span> · Opens fresh each time
     <br><button onclick="if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(regs=>Promise.all(regs.map(r=>r.unregister()))).then(()=>caches.keys().then(keys=>Promise.all(keys.map(k=>caches.delete(k))))).then(()=>location.reload(true))}else{location.reload(true)}" style="margin-top:8px;background:none;border:1px solid var(--border);color:var(--muted2);font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;">🔄 Force update</button>
     <br><span id="whoami" class="whoami"></span>
   </div>
@@ -1544,6 +1544,8 @@ if ('serviceWorker' in navigator && location.hostname === 'thephatphox.github.io
 </script>
 
 <!-- ── BOO / CHEER reaction bar (Firebase Realtime Database) ───────────────── -->
+<!-- Sound credits: cheer = "Arrowhead Stadium crowd noise" (Wikimedia Commons, CC BY-SA 4.0);
+     boo = "Soundgoats - Audience Booing" (public domain); whistle = splicesound (CC0). Trimmed for use. -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
@@ -1567,10 +1569,10 @@ try {
   const NAMES = ["Nicola","Harry","Jack","Paul","Thomas","Rick","Rachel","Ethan",
                  "Elliot","Tom","Lisa","Ben","Ella","Isobel","Grandma","Grandad"];
   const REACT = {
-    cheer:   { emoji:'👏', snd:'snd-cheer.m4a',   dur:3000, say:w=>`from ${w}`,          last:'cheered',         pitch:1.15 },
+    cheer:   { emoji:'👏', snd:'snd-cheer.m4a?v=2', dur:3200, say:w=>`from ${w}`,        last:'cheered',         pitch:1.15 },
     boo:     { emoji:'👎', snd:'snd-boo.m4a',     dur:3000, say:w=>`from ${w}`,          last:'booed',           pitch:0.85 },
     penalty: { emoji:'🥅', snd:'snd-whistle.m4a', dur:1600, say:w=>`Penalty! from ${w}`, last:'wants a penalty', pitch:1.05 },
-    referee: { emoji:'🟨', snd:'snd-whistle.m4a', dur:1600, say:w=>`Referee! from ${w}`, last:'blames the ref',  pitch:1.0  },
+    referee: { emoji:'🟨', snd:'',                dur:0,    say:w=>`Referee! from ${w}`, last:'blames the ref',  pitch:1.2  },
   };
 
   // ── identity (stored once on this device) ──
@@ -1645,6 +1647,7 @@ try {
     if(muted) return;
     const r=REACT[v.type];
     let said=false; const sayName=()=>{ if(said) return; said=true; speak(r.say(who), r.pitch); };
+    if(!r.snd){ sayName(); return; }                                // referee: no clip — just the shouted voice
     try {
       const a=new Audio(r.snd); a.volume=0.9;                       // real crowd sound…
       a.addEventListener('ended', sayName, {once:true});            // …then announce the name
