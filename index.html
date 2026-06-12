@@ -91,10 +91,38 @@ body::before {
 .status-line { white-space:nowrap; }
 
 /* ── TABS ── */
+.topstick { position:sticky; top:0; z-index:10; background:var(--bg); padding-top:8px; }
 .tabs {
-  display:flex; gap:3px; margin-bottom:16px;
+  display:flex; gap:3px; margin-bottom:8px;
   background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:3px;
-  position:sticky; top:8px; z-index:10;
+}
+
+/* ── REACTION BAR (boo / cheer) ── */
+.react-bar { display:flex; gap:6px; align-items:stretch; margin-bottom:14px; }
+.react-btn { flex:1; display:flex; align-items:center; justify-content:center; gap:7px;
+  border:1px solid var(--border); border-radius:10px; padding:8px 6px; cursor:pointer;
+  background:var(--surface2); color:var(--text); font-family:'Barlow Condensed',sans-serif;
+  font-weight:700; font-size:15px; letter-spacing:1px; text-transform:uppercase;
+  transition:transform .08s ease, background .15s; user-select:none; -webkit-user-select:none; }
+.react-btn:active { transform:scale(.94); }
+.react-btn.cheer { border-color:rgba(0,200,81,.45); }
+.react-btn.cheer:hover { background:rgba(0,200,81,.10); }
+.react-btn.boo { border-color:rgba(255,59,48,.45); }
+.react-btn.boo:hover { background:rgba(255,59,48,.10); }
+.react-emoji { font-size:19px; line-height:1; }
+.react-count { font-family:'Bebas Neue',sans-serif; font-size:16px; line-height:1; min-width:16px; }
+.react-btn.cheer .react-count { color:var(--green); }
+.react-btn.boo .react-count { color:var(--red); }
+.react-mute { flex:0 0 auto; width:42px; border:1px solid var(--border); border-radius:10px;
+  background:var(--surface2); cursor:pointer; font-size:17px; color:var(--text); }
+.react-mute.muted { opacity:.45; }
+.react-fx { position:fixed; inset:0; pointer-events:none; z-index:50; overflow:hidden; }
+.react-float { position:absolute; font-size:32px; will-change:transform,opacity;
+  animation:floatUp 1.4s cubic-bezier(.25,.8,.3,1) forwards; }
+@keyframes floatUp {
+  0%   { opacity:0; transform:translateY(6px) scale(.5); }
+  15%  { opacity:1; }
+  100% { opacity:0; transform:translateY(-170px) scale(1.5); }
 }
 .tab {
   flex:1; padding:11px 2px; text-align:center; cursor:pointer; border-radius:8px;
@@ -456,13 +484,21 @@ body::before {
     <span class="status-line">Data: <b id="status-text">Loading…</b> &nbsp;·&nbsp; <b id="refresh-time">—</b></span>
   </div>
 
-  <div class="tabs">
-    <button class="tab active" onclick="showTab('sweepstake')">🏆 Sweep</button>
-    <button class="tab" onclick="showTab('league')">📊 League</button>
-    <button class="tab" onclick="showTab('tournament')">🌍 Tournament</button>
-    <button class="tab" onclick="showTab('fixtures')">📅 Fixtures</button>
-    <button class="tab" id="tab-draw" onclick="showTab('draw')">🎰 Draw</button>
+  <div class="topstick">
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('sweepstake')">🏆 Sweep</button>
+      <button class="tab" onclick="showTab('league')">📊 League</button>
+      <button class="tab" onclick="showTab('tournament')">🌍 Tournament</button>
+      <button class="tab" onclick="showTab('fixtures')">📅 Fixtures</button>
+      <button class="tab" id="tab-draw" onclick="showTab('draw')">🎰 Draw</button>
+    </div>
+    <div class="react-bar">
+      <button class="react-btn cheer" id="cheerBtn"><span class="react-emoji">👏</span><span class="react-label">Cheer</span><span class="react-count" id="cheerCount">0</span></button>
+      <button class="react-btn boo" id="booBtn"><span class="react-emoji">👎</span><span class="react-label">Boo</span><span class="react-count" id="booCount">0</span></button>
+      <button class="react-mute" id="muteBtn" aria-label="Mute reaction sounds">🔊</button>
+    </div>
   </div>
+  <div id="reactFx" class="react-fx" aria-hidden="true"></div>
 
   <div id="pane-sweepstake" class="pane active"></div>
   <div id="pane-league" class="pane"></div>
@@ -471,7 +507,7 @@ body::before {
   <div id="pane-draw" class="pane"></div>
 
   <div class="footer">
-    Sweepstake 2026 · Live data via ESPN · No login needed · <span style="color:var(--gold)">v2.2</span> · Opens fresh each time
+    Sweepstake 2026 · Live data via ESPN · No login needed · <span style="color:var(--gold)">v2.3</span> · Opens fresh each time
     <br><button onclick="if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(regs=>Promise.all(regs.map(r=>r.unregister()))).then(()=>caches.keys().then(keys=>Promise.all(keys.map(k=>caches.delete(k))))).then(()=>location.reload(true))}else{location.reload(true)}" style="margin-top:8px;background:none;border:1px solid var(--border);color:var(--muted2);font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;">🔄 Force update</button>
   </div>
 </div>
@@ -1464,6 +1500,96 @@ if ('serviceWorker' in navigator && location.hostname === 'thephatphox.github.io
       .catch(e => console.log('SW reg failed:', e));
   });
 }
+</script>
+
+<!-- ── BOO / CHEER reaction bar (Firebase Realtime Database) ───────────────── -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import { getDatabase, ref, onValue, set, runTransaction } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBAyfRalpfCKYxQsyrz04PI1htFQzDXcho",
+  authDomain: "hazzerbet.firebaseapp.com",
+  databaseURL: "https://hazzerbet-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "hazzerbet",
+  storageBucket: "hazzerbet.firebasestorage.app",
+  messagingSenderId: "930236863594",
+  appId: "1:930236863594:web:2abe2223abd51a73dea613"
+};
+
+try {
+  const db = getDatabase(initializeApp(firebaseConfig));
+  const $ = id => document.getElementById(id);
+  const cheerBtn=$('cheerBtn'), booBtn=$('booBtn'), muteBtn=$('muteBtn'), fxLayer=$('reactFx');
+
+  // ── mute preference ──
+  let muted = localStorage.getItem('hb_muted') === '1';
+  const syncMute = () => { muteBtn.textContent = muted?'🔇':'🔊'; muteBtn.classList.toggle('muted', muted); };
+  syncMute();
+  muteBtn.addEventListener('click', () => {
+    muted = !muted; localStorage.setItem('hb_muted', muted?'1':'0'); syncMute(); if(!muted) unlockAudio();
+  });
+
+  // ── synthesised sounds (no audio files) ──
+  let actx = null;
+  function unlockAudio(){
+    try { if(!actx) actx = new (window.AudioContext||window.webkitAudioContext)();
+          if(actx.state === 'suspended') actx.resume(); } catch(e){}
+  }
+  window.addEventListener('pointerdown', unlockAudio);   // browsers block audio until a gesture
+  function tone(freqs, dur, type, peak){
+    if(muted || !actx || actx.state!=='running') return;
+    const now = actx.currentTime;
+    freqs.forEach((f,i) => {
+      const o=actx.createOscillator(), g=actx.createGain(), t0=now+i*0.07;
+      o.type=type; o.frequency.value=f;
+      g.gain.setValueAtTime(0,t0); g.gain.linearRampToValueAtTime(peak,t0+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t0+dur);
+      o.connect(g).connect(actx.destination); o.start(t0); o.stop(t0+dur);
+    });
+  }
+  const playCheer = () => tone([523.25,659.25,783.99,1046.5], 0.5, 'triangle', 0.16); // rising C-E-G-C
+  const playBoo   = () => tone([196,155.56,123.47],          0.55,'sawtooth', 0.13);  // low descending
+
+  // ── floating emoji ──
+  function floatEmoji(type){
+    const el=document.createElement('div'); el.className='react-float';
+    el.textContent = type==='cheer'?'👏':'👎';
+    const b=(type==='cheer'?cheerBtn:booBtn).getBoundingClientRect();
+    el.style.left=(b.left + b.width*(0.3+Math.random()*0.4))+'px';
+    el.style.top =b.top+'px';
+    fxLayer.appendChild(el); setTimeout(()=>el.remove(), 1500);
+  }
+  let lastReact = 0;
+  function reactTo(type){
+    floatEmoji(type);                       // always show the visual
+    const now=Date.now(); if(now-lastReact<250) return;  // throttle sound in a flurry
+    lastReact=now; (type==='cheer'?playCheer:playBoo)();
+  }
+
+  // ── live counters ──
+  onValue(ref(db,'counts/cheer'), s => $('cheerCount').textContent = s.val()||0);
+  onValue(ref(db,'counts/boo'),   s => $('booCount').textContent   = s.val()||0);
+
+  // ── react to the latest reaction from anyone (including self) ──
+  let pulseReady = false;
+  onValue(ref(db,'pulse'), s => {
+    if(!pulseReady){ pulseReady = true; return; }   // ignore the snapshot present at load
+    const v = s.val();
+    if(v && (v.type==='cheer'||v.type==='boo')) reactTo(v.type);
+  });
+
+  // ── send (rate-limited per device) ──
+  let lastSent = 0;
+  function send(type){
+    unlockAudio();
+    const now=Date.now(); if(now-lastSent<1200) return; lastSent=now;
+    set(ref(db,'pulse'), { type, ts: now });
+    runTransaction(ref(db,'counts/'+type), c => (c||0)+1);
+  }
+  cheerBtn.addEventListener('click', ()=>send('cheer'));
+  booBtn.addEventListener('click', ()=>send('boo'));
+} catch(e){ console.warn('Reactions unavailable:', e); }
 </script>
 </body>
 </html>
