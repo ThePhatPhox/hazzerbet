@@ -116,8 +116,18 @@ body::before {
   background:var(--surface2); cursor:pointer; font-size:16px; color:var(--text); }
 .react-mute.muted { opacity:.45; }
 .react-last { text-align:center; font-family:'Barlow Condensed',sans-serif; font-size:13px; letter-spacing:.5px;
-  color:var(--muted); margin:-6px 0 14px; min-height:16px; }
+  color:var(--muted); margin:-6px 0 14px; min-height:16px; cursor:pointer; }
 .react-last b { color:var(--gold); }
+.ll-more { color:var(--muted2); font-size:11px; }
+.log-sum { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+.log-chip { background:var(--surface2); border:1px solid var(--border); border-radius:20px; padding:4px 10px;
+  font-family:'Barlow Condensed',sans-serif; font-size:13px; }
+.log-chip b { color:var(--gold); }
+.log-row { display:flex; align-items:center; gap:10px; padding:8px 2px; border-bottom:1px solid rgba(255,255,255,.05); }
+.log-emoji { font-size:20px; flex:0 0 auto; }
+.log-txt { flex:1; font-family:'Barlow Condensed',sans-serif; font-size:15px; }
+.log-txt b { color:var(--gold); }
+.log-time { font-size:11px; color:var(--muted); font-family:'Barlow Condensed',sans-serif; white-space:nowrap; flex:0 0 auto; }
 .react-fx { position:fixed; inset:0; pointer-events:none; z-index:50; overflow:hidden; }
 .react-float { position:absolute; display:flex; flex-direction:column; align-items:center; line-height:1;
   will-change:transform,opacity; animation:floatUp 1.5s cubic-bezier(.25,.8,.3,1) forwards; }
@@ -535,7 +545,7 @@ body::before {
   <div id="pane-draw" class="pane"></div>
 
   <div class="footer">
-    Sweepstake 2026 · Live data via ESPN · No login needed · <span style="color:var(--gold)">v2.11</span> · Opens fresh each time
+    Sweepstake 2026 · Live data via ESPN · No login needed · <span style="color:var(--gold)">v2.12</span> · Opens fresh each time
     <br><button onclick="if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(regs=>Promise.all(regs.map(r=>r.unregister()))).then(()=>caches.keys().then(keys=>Promise.all(keys.map(k=>caches.delete(k))))).then(()=>location.reload(true))}else{location.reload(true)}" style="margin-top:8px;background:none;border:1px solid var(--border);color:var(--muted2);font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;">🔄 Force update</button>
     <br><span id="whoami" class="whoami"></span>
   </div>
@@ -1548,7 +1558,7 @@ if ('serviceWorker' in navigator && location.hostname === 'thephatphox.github.io
      boo = "Soundgoats - Audience Booing" (public domain); whistle = splicesound (CC0). Trimmed for use. -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+import { getDatabase, ref, onValue, set, push, query, limitToLast, get } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBAyfRalpfCKYxQsyrz04PI1htFQzDXcho",
@@ -1574,6 +1584,7 @@ try {
     penalty: { emoji:'🥅', snd:'snd-penalty.m4a', dur:2200, say:w=>`from ${w}`,          last:'wants a penalty', pitch:1.0 },
     referee: { emoji:'🟨', snd:'snd-referee.m4a', dur:1700, say:w=>`from ${w}`,          last:'blames the ref',  pitch:1.0 },
   };
+  const localFeed = [];   // test-mode reaction history (real mode uses Firebase /feed)
 
   // ── identity (stored once on this device) ──
   const getName = () => localStorage.getItem('hb_name');   // null = never asked; '' = chose anonymous
@@ -1660,10 +1671,46 @@ try {
   // ── "last reaction from…" line ──
   function updateLast(v){
     const el=$('reactLast'); if(!el) return;
-    if(!v || !REACT[v.type]){ el.textContent='No reactions yet'; return; }
+    if(!v || !REACT[v.type]){ el.innerHTML='No reactions yet <span class="ll-more">tap for log ›</span>'; return; }
     const who = (v.by && String(v.by).trim()) ? String(v.by) : 'Someone';
-    el.innerHTML = `${REACT[v.type].emoji} <b>${who}</b> ${REACT[v.type].last}`;
+    el.innerHTML = `${REACT[v.type].emoji} <b>${who}</b> ${REACT[v.type].last} <span class="ll-more">· log ›</span>`;
   }
+
+  // ── reaction log ("the banter") ──
+  function timeAgo(ts){
+    const s=Math.max(0,(Date.now()-ts)/1000);
+    if(s<60) return 'just now';
+    const m=Math.floor(s/60); if(m<60) return m+'m ago';
+    const h=Math.floor(m/60); if(h<24) return h+'h ago';
+    return Math.floor(h/24)+'d ago';
+  }
+  function renderLog(entries){
+    const root=$('modal-root'), box=$('modal-box'); if(!root||!box) return;
+    const tally={};
+    entries.forEach(v=>{ const n=(v.by&&String(v.by).trim())?String(v.by):'Someone'; tally[n]=(tally[n]||0)+1; });
+    const chips=Object.entries(tally).sort((a,b)=>b[1]-a[1])
+      .map(([n,c])=>`<span class="log-chip">${n} <b>×${c}</b></span>`).join('');
+    const rows = entries.length
+      ? entries.map(v=>{ const r=REACT[v.type]; const who=(v.by&&String(v.by).trim())?String(v.by):'Someone';
+          return `<div class="log-row"><span class="log-emoji">${r.emoji}</span><span class="log-txt"><b>${who}</b> ${r.last}</span><span class="log-time">${timeAgo(v.ts)}</span></div>`; }).join('')
+      : '<div class="empty" style="padding:24px">No reactions yet — be the first!</div>';
+    box.innerHTML = `
+      <div style="width:40px;height:4px;background:#2a2a3e;border-radius:2px;margin:0 auto 16px;"></div>
+      <button onclick="closeModal()" style="position:absolute;top:16px;right:16px;background:#1c1c2e;border:1px solid #2a2a3e;color:#f0f0f0;border-radius:50%;width:32px;height:32px;font-size:16px;cursor:pointer;">✕</button>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;color:#FFD700;margin-bottom:4px;">📣 The Banter</div>
+      <div style="font-size:12px;color:#777;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;margin-bottom:14px;">TAP OUTSIDE TO CLOSE · ${entries.length} REACTION${entries.length===1?'':'S'}</div>
+      ${chips?`<div class="log-sum">${chips}</div>`:''}
+      ${rows}`;
+    root.style.display='flex'; root.onclick=e=>{ if(e.target===root) closeModal(); };
+  }
+  async function openLog(){
+    if(TESTMODE){ renderLog(localFeed.slice().reverse()); return; }
+    let entries=[];
+    try { const snap=await get(query(ref(db,'feed'), limitToLast(100)));
+      snap.forEach(c=>{ const v=c.val(); if(v&&REACT[v.type]) entries.push(v); }); } catch(e){}
+    renderLog(entries.reverse());   // newest first
+  }
+  $('reactLast')?.addEventListener('click', openLog);
 
   // ── latest reaction from any device (incl. self) ──
   let pulseReady=false;
@@ -1680,8 +1727,9 @@ try {
     warmSpeech();
     const now=Date.now(); if(now-lastSent<1200) return; lastSent=now;
     const me = getName() || (TESTMODE ? 'Tester' : '');
-    if(TESTMODE){ const v={ type, ts:now, by:me }; updateLast(v); reactTo(v); return; }   // local only — never broadcast
+    if(TESTMODE){ const v={ type, ts:now, by:me }; localFeed.push(v); updateLast(v); reactTo(v); return; }   // local only — never broadcast
     set(ref(db,'pulse'), { type, ts:now, by:me });
+    push(ref(db,'feed'), { type, ts:now, by:me }).catch(()=>{});   // append to shared history log
   }
   document.querySelectorAll('.react-btn').forEach(btn => btn.addEventListener('click', ()=>send(btn.dataset.type)));
 } catch(e){ console.warn('Reactions unavailable:', e); }
