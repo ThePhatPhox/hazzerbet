@@ -546,7 +546,7 @@ body::before {
   <div id="pane-draw" class="pane"></div>
 
   <div class="footer">
-    Sweepstake 2026 · Live data via ESPN · No login needed · <span style="color:var(--gold)">v2.13</span> · Opens fresh each time
+    Sweepstake 2026 · Live data via ESPN · No login needed · <span style="color:var(--gold)">v2.14</span> · Opens fresh each time
     <br><button onclick="if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(regs=>Promise.all(regs.map(r=>r.unregister()))).then(()=>caches.keys().then(keys=>Promise.all(keys.map(k=>caches.delete(k))))).then(()=>location.reload(true))}else{location.reload(true)}" style="margin-top:8px;background:none;border:1px solid var(--border);color:var(--muted2);font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;">🔄 Force update</button>
     <br><span id="whoami" class="whoami"></span>
   </div>
@@ -1692,6 +1692,7 @@ try {
   }
   function renderLog(entries){
     const root=$('modal-root'), box=$('modal-box'); if(!root||!box) return;
+    entries = entries.slice().sort((a,b)=>(b.ts||0)-(a.ts||0));   // latest on top, always
     const tally={};
     entries.forEach(v=>{ const n=(v.by&&String(v.by).trim())?String(v.by):'Someone'; tally[n]=(tally[n]||0)+1; });
     const chips=Object.entries(tally).sort((a,b)=>b[1]-a[1])
@@ -1710,11 +1711,11 @@ try {
     root.style.display='flex'; root.onclick=e=>{ if(e.target===root) closeModal(); };
   }
   async function openLog(){
-    if(TESTMODE){ renderLog(localFeed.slice().reverse()); return; }
+    if(TESTMODE){ renderLog(localFeed); return; }   // renderLog sorts newest-first
     let entries=[];
     try { const snap=await get(query(ref(db,'feed'), limitToLast(100)));
       snap.forEach(c=>{ const v=c.val(); if(v&&REACT[v.type]) entries.push(v); }); } catch(e){}
-    renderLog(entries.reverse());   // newest first
+    renderLog(entries);
   }
   $('reactLast')?.addEventListener('click', openLog);
 
